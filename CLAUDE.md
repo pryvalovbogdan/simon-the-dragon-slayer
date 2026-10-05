@@ -1,4 +1,4 @@
-# Ember Runner — agent instructions
+# Simon the Dragon Slayer — agent instructions
 
 2D auto-runner for iPhone (Swift + SpriteKit). The hero runs, jumps obstacles, levels up into a
 fireball, and fights a boss at the end of each of four levels. An original setting: do not add
@@ -19,7 +19,7 @@ names, places or story from existing books, films or games.
    byte-identical between runs (use `draw.noise(seed)`, never `random`).
 5. **Every level must be beatable without taking a hit.** `swift test` proves it with a bot playing
    on one heart. If a level fails, fix the level or the boss pattern — not the bot or the test.
-6. `EmberRunner.xcodeproj` is generated. Edit `project.yml`, then `xcodegen generate`.
+6. `SimonTheDragonSlayer.xcodeproj` is generated. Edit `project.yml`, then `xcodegen generate`.
 
 ## Commands
 
