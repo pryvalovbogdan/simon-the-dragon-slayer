@@ -1,0 +1,227 @@
+{
+ "id": "level_02",
+ "nameKey": "level.2.name",
+ "background": "mountain",
+ "speed": 120,
+ "length": 4200,
+ "entryHeroLevel": 3,
+ "boss": "boss_dragon",
+ "bossRewardLevel": 4,
+ "items": [
+  {
+   "at": 220,
+   "kind": "coin"
+  },
+  {
+   "at": 236,
+   "kind": "coin"
+  },
+  {
+   "at": 252,
+   "kind": "coin"
+  },
+  {
+   "at": 268,
+   "kind": "coin"
+  },
+  {
+   "at": 400,
+   "kind": "thorns"
+  },
+  {
+   "at": 560,
+   "kind": "goblin"
+  },
+  {
+   "at": 720,
+   "kind": "icicle"
+  },
+  {
+   "at": 880,
+   "kind": "tree"
+  },
+  {
+   "at": 870,
+   "kind": "coin",
+   "y": 14
+  },
+  {
+   "at": 884,
+   "kind": "coin",
+   "y": 30
+  },
+  {
+   "at": 898,
+   "kind": "coin",
+   "y": 40
+  },
+  {
+   "at": 912,
+   "kind": "coin",
+   "y": 30
+  },
+  {
+   "at": 926,
+   "kind": "coin",
+   "y": 14
+  },
+  {
+   "at": 1060,
+   "kind": "giant"
+  },
+  {
+   "at": 1260,
+   "kind": "coin"
+  },
+  {
+   "at": 1276,
+   "kind": "coin"
+  },
+  {
+   "at": 1292,
+   "kind": "coin"
+  },
+  {
+   "at": 1308,
+   "kind": "coin"
+  },
+  {
+   "at": 1400,
+   "kind": "root"
+  },
+  {
+   "at": 1560,
+   "kind": "icicle"
+  },
+  {
+   "at": 1720,
+   "kind": "wolf"
+  },
+  {
+   "at": 1860,
+   "kind": "goblin"
+  },
+  {
+   "at": 2040,
+   "kind": "tree"
+  },
+  {
+   "at": 2030,
+   "kind": "coin",
+   "y": 14
+  },
+  {
+   "at": 2044,
+   "kind": "coin",
+   "y": 30
+  },
+  {
+   "at": 2058,
+   "kind": "coin",
+   "y": 40
+  },
+  {
+   "at": 2072,
+   "kind": "coin",
+   "y": 30
+  },
+  {
+   "at": 2086,
+   "kind": "coin",
+   "y": 14
+  },
+  {
+   "at": 2240,
+   "kind": "giant"
+  },
+  {
+   "at": 2460,
+   "kind": "icicle"
+  },
+  {
+   "at": 2620,
+   "kind": "root"
+  },
+  {
+   "at": 2780,
+   "kind": "wolf"
+  },
+  {
+   "at": 2940,
+   "kind": "coin"
+  },
+  {
+   "at": 2956,
+   "kind": "coin"
+  },
+  {
+   "at": 2972,
+   "kind": "coin"
+  },
+  {
+   "at": 2988,
+   "kind": "coin"
+  },
+  {
+   "at": 3100,
+   "kind": "tree"
+  },
+  {
+   "at": 3280,
+   "kind": "giant"
+  },
+  {
+   "at": 3480,
+   "kind": "icicle"
+  },
+  {
+   "at": 3640,
+   "kind": "thorns"
+  },
+  {
+   "at": 3630,
+   "kind": "coin",
+   "y": 14
+  },
+  {
+   "at": 3644,
+   "kind": "coin",
+   "y": 30
+  },
+  {
+   "at": 3658,
+   "kind": "coin",
+   "y": 40
+  },
+  {
+   "at": 3672,
+   "kind": "coin",
+   "y": 30
+  },
+  {
+   "at": 3686,
+   "kind": "coin",
+   "y": 14
+  },
+  {
+   "at": 3820,
+   "kind": "goblin"
+  },
+  {
+   "at": 3980,
+   "kind": "coin"
+  },
+  {
+   "at": 3996,
+   "kind": "coin"
+  },
+  {
+   "at": 4012,
+   "kind": "coin"
+  },
+  {
+   "at": 4028,
+   "kind": "coin"
+  }
+ ]
+}

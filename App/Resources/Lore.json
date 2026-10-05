@@ -1,0 +1,15 @@
+{
+ "game.title": "Ember Runner",
+ "hero.name": "Corin",
+ "level.1.name": "Oldwood",
+ "level.2.name": "Frostfang Peak",
+ "level.3.name": "The White Wastes",
+ "level.4.name": "The Ashen Spire",
+ "boss_giant.name": "The Frost Giant Chief",
+ "boss_dragon.name": "Rimewyrm",
+ "boss_queen.name": "The Pale Queen",
+ "boss_stormking.name": "The Tempest Lord",
+ "ability.fireball": "Fireball",
+ "ability.doubleJump": "Double Jump",
+ "ability.chargedFireball": "Charged Fireball"
+}

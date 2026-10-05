@@ -1,0 +1,13 @@
+{
+  "images": [
+    {
+      "filename": "boss_giant_stunned_1.png",
+      "idiom": "universal",
+      "scale": "1x"
+    }
+  ],
+  "info": {
+    "author": "xcode",
+    "version": 1
+  }
+}

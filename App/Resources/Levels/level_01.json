@@ -1,0 +1,261 @@
+{
+ "id": "level_01",
+ "nameKey": "level.1.name",
+ "background": "forest",
+ "speed": 110,
+ "length": 3600,
+ "entryHeroLevel": 1,
+ "boss": "boss_giant",
+ "bossRewardLevel": 3,
+ "items": [
+  {
+   "at": 220,
+   "kind": "coin"
+  },
+  {
+   "at": 236,
+   "kind": "coin"
+  },
+  {
+   "at": 252,
+   "kind": "coin"
+  },
+  {
+   "at": 268,
+   "kind": "coin"
+  },
+  {
+   "at": 420,
+   "kind": "root"
+  },
+  {
+   "at": 560,
+   "kind": "coin"
+  },
+  {
+   "at": 576,
+   "kind": "coin"
+  },
+  {
+   "at": 592,
+   "kind": "coin"
+  },
+  {
+   "at": 608,
+   "kind": "coin"
+  },
+  {
+   "at": 700,
+   "kind": "tree"
+  },
+  {
+   "at": 690,
+   "kind": "coin",
+   "y": 14
+  },
+  {
+   "at": 704,
+   "kind": "coin",
+   "y": 30
+  },
+  {
+   "at": 718,
+   "kind": "coin",
+   "y": 40
+  },
+  {
+   "at": 732,
+   "kind": "coin",
+   "y": 30
+  },
+  {
+   "at": 746,
+   "kind": "coin",
+   "y": 14
+  },
+  {
+   "at": 900,
+   "kind": "goblin"
+  },
+  {
+   "at": 1060,
+   "kind": "thorns"
+  },
+  {
+   "at": 1200,
+   "kind": "coin"
+  },
+  {
+   "at": 1216,
+   "kind": "coin"
+  },
+  {
+   "at": 1232,
+   "kind": "coin"
+  },
+  {
+   "at": 1248,
+   "kind": "coin"
+  },
+  {
+   "at": 1330,
+   "kind": "tree"
+  },
+  {
+   "at": 1320,
+   "kind": "coin",
+   "y": 14
+  },
+  {
+   "at": 1334,
+   "kind": "coin",
+   "y": 30
+  },
+  {
+   "at": 1348,
+   "kind": "coin",
+   "y": 40
+  },
+  {
+   "at": 1362,
+   "kind": "coin",
+   "y": 30
+  },
+  {
+   "at": 1376,
+   "kind": "coin",
+   "y": 14
+  },
+  {
+   "at": 1500,
+   "kind": "goblin"
+  },
+  {
+   "at": 1680,
+   "kind": "tree"
+  },
+  {
+   "at": 1840,
+   "kind": "thorns"
+  },
+  {
+   "at": 1980,
+   "kind": "goblin"
+  },
+  {
+   "at": 2100,
+   "kind": "coin"
+  },
+  {
+   "at": 2116,
+   "kind": "coin"
+  },
+  {
+   "at": 2132,
+   "kind": "coin"
+  },
+  {
+   "at": 2148,
+   "kind": "coin"
+  },
+  {
+   "at": 2240,
+   "kind": "tree"
+  },
+  {
+   "at": 2230,
+   "kind": "coin",
+   "y": 14
+  },
+  {
+   "at": 2244,
+   "kind": "coin",
+   "y": 30
+  },
+  {
+   "at": 2258,
+   "kind": "coin",
+   "y": 40
+  },
+  {
+   "at": 2272,
+   "kind": "coin",
+   "y": 30
+  },
+  {
+   "at": 2286,
+   "kind": "coin",
+   "y": 14
+  },
+  {
+   "at": 2400,
+   "kind": "wolf"
+  },
+  {
+   "at": 2540,
+   "kind": "root"
+  },
+  {
+   "at": 2700,
+   "kind": "shrine"
+  },
+  {
+   "at": 2900,
+   "kind": "goblin"
+  },
+  {
+   "at": 3040,
+   "kind": "wolf"
+  },
+  {
+   "at": 3200,
+   "kind": "tree"
+  },
+  {
+   "at": 3190,
+   "kind": "coin",
+   "y": 14
+  },
+  {
+   "at": 3204,
+   "kind": "coin",
+   "y": 30
+  },
+  {
+   "at": 3218,
+   "kind": "coin",
+   "y": 40
+  },
+  {
+   "at": 3232,
+   "kind": "coin",
+   "y": 30
+  },
+  {
+   "at": 3246,
+   "kind": "coin",
+   "y": 14
+  },
+  {
+   "at": 3380,
+   "kind": "goblin"
+  },
+  {
+   "at": 3480,
+   "kind": "coin"
+  },
+  {
+   "at": 3496,
+   "kind": "coin"
+  },
+  {
+   "at": 3512,
+   "kind": "coin"
+  },
+  {
+   "at": 3528,
+   "kind": "coin"
+  }
+ ],
+ "shrineLevel": 2
+}

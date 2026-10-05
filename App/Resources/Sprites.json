@@ -1,0 +1,871 @@
+{
+ "archer": {
+  "width": 24,
+  "height": 32,
+  "anchorX": 0.5625,
+  "anchorY": 0.0312,
+  "animations": {
+   "idle": {
+    "frames": 2,
+    "fps": 3,
+    "loop": true
+   },
+   "shoot": {
+    "frames": 4,
+    "fps": 10,
+    "loop": false
+   },
+   "death": {
+    "frames": 4,
+    "fps": 10,
+    "loop": false
+   }
+  }
+ },
+ "bg_forest_far": {
+  "width": 320,
+  "height": 110,
+  "anchorX": 0.5,
+  "anchorY": 0,
+  "animations": {
+   "still": {
+    "frames": 1,
+    "fps": 1,
+    "loop": true
+   }
+  }
+ },
+ "bg_forest_near": {
+  "width": 320,
+  "height": 150,
+  "anchorX": 0.5,
+  "anchorY": 0,
+  "animations": {
+   "still": {
+    "frames": 1,
+    "fps": 1,
+    "loop": true
+   }
+  }
+ },
+ "bg_forest_sky": {
+  "width": 16,
+  "height": 200,
+  "anchorX": 0.5,
+  "anchorY": 0,
+  "animations": {
+   "still": {
+    "frames": 1,
+    "fps": 1,
+    "loop": true
+   }
+  }
+ },
+ "bg_mountain_far": {
+  "width": 320,
+  "height": 150,
+  "anchorX": 0.5,
+  "anchorY": 0,
+  "animations": {
+   "still": {
+    "frames": 1,
+    "fps": 1,
+    "loop": true
+   }
+  }
+ },
+ "bg_mountain_near": {
+  "width": 320,
+  "height": 100,
+  "anchorX": 0.5,
+  "anchorY": 0,
+  "animations": {
+   "still": {
+    "frames": 1,
+    "fps": 1,
+    "loop": true
+   }
+  }
+ },
+ "bg_mountain_sky": {
+  "width": 16,
+  "height": 200,
+  "anchorX": 0.5,
+  "anchorY": 0,
+  "animations": {
+   "still": {
+    "frames": 1,
+    "fps": 1,
+    "loop": true
+   }
+  }
+ },
+ "bg_tower_far": {
+  "width": 320,
+  "height": 150,
+  "anchorX": 0.5,
+  "anchorY": 0,
+  "animations": {
+   "still": {
+    "frames": 1,
+    "fps": 1,
+    "loop": true
+   }
+  }
+ },
+ "bg_tower_near": {
+  "width": 320,
+  "height": 160,
+  "anchorX": 0.5,
+  "anchorY": 0,
+  "animations": {
+   "still": {
+    "frames": 1,
+    "fps": 1,
+    "loop": true
+   }
+  }
+ },
+ "bg_tower_sky": {
+  "width": 16,
+  "height": 200,
+  "anchorX": 0.5,
+  "anchorY": 0,
+  "animations": {
+   "still": {
+    "frames": 1,
+    "fps": 1,
+    "loop": true
+   }
+  }
+ },
+ "bg_wastes_far": {
+  "width": 320,
+  "height": 130,
+  "anchorX": 0.5,
+  "anchorY": 0,
+  "animations": {
+   "still": {
+    "frames": 1,
+    "fps": 1,
+    "loop": true
+   }
+  }
+ },
+ "bg_wastes_near": {
+  "width": 320,
+  "height": 70,
+  "anchorX": 0.5,
+  "anchorY": 0,
+  "animations": {
+   "still": {
+    "frames": 1,
+    "fps": 1,
+    "loop": true
+   }
+  }
+ },
+ "bg_wastes_sky": {
+  "width": 16,
+  "height": 200,
+  "anchorX": 0.5,
+  "anchorY": 0,
+  "animations": {
+   "still": {
+    "frames": 1,
+    "fps": 1,
+    "loop": true
+   }
+  }
+ },
+ "boss_dragon": {
+  "width": 128,
+  "height": 96,
+  "anchorX": 0.543,
+  "anchorY": 0.0104,
+  "animations": {
+   "idle": {
+    "frames": 6,
+    "fps": 8,
+    "loop": true
+   },
+   "breath": {
+    "frames": 8,
+    "fps": 10,
+    "loop": false
+   },
+   "tail": {
+    "frames": 6,
+    "fps": 10,
+    "loop": false
+   },
+   "hurt": {
+    "frames": 2,
+    "fps": 10,
+    "loop": true
+   },
+   "death": {
+    "frames": 8,
+    "fps": 8,
+    "loop": false
+   }
+  }
+ },
+ "boss_giant": {
+  "width": 96,
+  "height": 96,
+  "anchorX": 0.6823,
+  "anchorY": 0.0104,
+  "animations": {
+   "idle": {
+    "frames": 4,
+    "fps": 5,
+    "loop": true
+   },
+   "slam": {
+    "frames": 8,
+    "fps": 10,
+    "loop": false
+   },
+   "stunned": {
+    "frames": 4,
+    "fps": 6,
+    "loop": true
+   },
+   "hurt": {
+    "frames": 2,
+    "fps": 10,
+    "loop": true
+   },
+   "death": {
+    "frames": 8,
+    "fps": 8,
+    "loop": false
+   }
+  }
+ },
+ "boss_queen": {
+  "width": 64,
+  "height": 96,
+  "anchorX": 0.5234,
+  "anchorY": 0.0104,
+  "animations": {
+   "idle": {
+    "frames": 4,
+    "fps": 4,
+    "loop": true
+   },
+   "summon": {
+    "frames": 6,
+    "fps": 9,
+    "loop": false
+   },
+   "cast": {
+    "frames": 6,
+    "fps": 10,
+    "loop": false
+   },
+   "hurt": {
+    "frames": 2,
+    "fps": 10,
+    "loop": true
+   },
+   "death": {
+    "frames": 8,
+    "fps": 8,
+    "loop": false
+   }
+  }
+ },
+ "boss_stormking": {
+  "width": 96,
+  "height": 128,
+  "anchorX": 0.5365,
+  "anchorY": 0.0078,
+  "animations": {
+   "idle": {
+    "frames": 6,
+    "fps": 8,
+    "loop": true
+   },
+   "lightning": {
+    "frames": 8,
+    "fps": 10,
+    "loop": false
+   },
+   "phase": {
+    "frames": 6,
+    "fps": 10,
+    "loop": false
+   },
+   "hurt": {
+    "frames": 2,
+    "fps": 10,
+    "loop": true
+   },
+   "death": {
+    "frames": 10,
+    "fps": 8,
+    "loop": false
+   }
+  }
+ },
+ "coin": {
+  "width": 12,
+  "height": 12,
+  "anchorX": 0.5,
+  "anchorY": 0,
+  "animations": {
+   "spin": {
+    "frames": 6,
+    "fps": 10,
+    "loop": true
+   }
+  }
+ },
+ "fireball": {
+  "width": 16,
+  "height": 16,
+  "anchorX": 0.5,
+  "anchorY": 0,
+  "animations": {
+   "fly": {
+    "frames": 4,
+    "fps": 14,
+    "loop": true
+   },
+   "impact": {
+    "frames": 5,
+    "fps": 18,
+    "loop": false
+   }
+  }
+ },
+ "fireball_charged": {
+  "width": 24,
+  "height": 24,
+  "anchorX": 0.5,
+  "anchorY": 0,
+  "animations": {
+   "fly": {
+    "frames": 4,
+    "fps": 14,
+    "loop": true
+   },
+   "impact": {
+    "frames": 5,
+    "fps": 18,
+    "loop": false
+   }
+  }
+ },
+ "ghost": {
+  "width": 24,
+  "height": 28,
+  "anchorX": 0.5208,
+  "anchorY": 0.0714,
+  "animations": {
+   "float": {
+    "frames": 4,
+    "fps": 6,
+    "loop": true
+   },
+   "death": {
+    "frames": 3,
+    "fps": 10,
+    "loop": false
+   }
+  }
+ },
+ "giant": {
+  "width": 48,
+  "height": 64,
+  "anchorX": 0.6771,
+  "anchorY": 0.0156,
+  "animations": {
+   "walk": {
+    "frames": 6,
+    "fps": 7,
+    "loop": true
+   },
+   "swing": {
+    "frames": 6,
+    "fps": 10,
+    "loop": false
+   },
+   "hurt": {
+    "frames": 2,
+    "fps": 10,
+    "loop": true
+   },
+   "death": {
+    "frames": 6,
+    "fps": 8,
+    "loop": false
+   }
+  }
+ },
+ "goblin": {
+  "width": 24,
+  "height": 24,
+  "anchorX": 0.5625,
+  "anchorY": 0.0417,
+  "animations": {
+   "walk": {
+    "frames": 6,
+    "fps": 10,
+    "loop": true
+   },
+   "death": {
+    "frames": 4,
+    "fps": 10,
+    "loop": false
+   }
+  }
+ },
+ "ground_forest": {
+  "width": 32,
+  "height": 48,
+  "anchorX": 0.5,
+  "anchorY": 0,
+  "animations": {
+   "still": {
+    "frames": 1,
+    "fps": 1,
+    "loop": true
+   }
+  }
+ },
+ "ground_forest_fill": {
+  "width": 8,
+  "height": 8,
+  "anchorX": 0.5,
+  "anchorY": 0,
+  "animations": {
+   "still": {
+    "frames": 1,
+    "fps": 1,
+    "loop": true
+   }
+  }
+ },
+ "ground_mountain": {
+  "width": 32,
+  "height": 48,
+  "anchorX": 0.5,
+  "anchorY": 0,
+  "animations": {
+   "still": {
+    "frames": 1,
+    "fps": 1,
+    "loop": true
+   }
+  }
+ },
+ "ground_mountain_fill": {
+  "width": 8,
+  "height": 8,
+  "anchorX": 0.5,
+  "anchorY": 0,
+  "animations": {
+   "still": {
+    "frames": 1,
+    "fps": 1,
+    "loop": true
+   }
+  }
+ },
+ "ground_tower": {
+  "width": 32,
+  "height": 48,
+  "anchorX": 0.5,
+  "anchorY": 0,
+  "animations": {
+   "still": {
+    "frames": 1,
+    "fps": 1,
+    "loop": true
+   }
+  }
+ },
+ "ground_tower_fill": {
+  "width": 8,
+  "height": 8,
+  "anchorX": 0.5,
+  "anchorY": 0,
+  "animations": {
+   "still": {
+    "frames": 1,
+    "fps": 1,
+    "loop": true
+   }
+  }
+ },
+ "ground_wastes": {
+  "width": 32,
+  "height": 48,
+  "anchorX": 0.5,
+  "anchorY": 0,
+  "animations": {
+   "still": {
+    "frames": 1,
+    "fps": 1,
+    "loop": true
+   }
+  }
+ },
+ "ground_wastes_fill": {
+  "width": 8,
+  "height": 8,
+  "anchorX": 0.5,
+  "anchorY": 0,
+  "animations": {
+   "still": {
+    "frames": 1,
+    "fps": 1,
+    "loop": true
+   }
+  }
+ },
+ "hazard_arrow": {
+  "width": 12,
+  "height": 5,
+  "anchorX": 0.5,
+  "anchorY": 0,
+  "animations": {
+   "fly": {
+    "frames": 1,
+    "fps": 10,
+    "loop": true
+   }
+  }
+ },
+ "hazard_blade": {
+  "width": 72,
+  "height": 16,
+  "anchorX": 0.5,
+  "anchorY": 0,
+  "animations": {
+   "fly": {
+    "frames": 2,
+    "fps": 10,
+    "loop": true
+   }
+  }
+ },
+ "hazard_boulder": {
+  "width": 16,
+  "height": 16,
+  "anchorX": 0.5,
+  "anchorY": 0,
+  "animations": {
+   "fly": {
+    "frames": 4,
+    "fps": 12,
+    "loop": true
+   }
+  }
+ },
+ "hazard_frost": {
+  "width": 44,
+  "height": 14,
+  "anchorX": 0.5,
+  "anchorY": 0,
+  "animations": {
+   "fly": {
+    "frames": 3,
+    "fps": 10,
+    "loop": true
+   }
+  }
+ },
+ "hazard_icespike": {
+  "width": 12,
+  "height": 18,
+  "anchorX": 0.5,
+  "anchorY": 0,
+  "animations": {
+   "fly": {
+    "frames": 2,
+    "fps": 6,
+    "loop": true
+   }
+  }
+ },
+ "hazard_lightning": {
+  "width": 12,
+  "height": 20,
+  "anchorX": 0.5,
+  "anchorY": 0,
+  "animations": {
+   "fly": {
+    "frames": 3,
+    "fps": 14,
+    "loop": true
+   }
+  }
+ },
+ "hazard_orb": {
+  "width": 14,
+  "height": 14,
+  "anchorX": 0.5,
+  "anchorY": 0,
+  "animations": {
+   "fly": {
+    "frames": 4,
+    "fps": 12,
+    "loop": true
+   }
+  }
+ },
+ "hazard_shockwave": {
+  "width": 20,
+  "height": 12,
+  "anchorX": 0.5,
+  "anchorY": 0,
+  "animations": {
+   "fly": {
+    "frames": 3,
+    "fps": 12,
+    "loop": true
+   }
+  }
+ },
+ "hazard_tail": {
+  "width": 64,
+  "height": 14,
+  "anchorX": 0.5,
+  "anchorY": 0,
+  "animations": {
+   "fly": {
+    "frames": 2,
+    "fps": 8,
+    "loop": true
+   }
+  }
+ },
+ "hazard_wave": {
+  "width": 34,
+  "height": 14,
+  "anchorX": 0.5,
+  "anchorY": 0,
+  "animations": {
+   "fly": {
+    "frames": 3,
+    "fps": 12,
+    "loop": true
+   }
+  }
+ },
+ "heart_empty": {
+  "width": 11,
+  "height": 10,
+  "anchorX": 0.5,
+  "anchorY": 0,
+  "animations": {
+   "still": {
+    "frames": 1,
+    "fps": 1,
+    "loop": true
+   }
+  }
+ },
+ "heart_full": {
+  "width": 11,
+  "height": 10,
+  "anchorX": 0.5,
+  "anchorY": 0,
+  "animations": {
+   "still": {
+    "frames": 1,
+    "fps": 1,
+    "loop": true
+   }
+  }
+ },
+ "hero": {
+  "width": 48,
+  "height": 48,
+  "anchorX": 0.3438,
+  "anchorY": 0.0208,
+  "animations": {
+   "run": {
+    "frames": 8,
+    "fps": 14,
+    "loop": true
+   },
+   "stop": {
+    "frames": 4,
+    "fps": 10,
+    "loop": false
+   },
+   "idle": {
+    "frames": 4,
+    "fps": 4,
+    "loop": true
+   },
+   "jump": {
+    "frames": 2,
+    "fps": 8,
+    "loop": true
+   },
+   "fall": {
+    "frames": 2,
+    "fps": 8,
+    "loop": true
+   },
+   "cast": {
+    "frames": 6,
+    "fps": 16,
+    "loop": false
+   },
+   "hurt": {
+    "frames": 2,
+    "fps": 10,
+    "loop": true
+   },
+   "death": {
+    "frames": 6,
+    "fps": 8,
+    "loop": false
+   }
+  }
+ },
+ "hound": {
+  "width": 32,
+  "height": 20,
+  "anchorX": 0.5156,
+  "anchorY": 0.05,
+  "animations": {
+   "run": {
+    "frames": 6,
+    "fps": 14,
+    "loop": true
+   },
+   "death": {
+    "frames": 4,
+    "fps": 10,
+    "loop": false
+   }
+  }
+ },
+ "icicle": {
+  "width": 14,
+  "height": 42,
+  "anchorX": 0.5,
+  "anchorY": 0,
+  "animations": {
+   "still": {
+    "frames": 1,
+    "fps": 1,
+    "loop": true
+   }
+  }
+ },
+ "raven": {
+  "width": 24,
+  "height": 20,
+  "anchorX": 0.5208,
+  "anchorY": 0.25,
+  "animations": {
+   "fly": {
+    "frames": 4,
+    "fps": 10,
+    "loop": true
+   },
+   "death": {
+    "frames": 3,
+    "fps": 10,
+    "loop": false
+   }
+  }
+ },
+ "root": {
+  "width": 24,
+  "height": 10,
+  "anchorX": 0.5,
+  "anchorY": 0.1,
+  "animations": {
+   "still": {
+    "frames": 1,
+    "fps": 1,
+    "loop": true
+   }
+  }
+ },
+ "shrine": {
+  "width": 24,
+  "height": 48,
+  "anchorX": 0.5,
+  "anchorY": 0.0208,
+  "animations": {
+   "glow": {
+    "frames": 4,
+    "fps": 5,
+    "loop": true
+   }
+  }
+ },
+ "skeleton": {
+  "width": 24,
+  "height": 32,
+  "anchorX": 0.5625,
+  "anchorY": 0.0312,
+  "animations": {
+   "walk": {
+    "frames": 6,
+    "fps": 8,
+    "loop": true
+   },
+   "death": {
+    "frames": 4,
+    "fps": 10,
+    "loop": false
+   }
+  }
+ },
+ "thorns": {
+  "width": 28,
+  "height": 14,
+  "anchorX": 0.5,
+  "anchorY": 0.0714,
+  "animations": {
+   "still": {
+    "frames": 1,
+    "fps": 1,
+    "loop": true
+   }
+  }
+ },
+ "tree": {
+  "width": 20,
+  "height": 30,
+  "anchorX": 0.5,
+  "anchorY": 0.0333,
+  "animations": {
+   "still": {
+    "frames": 1,
+    "fps": 1,
+    "loop": true
+   }
+  }
+ },
+ "wolf": {
+  "width": 32,
+  "height": 20,
+  "anchorX": 0.5156,
+  "anchorY": 0.05,
+  "animations": {
+   "run": {
+    "frames": 6,
+    "fps": 12,
+    "loop": true
+   },
+   "death": {
+    "frames": 4,
+    "fps": 10,
+    "loop": false
+   }
+  }
+ }
+}
