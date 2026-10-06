@@ -1,0 +1,347 @@
+{
+ "id": "level_04",
+ "nameKey": "level.4.name",
+ "background": "tower",
+ "speed": 140,
+ "length": 7500,
+ "entryHeroLevel": 4,
+ "boss": "boss_stormking",
+ "bossRewardLevel": 4,
+ "ravines": [
+  {
+   "at": 700,
+   "width": 50
+  },
+  {
+   "at": 1900,
+   "width": 56
+  },
+  {
+   "at": 4170,
+   "width": 56
+  },
+  {
+   "at": 4296,
+   "width": 54
+  },
+  {
+   "at": 5200,
+   "width": 54
+  },
+  {
+   "at": 6160,
+   "width": 56
+  },
+  {
+   "at": 6900,
+   "width": 54
+  },
+  {
+   "at": 7024,
+   "width": 54
+  }
+ ],
+ "items": [
+  {
+   "at": 220,
+   "kind": "coin"
+  },
+  {
+   "at": 236,
+   "kind": "coin"
+  },
+  {
+   "at": 252,
+   "kind": "coin"
+  },
+  {
+   "at": 268,
+   "kind": "coin"
+  },
+  {
+   "at": 420,
+   "kind": "skeleton"
+  },
+  {
+   "at": 600,
+   "kind": "tree"
+  },
+  {
+   "at": 590,
+   "kind": "coin",
+   "y": 14
+  },
+  {
+   "at": 604,
+   "kind": "coin",
+   "y": 30
+  },
+  {
+   "at": 618,
+   "kind": "coin",
+   "y": 40
+  },
+  {
+   "at": 632,
+   "kind": "coin",
+   "y": 30
+  },
+  {
+   "at": 646,
+   "kind": "coin",
+   "y": 14
+  },
+  {
+   "at": 850,
+   "kind": "hound"
+  },
+  {
+   "at": 1020,
+   "kind": "icicle"
+  },
+  {
+   "at": 1200,
+   "kind": "archer"
+  },
+  {
+   "at": 1440,
+   "kind": "thorns"
+  },
+  {
+   "at": 1620,
+   "kind": "giant"
+  },
+  {
+   "at": 1860,
+   "kind": "raven"
+  },
+  {
+   "at": 2040,
+   "kind": "tree"
+  },
+  {
+   "at": 2030,
+   "kind": "coin",
+   "y": 14
+  },
+  {
+   "at": 2044,
+   "kind": "coin",
+   "y": 30
+  },
+  {
+   "at": 2058,
+   "kind": "coin",
+   "y": 40
+  },
+  {
+   "at": 2072,
+   "kind": "coin",
+   "y": 30
+  },
+  {
+   "at": 2086,
+   "kind": "coin",
+   "y": 14
+  },
+  {
+   "at": 2260,
+   "kind": "ghost"
+  },
+  {
+   "at": 2420,
+   "kind": "skeleton"
+  },
+  {
+   "at": 2640,
+   "kind": "icicle"
+  },
+  {
+   "at": 2820,
+   "kind": "hound"
+  },
+  {
+   "at": 3040,
+   "kind": "giant"
+  },
+  {
+   "at": 3280,
+   "kind": "archer"
+  },
+  {
+   "at": 3520,
+   "kind": "ghost"
+  },
+  {
+   "at": 3700,
+   "kind": "raven"
+  },
+  {
+   "at": 3880,
+   "kind": "tree"
+  },
+  {
+   "at": 3870,
+   "kind": "coin",
+   "y": 14
+  },
+  {
+   "at": 3884,
+   "kind": "coin",
+   "y": 30
+  },
+  {
+   "at": 3898,
+   "kind": "coin",
+   "y": 40
+  },
+  {
+   "at": 3912,
+   "kind": "coin",
+   "y": 30
+  },
+  {
+   "at": 3926,
+   "kind": "coin",
+   "y": 14
+  },
+  {
+   "at": 4100,
+   "kind": "giant"
+  },
+  {
+   "at": 4262,
+   "kind": "wolf"
+  },
+  {
+   "at": 4540,
+   "kind": "icicle"
+  },
+  {
+   "at": 4720,
+   "kind": "thorns"
+  },
+  {
+   "at": 4860,
+   "kind": "coin"
+  },
+  {
+   "at": 4876,
+   "kind": "coin"
+  },
+  {
+   "at": 4892,
+   "kind": "coin"
+  },
+  {
+   "at": 4908,
+   "kind": "coin"
+  },
+  {
+   "at": 4900,
+   "kind": "skeleton"
+  },
+  {
+   "at": 5080,
+   "kind": "archer"
+  },
+  {
+   "at": 5340,
+   "kind": "icicle"
+  },
+  {
+   "at": 5500,
+   "kind": "hound"
+  },
+  {
+   "at": 5670,
+   "kind": "coin",
+   "y": 14
+  },
+  {
+   "at": 5680,
+   "kind": "tree"
+  },
+  {
+   "at": 5684,
+   "kind": "coin",
+   "y": 30
+  },
+  {
+   "at": 5698,
+   "kind": "coin",
+   "y": 40
+  },
+  {
+   "at": 5712,
+   "kind": "coin",
+   "y": 30
+  },
+  {
+   "at": 5726,
+   "kind": "coin",
+   "y": 14
+  },
+  {
+   "at": 5860,
+   "kind": "ghost"
+  },
+  {
+   "at": 6040,
+   "kind": "giant"
+  },
+  {
+   "at": 6296,
+   "kind": "wolf"
+  },
+  {
+   "at": 6440,
+   "kind": "raven"
+  },
+  {
+   "at": 6590,
+   "kind": "coin",
+   "y": 14
+  },
+  {
+   "at": 6600,
+   "kind": "thorns"
+  },
+  {
+   "at": 6604,
+   "kind": "coin",
+   "y": 30
+  },
+  {
+   "at": 6618,
+   "kind": "coin",
+   "y": 40
+  },
+  {
+   "at": 6632,
+   "kind": "coin",
+   "y": 30
+  },
+  {
+   "at": 6646,
+   "kind": "coin",
+   "y": 14
+  },
+  {
+   "at": 6780,
+   "kind": "archer"
+  },
+  {
+   "at": 6990,
+   "kind": "hound"
+  },
+  {
+   "at": 7200,
+   "kind": "icicle"
+  },
+  {
+   "at": 7340,
+   "kind": "giant"
+  }
+ ]
+}

@@ -1,0 +1,293 @@
+{
+ "id": "level_03",
+ "nameKey": "level.3.name",
+ "background": "wastes",
+ "speed": 130,
+ "length": 6900,
+ "entryHeroLevel": 4,
+ "boss": "boss_queen",
+ "bossRewardLevel": 4,
+ "ravines": [
+  {
+   "at": 1920,
+   "width": 48
+  },
+  {
+   "at": 4100,
+   "width": 44
+  },
+  {
+   "at": 4214,
+   "width": 44
+  },
+  {
+   "at": 4900,
+   "width": 48
+  },
+  {
+   "at": 5800,
+   "width": 52
+  },
+  {
+   "at": 6340,
+   "width": 44
+  },
+  {
+   "at": 6454,
+   "width": 44
+  }
+ ],
+ "items": [
+  {
+   "at": 220,
+   "kind": "coin"
+  },
+  {
+   "at": 236,
+   "kind": "coin"
+  },
+  {
+   "at": 252,
+   "kind": "coin"
+  },
+  {
+   "at": 268,
+   "kind": "coin"
+  },
+  {
+   "at": 420,
+   "kind": "hound"
+  },
+  {
+   "at": 640,
+   "kind": "skeleton"
+  },
+  {
+   "at": 820,
+   "kind": "archer"
+  },
+  {
+   "at": 1040,
+   "kind": "icicle"
+  },
+  {
+   "at": 1220,
+   "kind": "raven"
+  },
+  {
+   "at": 1400,
+   "kind": "skeleton"
+  },
+  {
+   "at": 1390,
+   "kind": "coin",
+   "y": 14
+  },
+  {
+   "at": 1404,
+   "kind": "coin",
+   "y": 30
+  },
+  {
+   "at": 1418,
+   "kind": "coin",
+   "y": 40
+  },
+  {
+   "at": 1432,
+   "kind": "coin",
+   "y": 30
+  },
+  {
+   "at": 1446,
+   "kind": "coin",
+   "y": 14
+  },
+  {
+   "at": 1600,
+   "kind": "hound"
+  },
+  {
+   "at": 1820,
+   "kind": "giant"
+  },
+  {
+   "at": 2040,
+   "kind": "coin"
+  },
+  {
+   "at": 2056,
+   "kind": "coin"
+  },
+  {
+   "at": 2072,
+   "kind": "coin"
+  },
+  {
+   "at": 2088,
+   "kind": "coin"
+  },
+  {
+   "at": 2200,
+   "kind": "archer"
+  },
+  {
+   "at": 2440,
+   "kind": "thorns"
+  },
+  {
+   "at": 2620,
+   "kind": "raven"
+  },
+  {
+   "at": 2800,
+   "kind": "ghost"
+  },
+  {
+   "at": 2980,
+   "kind": "hound"
+  },
+  {
+   "at": 3200,
+   "kind": "skeleton"
+  },
+  {
+   "at": 3190,
+   "kind": "coin",
+   "y": 14
+  },
+  {
+   "at": 3204,
+   "kind": "coin",
+   "y": 30
+  },
+  {
+   "at": 3218,
+   "kind": "coin",
+   "y": 40
+  },
+  {
+   "at": 3232,
+   "kind": "coin",
+   "y": 30
+  },
+  {
+   "at": 3246,
+   "kind": "coin",
+   "y": 14
+  },
+  {
+   "at": 3400,
+   "kind": "giant"
+  },
+  {
+   "at": 3640,
+   "kind": "archer"
+  },
+  {
+   "at": 3880,
+   "kind": "ghost"
+  },
+  {
+   "at": 4060,
+   "kind": "raven"
+  },
+  {
+   "at": 4190,
+   "kind": "hound"
+  },
+  {
+   "at": 4400,
+   "kind": "coin"
+  },
+  {
+   "at": 4416,
+   "kind": "coin"
+  },
+  {
+   "at": 4432,
+   "kind": "coin"
+  },
+  {
+   "at": 4448,
+   "kind": "coin"
+  },
+  {
+   "at": 4420,
+   "kind": "skeleton"
+  },
+  {
+   "at": 4600,
+   "kind": "archer"
+  },
+  {
+   "at": 4800,
+   "kind": "icicle"
+  },
+  {
+   "at": 5140,
+   "kind": "raven"
+  },
+  {
+   "at": 5290,
+   "kind": "coin",
+   "y": 14
+  },
+  {
+   "at": 5300,
+   "kind": "skeleton"
+  },
+  {
+   "at": 5304,
+   "kind": "coin",
+   "y": 30
+  },
+  {
+   "at": 5318,
+   "kind": "coin",
+   "y": 40
+  },
+  {
+   "at": 5332,
+   "kind": "coin",
+   "y": 30
+  },
+  {
+   "at": 5346,
+   "kind": "coin",
+   "y": 14
+  },
+  {
+   "at": 5480,
+   "kind": "giant"
+  },
+  {
+   "at": 5700,
+   "kind": "ghost"
+  },
+  {
+   "at": 5952,
+   "kind": "hound"
+  },
+  {
+   "at": 6060,
+   "kind": "thorns"
+  },
+  {
+   "at": 6220,
+   "kind": "archer"
+  },
+  {
+   "at": 6420,
+   "kind": "hound"
+  },
+  {
+   "at": 6680,
+   "kind": "raven"
+  },
+  {
+   "at": 6790,
+   "kind": "skeleton"
+  }
+ ]
+}

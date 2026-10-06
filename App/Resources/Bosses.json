@@ -1,0 +1,388 @@
+[
+ {
+  "id": "boss_giant",
+  "hp": 20,
+  "width": 56,
+  "height": 84,
+  "baseY": 0,
+  "vulnerable": "always",
+  "requiresCharged": false,
+  "attacks": [
+   {
+    "name": "slam",
+    "telegraph": 0.8,
+    "duration": 0.6,
+    "recover": 0.8,
+    "hazards": [
+     {
+      "kind": "shockwave",
+      "delay": 0,
+      "y": 0,
+      "width": 16,
+      "height": 10,
+      "closingSpeed": 150
+     }
+    ]
+   },
+   {
+    "name": "double_slam",
+    "telegraph": 0.8,
+    "duration": 1.3,
+    "recover": 0.9,
+    "hazards": [
+     {
+      "kind": "shockwave",
+      "delay": 0,
+      "y": 0,
+      "width": 16,
+      "height": 10,
+      "closingSpeed": 150
+     },
+     {
+      "kind": "shockwave",
+      "delay": 0.8,
+      "y": 0,
+      "width": 16,
+      "height": 10,
+      "closingSpeed": 150
+     }
+    ]
+   },
+   {
+    "name": "boulder",
+    "telegraph": 0.7,
+    "duration": 0.5,
+    "recover": 0.7,
+    "hazards": [
+     {
+      "kind": "boulder",
+      "delay": 0,
+      "y": 42,
+      "width": 14,
+      "height": 14,
+      "closingSpeed": 170
+     }
+    ]
+   }
+  ],
+  "phases": [
+   {
+    "startsBelow": 1,
+    "attacks": [
+     "slam",
+     "boulder"
+    ]
+   },
+   {
+    "startsBelow": 0.5,
+    "attacks": [
+     "double_slam",
+     "boulder",
+     "slam"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "boss_dragon",
+  "hp": 16,
+  "width": 90,
+  "height": 60,
+  "baseY": 8,
+  "vulnerable": "recover",
+  "requiresCharged": false,
+  "attacks": [
+   {
+    "name": "frost_breath",
+    "telegraph": 0.9,
+    "duration": 0.8,
+    "recover": 1.4,
+    "hazards": [
+     {
+      "kind": "frost",
+      "delay": 0,
+      "y": 0,
+      "width": 40,
+      "height": 12,
+      "closingSpeed": 170
+     }
+    ]
+   },
+   {
+    "name": "tail_sweep",
+    "telegraph": 0.7,
+    "duration": 0.5,
+    "recover": 1.2,
+    "hazards": [
+     {
+      "kind": "tail",
+      "delay": 0,
+      "y": 42,
+      "width": 60,
+      "height": 12,
+      "closingSpeed": 200
+     }
+    ]
+   },
+   {
+    "name": "ice_rain",
+    "telegraph": 0.8,
+    "duration": 1.6,
+    "recover": 1.5,
+    "hazards": [
+     {
+      "kind": "icespike",
+      "delay": 0,
+      "y": 0,
+      "width": 10,
+      "height": 16,
+      "closingSpeed": 120,
+      "ahead": 130,
+      "arm": 0.5
+     },
+     {
+      "kind": "icespike",
+      "delay": 0,
+      "y": 0,
+      "width": 10,
+      "height": 16,
+      "closingSpeed": 120,
+      "ahead": 250,
+      "arm": 0.5
+     }
+    ]
+   }
+  ],
+  "phases": [
+   {
+    "startsBelow": 1,
+    "attacks": [
+     "frost_breath",
+     "tail_sweep"
+    ]
+   },
+   {
+    "startsBelow": 0.5,
+    "attacks": [
+     "ice_rain",
+     "frost_breath",
+     "tail_sweep"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "boss_queen",
+  "hp": 24,
+  "width": 30,
+  "height": 64,
+  "baseY": 6,
+  "vulnerable": "always",
+  "requiresCharged": false,
+  "attacks": [
+   {
+    "name": "mirror_orbs",
+    "telegraph": 0.7,
+    "duration": 1.0,
+    "recover": 0.8,
+    "hazards": [
+     {
+      "kind": "orb",
+      "delay": 0,
+      "y": 0,
+      "width": 12,
+      "height": 12,
+      "closingSpeed": 160
+     },
+     {
+      "kind": "orb",
+      "delay": 0.6,
+      "y": 42,
+      "width": 12,
+      "height": 12,
+      "closingSpeed": 160
+     }
+    ]
+   },
+   {
+    "name": "summon_hounds",
+    "telegraph": 0.8,
+    "duration": 1.0,
+    "recover": 0.8,
+    "hazards": [],
+    "summons": [
+     {
+      "kind": "hound",
+      "delay": 0
+     },
+     {
+      "kind": "hound",
+      "delay": 0.8
+     }
+    ]
+   },
+   {
+    "name": "ravens",
+    "telegraph": 0.8,
+    "duration": 0.9,
+    "recover": 0.8,
+    "hazards": [],
+    "summons": [
+     {
+      "kind": "raven",
+      "delay": 0
+     },
+     {
+      "kind": "raven",
+      "delay": 0.7
+     }
+    ]
+   }
+  ],
+  "phases": [
+   {
+    "startsBelow": 1,
+    "attacks": [
+     "mirror_orbs",
+     "summon_hounds"
+    ]
+   },
+   {
+    "startsBelow": 0.6,
+    "attacks": [
+     "mirror_orbs",
+     "ravens",
+     "summon_hounds"
+    ]
+   },
+   {
+    "startsBelow": 0.3,
+    "attacks": [
+     "summon_hounds",
+     "mirror_orbs",
+     "ravens"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "boss_stormking",
+  "hp": 30,
+  "width": 50,
+  "height": 104,
+  "baseY": 4,
+  "vulnerable": "recover",
+  "requiresCharged": true,
+  "attacks": [
+   {
+    "name": "lightning",
+    "telegraph": 0.8,
+    "duration": 1.6,
+    "recover": 1.6,
+    "hazards": [
+     {
+      "kind": "lightning",
+      "delay": 0,
+      "y": 0,
+      "width": 10,
+      "height": 18,
+      "closingSpeed": 140,
+      "ahead": 140,
+      "arm": 0.6
+     },
+     {
+      "kind": "lightning",
+      "delay": 0,
+      "y": 0,
+      "width": 10,
+      "height": 18,
+      "closingSpeed": 140,
+      "ahead": 270,
+      "arm": 0.6
+     }
+    ]
+   },
+   {
+    "name": "storm_wave",
+    "telegraph": 0.7,
+    "duration": 0.6,
+    "recover": 1.6,
+    "hazards": [
+     {
+      "kind": "wave",
+      "delay": 0,
+      "y": 0,
+      "width": 30,
+      "height": 12,
+      "closingSpeed": 190
+     }
+    ]
+   },
+   {
+    "name": "sorrow_blade",
+    "telegraph": 0.7,
+    "duration": 0.5,
+    "recover": 1.6,
+    "hazards": [
+     {
+      "kind": "blade",
+      "delay": 0,
+      "y": 42,
+      "width": 70,
+      "height": 14,
+      "closingSpeed": 220
+     }
+    ]
+   },
+   {
+    "name": "tempest",
+    "telegraph": 0.9,
+    "duration": 1.6,
+    "recover": 2.0,
+    "hazards": [
+     {
+      "kind": "wave",
+      "delay": 0,
+      "y": 0,
+      "width": 30,
+      "height": 12,
+      "closingSpeed": 190
+     },
+     {
+      "kind": "blade",
+      "delay": 0.9,
+      "y": 42,
+      "width": 70,
+      "height": 14,
+      "closingSpeed": 220
+     }
+    ]
+   }
+  ],
+  "phases": [
+   {
+    "startsBelow": 1,
+    "attacks": [
+     "lightning",
+     "storm_wave"
+    ]
+   },
+   {
+    "startsBelow": 0.66,
+    "attacks": [
+     "sorrow_blade",
+     "lightning",
+     "storm_wave"
+    ]
+   },
+   {
+    "startsBelow": 0.33,
+    "attacks": [
+     "tempest",
+     "lightning",
+     "sorrow_blade"
+    ]
+   }
+  ]
+ }
+]
