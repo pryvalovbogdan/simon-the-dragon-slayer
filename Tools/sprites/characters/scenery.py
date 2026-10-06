@@ -81,7 +81,13 @@ def spires(theme: str, layer: str, height: int, seed: int, count: int, color, wi
     return single(f"bg_{theme}_{layer}", c)
 
 
-def ground(theme: str, top, top_light, fill, speck, seed: int) -> Sprite:
+EARTH_TOP = 12
+
+
+def ground(theme: str, top, top_light, fill, speck, seed: int) -> list[Sprite]:
+    """The ground tile, and its grassless lower part as a tile of its own for stacking underneath
+    where the earth runs deeper than one tile. The game never cuts pieces out of a texture itself:
+    on a device the atlas packs textures together and a cut-out shows its neighbours."""
     c = Canvas(32, 48)
     c.rect(0, 0, 31, 47, fill)
     c.rect(0, 0, 31, 4, top)
@@ -92,7 +98,16 @@ def ground(theme: str, top, top_light, fill, speck, seed: int) -> Sprite:
     for _ in range(26):
         x, y = int(rnd() * 31), 9 + int(rnd() * 38)
         c.rect(x, y, x + int(rnd() * 2), y, speck)
-    return single(f"ground_{theme}", c)
+    earth = Canvas(32, 48 - EARTH_TOP)
+    earth.paste(c.img.crop((0, EARTH_TOP, 32, 48)))
+    return [single(f"ground_{theme}", c), single(f"ground_{theme}_earth", earth)]
+
+
+def flat(name: str, color) -> Sprite:
+    """One plain colour, for the game to stretch over an area."""
+    c = Canvas(8, 8)
+    c.rect(0, 0, 7, 7, color)
+    return single(name, c)
 
 
 def ground_fill(theme: str, fill) -> Sprite:
@@ -183,7 +198,9 @@ def build() -> list[Sprite]:
         sky("forest", [P.BLUE, P.BLUE, P.BLUE, P.BLUE_L, P.BLUE_L]),
         trees("forest", "far", 110, 1, 9, P.FOREST, P.FOREST, P.GREEN_D),
         trees("forest", "near", 150, 2, 6, P.BROWN_D, P.GREEN_D, P.GREEN),
-        ground("forest", P.GREEN, P.GREEN_L, P.BROWN, P.BROWN_D, 3),
+        *ground("forest", P.GREEN, P.GREEN_L, P.BROWN, P.BROWN_D, 3),
+        flat("bg_forest_sky_top", P.BLUE),
+        flat("ravine_forest_deep", P.BLACK),
         ground_fill("forest", P.BROWN),
         ravine("forest", P.GREEN, P.GREEN_L, P.BROWN_D, P.OUTLINE, 13),
         ravine_fill("forest", P.OUTLINE),
@@ -194,7 +211,9 @@ def build() -> list[Sprite]:
         sky("mountain", [P.BLUE_D, P.BLUE, P.BLUE, P.BLUE_L, P.BLUE_L]),
         peaks("mountain", "far", 150, 4, 5, (80, 145), (50, 80), P.BLUE_D, P.WHITE),
         peaks("mountain", "near", 100, 5, 7, (40, 90), (30, 55), P.GREY_D, P.BLUE_L),
-        ground("mountain", P.WHITE, P.WHITE, P.GREY_L, P.BLUE_L, 6),
+        *ground("mountain", P.WHITE, P.WHITE, P.GREY_L, P.BLUE_L, 6),
+        flat("bg_mountain_sky_top", P.BLUE_D),
+        flat("ravine_mountain_deep", P.BLACK),
         ground_fill("mountain", P.GREY_L),
         ravine("mountain", P.WHITE, P.WHITE, P.GREY, P.GREY_D, 14),
         ravine_fill("mountain", P.NAVY),
@@ -205,7 +224,9 @@ def build() -> list[Sprite]:
         sky("wastes", [P.NAVY, P.NAVY, P.PURPLE_D, P.PURPLE_D, P.PALE_D]),
         peaks("wastes", "far", 130, 7, 4, (60, 125), (60, 100), P.SLATE, P.PALE_D),
         peaks("wastes", "near", 70, 8, 9, (20, 60), (14, 30), P.GREY_D, None),
-        ground("wastes", P.PALE, P.WHITE, P.GREY, P.GREY_D, 9),
+        *ground("wastes", P.PALE, P.WHITE, P.GREY, P.GREY_D, 9),
+        flat("bg_wastes_sky_top", P.NAVY),
+        flat("ravine_wastes_deep", P.BLACK),
         ground_fill("wastes", P.GREY),
         ravine("wastes", P.PALE, P.WHITE, P.GREY_D, P.SLATE, 15),
         ravine_fill("wastes", P.OUTLINE),
@@ -216,7 +237,9 @@ def build() -> list[Sprite]:
         sky("tower", [P.BLACK, P.BLACK, P.RED_D, P.RED_D, P.RED]),
         spires("tower", "far", 150, 10, 8, P.BLACK, None),
         spires("tower", "near", 160, 11, 5, P.SLATE, P.ORANGE),
-        ground("tower", P.GREY_D, P.GREY, P.SLATE, P.BLACK, 12),
+        *ground("tower", P.GREY_D, P.GREY, P.SLATE, P.BLACK, 12),
+        flat("bg_tower_sky_top", P.BLACK),
+        flat("ravine_tower_deep", P.BLACK),
         ground_fill("tower", P.SLATE),
         ravine("tower", P.GREY_D, P.GREY, P.OUTLINE, P.BLACK, 16),
         ravine_fill("tower", P.OUTLINE),

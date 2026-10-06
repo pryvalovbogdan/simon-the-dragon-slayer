@@ -16,7 +16,10 @@ pass "Release configuration builds"
 
 PLIST="$APP/Info.plist"
 value() { /usr/libexec/PlistBuddy -c "Print :$1" "$PLIST" 2>/dev/null; }
-[ "$(value CFBundleIdentifier)" = "com.example.simonthedragonslayer" ] && fail "bundle id is still the placeholder com.example.simonthedragonslayer" || pass "bundle id is set"
+case "$(value CFBundleIdentifier)" in
+  com.example.*|"") fail "bundle id is still a placeholder: $(value CFBundleIdentifier)" ;;
+  *) pass "bundle id $(value CFBundleIdentifier)" ;;
+esac
 [ -n "$(value CFBundleShortVersionString)" ] && pass "version $(value CFBundleShortVersionString) ($(value CFBundleVersion))" || fail "no version"
 [ -n "$(value CFBundleIcons:CFBundlePrimaryIcon:CFBundleIconName)" ] && pass "app icon present" || fail "app icon missing"
 [ -e App/Resources/PrivacyInfo.xcprivacy ] && pass "privacy manifest present" || fail "PrivacyInfo.xcprivacy missing (required: the app reads UserDefaults)"

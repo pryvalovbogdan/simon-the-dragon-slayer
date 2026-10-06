@@ -23,18 +23,14 @@ final class ParallaxNode: SKNode {
         fatalError("init(coder:) is not used")
     }
 
-    /// Rows repeating the lower, grassless part of a ground tile from `top` down past the bottom of
-    /// the scene, for screens where the earth runs deeper than the tile is tall.
+    /// Rows of the grassless earth tile from `top` down past the bottom of the scene, for screens
+    /// where the earth runs deeper than the ground tile is tall.
     static func earth(below top: CGFloat, tile: SKTexture, tileSize: CGSize, viewWidth: CGFloat) -> [ParallaxNode] {
-        let height = (tileSize.height * 0.75).rounded()
-        let texture = SKTexture(rect: CGRect(x: 0, y: 0, width: 1, height: height / tileSize.height), in: tile)
-        texture.filteringMode = .nearest
         var rows: [ParallaxNode] = []
         var top = top
         while top > 0 {
-            top -= height
-            let row = ParallaxNode(texture: texture, size: CGSize(width: tileSize.width, height: height),
-                                   viewWidth: viewWidth, factor: 1)
+            top -= tileSize.height
+            let row = ParallaxNode(texture: tile, size: tileSize, viewWidth: viewWidth, factor: 1)
             row.position.y = top
             rows.append(row)
         }

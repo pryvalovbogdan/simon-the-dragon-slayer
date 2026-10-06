@@ -21,12 +21,12 @@ APP=.build/xcode/Build/Products/Debug-iphonesimulator/SimonTheDragonSlayer.app
 
 xcrun simctl bootstatus "$DEVICE" -b >/dev/null
 xcrun simctl install "$DEVICE" "$APP"
-xcrun simctl terminate "$DEVICE" com.example.simonthedragonslayer 2>/dev/null || true
+xcrun simctl terminate "$DEVICE" com.pryvalov.simonthedragonslayer 2>/dev/null || true
 
 LEVEL="${1:-}"
 if [ -n "$LEVEL" ]; then
   shift
-  xcrun simctl launch "$DEVICE" com.example.simonthedragonslayer -autoplay "$LEVEL" -orientation "$ORIENT" >/dev/null
+  xcrun simctl launch "$DEVICE" com.pryvalov.simonthedragonslayer -autoplay "$LEVEL" -orientation "$ORIENT" >/dev/null
   PREVIOUS=0
   for AT in "${@:-4}"; do
     sleep $((AT - PREVIOUS)); PREVIOUS=$AT
@@ -34,7 +34,7 @@ if [ -n "$LEVEL" ]; then
     echo "$OUT/level${LEVEL}_${ORIENT}_${AT}s.png"
   done
 else
-  xcrun simctl launch "$DEVICE" com.example.simonthedragonslayer -orientation "$ORIENT" >/dev/null
+  xcrun simctl launch "$DEVICE" com.pryvalov.simonthedragonslayer -orientation "$ORIENT" >/dev/null
   sleep 3
   xcrun simctl io "$DEVICE" screenshot "$OUT/menu_${ORIENT}.png" >/dev/null 2>&1
   echo "$OUT/menu_${ORIENT}.png"

@@ -19,7 +19,10 @@ names, places or story from existing books, films or games.
    byte-identical between runs (use `draw.noise(seed)`, never `random`).
 5. **Every level must be beatable without taking a hit.** `swift test` proves it with a bot playing
    on one heart. If a level fails, fix the level or the boss pattern — not the bot or the test.
-6. `SimonTheDragonSlayer.xcodeproj` is generated. Edit `project.yml`, then `xcodegen generate`.
+6. **Never cut a piece out of a sprite texture in code** (`SKTexture(rect:in:)`). On a real device
+   the atlas packs sprites together and the cut-out shows its neighbours; the simulator hides this.
+   Generate the piece as its own sprite instead.
+7. `SimonTheDragonSlayer.xcodeproj` is generated. Edit `project.yml`, then `xcodegen generate`.
 
 ## Commands
 

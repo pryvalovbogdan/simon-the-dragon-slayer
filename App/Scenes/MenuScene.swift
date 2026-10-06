@@ -65,10 +65,12 @@ final class MenuScene: SKScene {
             node.zPosition = -6
             addChild(node)
         }
-        if let tile = library.textures("ground_forest", "still").first, let sheet = library.sheet("ground_forest") {
+        if let sheet = library.sheet("ground_forest"), let earth = library.textures("ground_forest_earth", "still").first,
+           let earthSheet = library.sheet("ground_forest_earth") {
             let top = groundY - sheet.height
             addStrip("ground_forest", bottom: top, factor: 1, z: -5)
-            for row in ParallaxNode.earth(below: top, tile: tile, tileSize: CGSize(width: sheet.width, height: sheet.height),
+            for row in ParallaxNode.earth(below: top, tile: earth,
+                                          tileSize: CGSize(width: earthSheet.width, height: earthSheet.height),
                                           viewWidth: size.width) {
                 row.zPosition = -5
                 addChild(row)
@@ -84,7 +86,10 @@ final class MenuScene: SKScene {
         switch pose {
         case .running: hero.play("run")
         case .standing: hero.play("idle")
-        case .fallen: hero.play("death")
+        case .fallen:
+            // Lying where they fell: a frame from before the death animation fades the hero away.
+            let frames = library.textures("hero", "death")
+            if !frames.isEmpty { hero.texture = frames[min(3, frames.count - 1)] }
         }
         addChild(hero)
     }

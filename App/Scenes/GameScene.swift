@@ -164,9 +164,7 @@ final class GameScene: SKScene {
             node.zPosition = -10
             scenery.addChild(node)
             let above = size.height - groundY - bandHeight
-            if above > 0 {
-                let topColour = SKTexture(rect: CGRect(x: 0, y: 0.98, width: 1, height: 0.02), in: sky)
-                topColour.filteringMode = .nearest
+            if above > 0, let topColour = library.textures("bg_\(theme)_sky_top", "still").first {
                 let fill = SKSpriteNode(texture: topColour, size: CGSize(width: size.width, height: above + 1))
                 fill.anchorPoint = .zero
                 fill.position.y = groundY + bandHeight - 1
@@ -204,11 +202,14 @@ final class GameScene: SKScene {
             scenery.addChild(node)
             parallax.append(node)
             // Upright the earth runs deeper than the tile; keep it textured and scrolling as one piece.
-            for row in ParallaxNode.earth(below: node.position.y, tile: texture,
-                                          tileSize: CGSize(width: sheet.width, height: sheet.height), viewWidth: size.width) {
-                row.zPosition = -4
-                scenery.addChild(row)
-                parallax.append(row)
+            if let earth = library.textures("\(name)_earth", "still").first, let earthSheet = library.sheet("\(name)_earth") {
+                for row in ParallaxNode.earth(below: node.position.y, tile: earth,
+                                              tileSize: CGSize(width: earthSheet.width, height: earthSheet.height),
+                                              viewWidth: size.width) {
+                    row.zPosition = -4
+                    scenery.addChild(row)
+                    parallax.append(row)
+                }
             }
         }
         buildRavines(theme: theme)
@@ -229,10 +230,8 @@ final class GameScene: SKScene {
             fill.anchorPoint = .zero
             fill.position.y = groundY - wallSize.height
             node.addChild(fill)
-            if groundY > wallSize.height {
-                // Where the earth is deeper than the drawn pit, carry its bottom colour on down.
-                let bottomColour = SKTexture(rect: CGRect(x: 0, y: 0, width: 1, height: 0.02), in: dark)
-                bottomColour.filteringMode = .nearest
+            // Where the earth is deeper than the drawn pit, carry its bottom colour on down.
+            if groundY > wallSize.height, let bottomColour = library.textures("\(name)_deep", "still").first {
                 let rest = SKSpriteNode(texture: bottomColour, size: CGSize(width: width, height: fill.position.y + 1))
                 rest.anchorPoint = .zero
                 node.addChild(rest)

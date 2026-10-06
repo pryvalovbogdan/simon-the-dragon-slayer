@@ -92,10 +92,12 @@ def test_every_thing_the_game_can_show_has_a_sprite(sprites):
     for path in sorted((resources / "Levels").glob("level_*.json")):
         level = json.loads(path.read_text())
         needed |= {item["kind"] for item in level["items"]}
-        needed |= {level["boss"], f"ground_{level['background']}", f"ground_{level['background']}_fill"}
+        needed |= {level["boss"], f"ground_{level['background']}", f"ground_{level['background']}_fill",
+                   f"ground_{level['background']}_earth", f"bg_{level['background']}_sky_top"}
         needed |= {f"bg_{level['background']}_{layer}" for layer in ("sky", "far", "near", "clouds", "puffs", "bushes")}
         if level.get("ravines"):
-            needed |= {f"ravine_{level['background']}", f"ravine_{level['background']}_fill"}
+            needed |= {f"ravine_{level['background']}", f"ravine_{level['background']}_fill",
+                       f"ravine_{level['background']}_deep"}
     for boss in json.loads((resources / "Bosses.json").read_text()):
         for attack in boss["attacks"]:
             needed |= {f"hazard_{h['kind']}" for h in attack["hazards"]}

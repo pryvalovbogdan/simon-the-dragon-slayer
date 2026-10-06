@@ -139,6 +139,19 @@
    }
   }
  },
+ "bg_forest_sky_top": {
+  "width": 8,
+  "height": 8,
+  "anchorX": 0.5,
+  "anchorY": 0,
+  "animations": {
+   "still": {
+    "frames": 1,
+    "fps": 1,
+    "loop": true
+   }
+  }
+ },
  "bg_menu_bushes": {
   "width": 320,
   "height": 26,
@@ -282,6 +295,19 @@
    }
   }
  },
+ "bg_mountain_sky_top": {
+  "width": 8,
+  "height": 8,
+  "anchorX": 0.5,
+  "anchorY": 0,
+  "animations": {
+   "still": {
+    "frames": 1,
+    "fps": 1,
+    "loop": true
+   }
+  }
+ },
  "bg_tower_bushes": {
   "width": 320,
   "height": 18,
@@ -360,6 +386,19 @@
    }
   }
  },
+ "bg_tower_sky_top": {
+  "width": 8,
+  "height": 8,
+  "anchorX": 0.5,
+  "anchorY": 0,
+  "animations": {
+   "still": {
+    "frames": 1,
+    "fps": 1,
+    "loop": true
+   }
+  }
+ },
  "bg_wastes_bushes": {
   "width": 320,
   "height": 18,
@@ -428,6 +467,19 @@
  "bg_wastes_sky": {
   "width": 16,
   "height": 200,
+  "anchorX": 0.5,
+  "anchorY": 0,
+  "animations": {
+   "still": {
+    "frames": 1,
+    "fps": 1,
+    "loop": true
+   }
+  }
+ },
+ "bg_wastes_sky_top": {
+  "width": 8,
+  "height": 8,
   "anchorX": 0.5,
   "anchorY": 0,
   "animations": {
@@ -696,6 +748,19 @@
    }
   }
  },
+ "ground_forest_earth": {
+  "width": 32,
+  "height": 36,
+  "anchorX": 0.5,
+  "anchorY": 0,
+  "animations": {
+   "still": {
+    "frames": 1,
+    "fps": 1,
+    "loop": true
+   }
+  }
+ },
  "ground_forest_fill": {
   "width": 8,
   "height": 8,
@@ -712,6 +777,19 @@
  "ground_mountain": {
   "width": 32,
   "height": 48,
+  "anchorX": 0.5,
+  "anchorY": 0,
+  "animations": {
+   "still": {
+    "frames": 1,
+    "fps": 1,
+    "loop": true
+   }
+  }
+ },
+ "ground_mountain_earth": {
+  "width": 32,
+  "height": 36,
   "anchorX": 0.5,
   "anchorY": 0,
   "animations": {
@@ -748,6 +826,19 @@
    }
   }
  },
+ "ground_tower_earth": {
+  "width": 32,
+  "height": 36,
+  "anchorX": 0.5,
+  "anchorY": 0,
+  "animations": {
+   "still": {
+    "frames": 1,
+    "fps": 1,
+    "loop": true
+   }
+  }
+ },
  "ground_tower_fill": {
   "width": 8,
   "height": 8,
@@ -764,6 +855,19 @@
  "ground_wastes": {
   "width": 32,
   "height": 48,
+  "anchorX": 0.5,
+  "anchorY": 0,
+  "animations": {
+   "still": {
+    "frames": 1,
+    "fps": 1,
+    "loop": true
+   }
+  }
+ },
+ "ground_wastes_earth": {
+  "width": 32,
+  "height": 36,
   "anchorX": 0.5,
   "anchorY": 0,
   "animations": {
@@ -1076,6 +1180,19 @@
    }
   }
  },
+ "ravine_forest_deep": {
+  "width": 8,
+  "height": 8,
+  "anchorX": 0.5,
+  "anchorY": 0,
+  "animations": {
+   "still": {
+    "frames": 1,
+    "fps": 1,
+    "loop": true
+   }
+  }
+ },
  "ravine_forest_fill": {
   "width": 8,
   "height": 48,
@@ -1092,6 +1209,19 @@
  "ravine_mountain": {
   "width": 8,
   "height": 48,
+  "anchorX": 0.5,
+  "anchorY": 0,
+  "animations": {
+   "still": {
+    "frames": 1,
+    "fps": 1,
+    "loop": true
+   }
+  }
+ },
+ "ravine_mountain_deep": {
+  "width": 8,
+  "height": 8,
   "anchorX": 0.5,
   "anchorY": 0,
   "animations": {
@@ -1128,6 +1258,19 @@
    }
   }
  },
+ "ravine_tower_deep": {
+  "width": 8,
+  "height": 8,
+  "anchorX": 0.5,
+  "anchorY": 0,
+  "animations": {
+   "still": {
+    "frames": 1,
+    "fps": 1,
+    "loop": true
+   }
+  }
+ },
  "ravine_tower_fill": {
   "width": 8,
   "height": 48,
@@ -1144,6 +1287,19 @@
  "ravine_wastes": {
   "width": 8,
   "height": 48,
+  "anchorX": 0.5,
+  "anchorY": 0,
+  "animations": {
+   "still": {
+    "frames": 1,
+    "fps": 1,
+    "loop": true
+   }
+  }
+ },
+ "ravine_wastes_deep": {
+  "width": 8,
+  "height": 8,
   "anchorX": 0.5,
   "anchorY": 0,
   "animations": {

@@ -23,7 +23,7 @@ Files are loaded in file-name order; adding `level_05.json` adds a fifth level w
 | Field | Meaning |
 | --- | --- |
 | `nameKey` | Key in `App/Resources/Lore.json` holding the display name |
-| `background` | Theme: needs sprites `bg_<theme>_sky`, `_clouds`, `_puffs`, `_far`, `_near`, `_bushes` and `ground_<theme>` |
+| `background` | Theme: needs sprites `bg_<theme>_sky`, `_clouds`, `_puffs`, `_far`, `_near`, `_bushes`, `_sky_top` and `ground_<theme>` with `_fill` and `_earth` |
 | `speed` | World units per second |
 | `length` | Distance at which the boss appears |
 | `entryHeroLevel` | Hero level the player is guaranteed on entry; must not exceed what earlier bosses grant |
@@ -32,7 +32,7 @@ Files are loaded in file-name order; adding `level_05.json` adds a fifth level w
 | `items[].at` | Distance from the start. Keep 150 clear at the start and 60 before `length` |
 | `items[].kind` | An `ItemKind`: tree, root, thorns, goblin, wolf, skeleton, ghost, giant, icicle, archer, hound, raven, coin, shrine |
 | `items[].y` | Optional height above ground (coin arcs) |
-| `ravines[]` | Optional gaps in the ground: `at` is the left rim, `width` how far it spans. Needs sprites `ravine_<theme>` and `ravine_<theme>_fill` |
+| `ravines[]` | Optional gaps in the ground: `at` is the left rim, `width` how far it spans. Needs sprites `ravine_<theme>`, `ravine_<theme>_fill` and `ravine_<theme>_deep` |
 
 Useful numbers: a full jump is 50 high and lasts 0.67 s, so it covers `speed × 0.67` units
 (≈ 74 at speed 110). A tap hop is about 10 high. Leave roughly 110+ units between ground threats.
