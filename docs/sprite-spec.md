@@ -28,10 +28,13 @@ Outputs per animation:
 | boss_queen | 64×96 | idle 4, summon 6, cast 6, hurt 2, death 8 |
 | boss_stormking | 96×128 | idle 6, lightning 8, phase 6, hurt 2, death 10 |
 
-Also generated: props (`tree`, `root`, `icicle`, `coin`, `shrine`, hearts), ten `hazard_*` sprites,
-and per theme `bg_<theme>_sky|far|near`, `ground_<theme>` (far/near are 320 wide and tile
-horizontally) and `ravine_<theme>` with `ravine_<theme>_fill` (the left wall of a ravine, mirrored
-for the right one, and the dark stretched between them). The table above is enforced by `Tools/sprites/tests/test_sprites.py` — change both.
+Also generated: props (`tree`, `root`, `icicle`, `coin`, `shrine`, hearts, and `medal` with one
+frame each for `bronze`, `silver` and `gold`), ten `hazard_*` sprites,
+and per theme `bg_<theme>_sky|clouds|puffs|far|near|bushes`, `ground_<theme>` (all but the sky are
+320 wide and tile horizontally) and `ravine_<theme>` with `ravine_<theme>_fill` (the left wall of a ravine, mirrored
+for the right one, and the dark stretched between them). The start screen has its own backdrop:
+`bg_menu_sky`, `bg_menu_clouds`, `bg_menu_puffs`, `bg_menu_horizon` and `bg_menu_bushes`, over the
+forest ground. The table above is enforced by `Tools/sprites/tests/test_sprites.py` — change both.
 
 ## How characters are drawn
 

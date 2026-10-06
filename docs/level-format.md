@@ -23,7 +23,7 @@ Files are loaded in file-name order; adding `level_05.json` adds a fifth level w
 | Field | Meaning |
 | --- | --- |
 | `nameKey` | Key in `App/Resources/Lore.json` holding the display name |
-| `background` | Theme: needs sprites `bg_<theme>_sky`, `_far`, `_near` and `ground_<theme>` |
+| `background` | Theme: needs sprites `bg_<theme>_sky`, `_clouds`, `_puffs`, `_far`, `_near`, `_bushes` and `ground_<theme>` |
 | `speed` | World units per second |
 | `length` | Distance at which the boss appears |
 | `entryHeroLevel` | Hero level the player is guaranteed on entry; must not exceed what earlier bosses grant |

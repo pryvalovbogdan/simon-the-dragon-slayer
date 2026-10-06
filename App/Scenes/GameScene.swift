@@ -13,18 +13,15 @@ final class GameScene: SKScene {
         let minimumUnits: CGSize
         let heroScreenX: CGFloat
         let bossOffset: Double
-        /// How much taller than wide one world unit is drawn. Above 1 the whole playfield — hero,
-        /// obstacles, ground, backdrop — is stretched upward to use a tall screen.
-        let verticalStretch: CGFloat
         /// Share of the screen height below the ground line.
         let groundShare: CGFloat?
 
         static let wide = Framing(minimumUnits: CGSize(width: 330, height: 180), heroScreenX: 70,
-                                  bossOffset: Tuning.wideBossOffset, verticalStretch: 1, groundShare: nil)
+                                  bossOffset: Tuning.wideBossOffset, groundShare: nil)
         /// Portrait trades view distance for size: sprites are drawn larger, so the hero stands
         /// nearer the edge and the boss nearer the hero to keep both on screen.
-        static let narrow = Framing(minimumUnits: CGSize(width: 230, height: 180), heroScreenX: 36,
-                                    bossOffset: Tuning.narrowBossOffset, verticalStretch: 1.4, groundShare: 0.3)
+        static let narrow = Framing(minimumUnits: CGSize(width: 190, height: 180), heroScreenX: 30,
+                                    bossOffset: Tuning.narrowBossOffset, groundShare: 0.38)
 
         static func `for`(_ viewSize: CGSize) -> Framing {
             viewSize.height > viewSize.width ? narrow : wide
@@ -41,6 +38,9 @@ final class GameScene: SKScene {
     private let library: SpriteLibrary
     private let hud: GameHUD
     private let soundOn: Bool
+    /// How fast the game clock runs; above 1 in the later loops of an endless run.
+    private let timeScale: Double
+    private let openingBanner: String?
     private let text: (String) -> String
     private let onFinish: (GameResult) -> Void
     /// Set by the `-autoplay` debug launch argument: the validator bot plays instead of touches.
@@ -74,12 +74,14 @@ final class GameScene: SKScene {
     private let haptics = UIImpactFeedbackGenerator(style: .medium)
 
     init(viewSize: CGSize, displayScale: CGFloat, level: LevelDefinition, boss: BossDefinition?, stats: HeroStats, library: SpriteLibrary,
-         hud: GameHUD, soundOn: Bool, autoplay: Bool = false, text: @escaping (String) -> String,
-         onFinish: @escaping (GameResult) -> Void) {
+         hud: GameHUD, soundOn: Bool, autoplay: Bool = false, timeScale: Double = 1, openingBanner: String? = nil,
+         text: @escaping (String) -> String, onFinish: @escaping (GameResult) -> Void) {
         world = RunnerWorld(level: level, boss: boss, stats: stats)
         self.library = library
         self.hud = hud
         self.soundOn = soundOn
+        self.timeScale = timeScale
+        self.openingBanner = openingBanner
         self.text = text
         self.onFinish = onFinish
         bot = autoplay ? Bot() : nil
@@ -87,22 +89,22 @@ final class GameScene: SKScene {
         framing = Framing.for(viewSize)
         world.setBossOffset(framing.bossOffset)
         super.init(size: Self.sceneSize(viewSize: viewSize, displayScale: self.displayScale))
-        // `.fill` lets the two axes scale independently, which is what the portrait stretch needs;
-        // in landscape both axes use the same scale, so nothing is distorted there.
+        // The scene has the view's proportions, so `.fill` scales both axes alike.
         scaleMode = .fill
         anchorPoint = .zero
         groundY = Self.groundLine(for: size, framing: framing)
+        // Animations keep pace with the faster clock.
+        speed = CGFloat(timeScale)
     }
 
     /// World units shown for a view of `viewSize` points. One unit always covers a whole number of
-    /// device pixels on each axis, so every sprite pixel is drawn the same size.
+    /// device pixels, the same on both axes, so every sprite pixel is drawn square and the same size.
     static func sceneSize(viewSize: CGSize, displayScale: CGFloat) -> CGSize {
         let minimum = Framing.for(viewSize).minimumUnits
         let pixelsPerUnit = max(1, floor(min(viewSize.height * displayScale / minimum.height,
                                              viewSize.width * displayScale / minimum.width)))
-        let verticalPixels = (pixelsPerUnit * Framing.for(viewSize).verticalStretch).rounded()
         return CGSize(width: viewSize.width * displayScale / pixelsPerUnit,
-                      height: viewSize.height * displayScale / verticalPixels)
+                      height: viewSize.height * displayScale / pixelsPerUnit)
     }
 
     /// In portrait the ground line sits part-way up the screen, leaving earth below for thumbs.
@@ -143,6 +145,7 @@ final class GameScene: SKScene {
         hero.play("run")
         actors.addChild(hero)
         syncHUD()
+        if let openingBanner { showBanner(openingBanner) }
         render()
     }
 
@@ -178,12 +181,15 @@ final class GameScene: SKScene {
             node.zPosition = -5
             scenery.addChild(node)
         }
-        for (layer, factor, z) in [("far", 0.15, -8.0), ("near", 0.4, -6.0)] {
+        // Back to front. The loose clouds float above the tree line, so they mostly show upright,
+        // where there is open sky; everything else stands on the ground line.
+        for (layer, factor, z, lift) in [("puffs", 0.03, -9.5, 150.0), ("clouds", 0.06, -9.0, 0), ("far", 0.15, -8.0, 0),
+                                         ("near", 0.4, -6.0, 0), ("bushes", 0.7, -5.5, 0)] {
             let name = "bg_\(theme)_\(layer)"
             guard let texture = library.textures(name, "still").first, let sheet = library.sheet(name) else { continue }
             let node = ParallaxNode(texture: texture, size: CGSize(width: sheet.width, height: sheet.height),
                                     viewWidth: size.width, factor: factor)
-            node.position.y = groundY
+            node.position.y = groundY + lift
             node.zPosition = z
             scenery.addChild(node)
             parallax.append(node)
@@ -196,6 +202,13 @@ final class GameScene: SKScene {
             node.zPosition = -4
             scenery.addChild(node)
             parallax.append(node)
+            // Upright the earth runs deeper than the tile; keep it textured and scrolling as one piece.
+            for row in ParallaxNode.earth(below: node.position.y, tile: texture,
+                                          tileSize: CGSize(width: sheet.width, height: sheet.height), viewWidth: size.width) {
+                row.zPosition = -4
+                scenery.addChild(row)
+                parallax.append(row)
+            }
         }
         buildRavines(theme: theme)
     }
@@ -268,7 +281,7 @@ final class GameScene: SKScene {
             return
         }
         lastTime = currentTime
-        accumulator += min(currentTime - last, 0.1)
+        accumulator += min(currentTime - last, 0.1) * timeScale
         while accumulator >= Self.step {
             accumulator -= Self.step
             guard !world.isOver else { break }
@@ -289,6 +302,7 @@ final class GameScene: SKScene {
         let won = world.phase == .won
         play(won ? .win : .lose)
         let result = GameResult(won: won, score: world.score, xp: world.stats.xp, heroLevel: world.stats.level,
+                                hearts: world.stats.hearts,
                                 unlocked: unlocked)
         run(.sequence([.wait(forDuration: won ? 0.6 : 1.4), .run { [onFinish] in onFinish(result) }]))
     }

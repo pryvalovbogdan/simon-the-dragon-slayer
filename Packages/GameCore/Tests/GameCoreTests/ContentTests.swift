@@ -81,7 +81,7 @@ import Testing
 
     @Test func everyNameTheGameShowsIsInTheLoreFile() throws {
         let lore = try Content.lore()
-        var keys = ["game.title", "hero.name"] + Ability.allCases.map { "ability.\($0.rawValue)" }
+        var keys = ["game.title", "hero.name", "mode.endless.name"] + Ability.allCases.map { "ability.\($0.rawValue)" }
         for id in Content.levelIDs {
             let level = try Content.level(id)
             keys += [level.nameKey, "\(level.boss).name"]

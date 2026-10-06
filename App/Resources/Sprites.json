@@ -22,6 +22,32 @@
    }
   }
  },
+ "bg_forest_bushes": {
+  "width": 320,
+  "height": 18,
+  "anchorX": 0.5,
+  "anchorY": 0,
+  "animations": {
+   "still": {
+    "frames": 1,
+    "fps": 1,
+    "loop": true
+   }
+  }
+ },
+ "bg_forest_clouds": {
+  "width": 320,
+  "height": 170,
+  "anchorX": 0.5,
+  "anchorY": 0,
+  "animations": {
+   "still": {
+    "frames": 1,
+    "fps": 1,
+    "loop": true
+   }
+  }
+ },
  "bg_forest_far": {
   "width": 320,
   "height": 110,
@@ -48,9 +74,113 @@
    }
   }
  },
+ "bg_forest_puffs": {
+  "width": 320,
+  "height": 120,
+  "anchorX": 0.5,
+  "anchorY": 0,
+  "animations": {
+   "still": {
+    "frames": 1,
+    "fps": 1,
+    "loop": true
+   }
+  }
+ },
  "bg_forest_sky": {
   "width": 16,
   "height": 200,
+  "anchorX": 0.5,
+  "anchorY": 0,
+  "animations": {
+   "still": {
+    "frames": 1,
+    "fps": 1,
+    "loop": true
+   }
+  }
+ },
+ "bg_menu_bushes": {
+  "width": 320,
+  "height": 26,
+  "anchorX": 0.5,
+  "anchorY": 0,
+  "animations": {
+   "still": {
+    "frames": 1,
+    "fps": 1,
+    "loop": true
+   }
+  }
+ },
+ "bg_menu_clouds": {
+  "width": 320,
+  "height": 110,
+  "anchorX": 0.5,
+  "anchorY": 0,
+  "animations": {
+   "still": {
+    "frames": 1,
+    "fps": 1,
+    "loop": true
+   }
+  }
+ },
+ "bg_menu_horizon": {
+  "width": 320,
+  "height": 80,
+  "anchorX": 0.5,
+  "anchorY": 0,
+  "animations": {
+   "still": {
+    "frames": 1,
+    "fps": 1,
+    "loop": true
+   }
+  }
+ },
+ "bg_menu_puffs": {
+  "width": 320,
+  "height": 120,
+  "anchorX": 0.5,
+  "anchorY": 0,
+  "animations": {
+   "still": {
+    "frames": 1,
+    "fps": 1,
+    "loop": true
+   }
+  }
+ },
+ "bg_menu_sky": {
+  "width": 16,
+  "height": 200,
+  "anchorX": 0.5,
+  "anchorY": 0,
+  "animations": {
+   "still": {
+    "frames": 1,
+    "fps": 1,
+    "loop": true
+   }
+  }
+ },
+ "bg_mountain_bushes": {
+  "width": 320,
+  "height": 18,
+  "anchorX": 0.5,
+  "anchorY": 0,
+  "animations": {
+   "still": {
+    "frames": 1,
+    "fps": 1,
+    "loop": true
+   }
+  }
+ },
+ "bg_mountain_clouds": {
+  "width": 320,
+  "height": 170,
   "anchorX": 0.5,
   "anchorY": 0,
   "animations": {
@@ -87,9 +217,48 @@
    }
   }
  },
+ "bg_mountain_puffs": {
+  "width": 320,
+  "height": 120,
+  "anchorX": 0.5,
+  "anchorY": 0,
+  "animations": {
+   "still": {
+    "frames": 1,
+    "fps": 1,
+    "loop": true
+   }
+  }
+ },
  "bg_mountain_sky": {
   "width": 16,
   "height": 200,
+  "anchorX": 0.5,
+  "anchorY": 0,
+  "animations": {
+   "still": {
+    "frames": 1,
+    "fps": 1,
+    "loop": true
+   }
+  }
+ },
+ "bg_tower_bushes": {
+  "width": 320,
+  "height": 18,
+  "anchorX": 0.5,
+  "anchorY": 0,
+  "animations": {
+   "still": {
+    "frames": 1,
+    "fps": 1,
+    "loop": true
+   }
+  }
+ },
+ "bg_tower_clouds": {
+  "width": 320,
+  "height": 150,
   "anchorX": 0.5,
   "anchorY": 0,
   "animations": {
@@ -126,9 +295,48 @@
    }
   }
  },
+ "bg_tower_puffs": {
+  "width": 320,
+  "height": 120,
+  "anchorX": 0.5,
+  "anchorY": 0,
+  "animations": {
+   "still": {
+    "frames": 1,
+    "fps": 1,
+    "loop": true
+   }
+  }
+ },
  "bg_tower_sky": {
   "width": 16,
   "height": 200,
+  "anchorX": 0.5,
+  "anchorY": 0,
+  "animations": {
+   "still": {
+    "frames": 1,
+    "fps": 1,
+    "loop": true
+   }
+  }
+ },
+ "bg_wastes_bushes": {
+  "width": 320,
+  "height": 18,
+  "anchorX": 0.5,
+  "anchorY": 0,
+  "animations": {
+   "still": {
+    "frames": 1,
+    "fps": 1,
+    "loop": true
+   }
+  }
+ },
+ "bg_wastes_clouds": {
+  "width": 320,
+  "height": 170,
   "anchorX": 0.5,
   "anchorY": 0,
   "animations": {
@@ -155,6 +363,19 @@
  "bg_wastes_near": {
   "width": 320,
   "height": 70,
+  "anchorX": 0.5,
+  "anchorY": 0,
+  "animations": {
+   "still": {
+    "frames": 1,
+    "fps": 1,
+    "loop": true
+   }
+  }
+ },
+ "bg_wastes_puffs": {
+  "width": 320,
+  "height": 120,
   "anchorX": 0.5,
   "anchorY": 0,
   "animations": {
@@ -756,6 +977,29 @@
   "anchorY": 0,
   "animations": {
    "still": {
+    "frames": 1,
+    "fps": 1,
+    "loop": true
+   }
+  }
+ },
+ "medal": {
+  "width": 32,
+  "height": 32,
+  "anchorX": 0.5,
+  "anchorY": 0,
+  "animations": {
+   "bronze": {
+    "frames": 1,
+    "fps": 1,
+    "loop": true
+   },
+   "silver": {
+    "frames": 1,
+    "fps": 1,
+    "loop": true
+   },
+   "gold": {
     "frames": 1,
     "fps": 1,
     "loop": true

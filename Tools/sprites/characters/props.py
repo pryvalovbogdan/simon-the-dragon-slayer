@@ -62,6 +62,25 @@ def coin() -> Sprite:
     return sprite
 
 
+def medal() -> Sprite:
+    """The end-screen award: a struck disc with a sword on it, in three metals."""
+    sprite = Sprite("medal", (32, 32))
+    for name, face, shade, shine in (("bronze", P.BROWN_L, P.BROWN, P.SAND), ("silver", P.GREY_L, P.GREY, P.WHITE),
+                                     ("gold", P.GOLD, P.GOLD_D, P.YELLOW)):
+        c = Canvas(32, 32)
+        c.ellipse(15.5, 15.5, 13, 13, shade)
+        c.ellipse(15.5, 15.5, 10.5, 10.5, face)
+        c.line((10, 8), (14, 6), shine)
+        # Sword, point up.
+        c.rect(15, 7, 16, 19, shade)
+        c.px(15.5, 6, shade)
+        c.rect(12, 20, 19, 20, shade)
+        c.rect(15, 21, 16, 24, shade)
+        c.rect(15, 8, 15, 18, shine)
+        sprite.add(name, [c.outline(P.OUTLINE)], fps=1)
+    return sprite
+
+
 def shrine() -> Sprite:
     """A standing stone whose runes pulse; passing it grants the level-up."""
     sprite = Sprite("shrine", (24, 48), ground=46)
@@ -206,5 +225,5 @@ def hazards() -> list[Sprite]:
 
 
 def build() -> list[Sprite]:
-    return [tree(), root(), icicle(), coin(), shrine(), heart("heart_full", P.RED, P.WHITE),
+    return [tree(), root(), icicle(), coin(), medal(), shrine(), heart("heart_full", P.RED, P.WHITE),
             heart("heart_empty", P.SLATE, P.GREY_D), *hazards()]

@@ -30,6 +30,7 @@ Tools/.venv/bin/python Tools/sprites/build.py [name ...]   # regenerate art (all
 python3 Tools/sfx/build.py           # regenerate sound effects
 Tools/run-sim.sh                     # build, launch in simulator, screenshot the menu
 Tools/run-sim.sh 2 12 41             # bot plays level 2; screenshots at 12 s and 41 s
+Tools/run-sim.sh endless 60          # bot plays an endless run; screenshot at 60 s
 ORIENT=portrait Tools/run-sim.sh 1 39   # same, upright (default is landscape)
 Tools/release-check.sh               # gate before any TestFlight/App Store upload
 ```
@@ -54,9 +55,10 @@ First-time setup: `brew install xcodegen` and
 | `docs/game-design.md` | Mechanics, progression, levels and bosses |
 
 Units: 1 world unit = 1 sprite pixel. Both orientations are supported: `GameScene.sceneSize` picks a
-whole number of device pixels per unit so that at least 330×180 units fit in landscape and 230×180
+whole number of device pixels per unit so that at least 330×180 units fit in landscape and 190×180
 in portrait (larger sprites, shorter view; the boss stands at `narrowBossOffset` there, and the
-whole playfield is stretched 1.4× vertically to use the tall screen), and `layout(viewSize:)`
+ground line sits 38% of the way up the tall screen). Pixels are square in both; never stretch one
+axis. `layout(viewSize:)`
 re-frames on rotation without touching the simulation. Check visual changes in **both** orientations.
 Characters are drawn facing right; enemies are mirrored on export (`faces_left=True`).
 

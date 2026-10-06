@@ -7,6 +7,7 @@ struct GameResult: Equatable {
     var score: Int
     var xp: Int
     var heroLevel: Int
+    var hearts: Int
     /// Abilities gained during this run, in unlock order.
     var unlocked: [Ability]
 }
@@ -30,9 +31,11 @@ final class AppModel {
     var screen = Screen.menu
     private(set) var save: SaveGame
     /// Debug builds only: `-autoplay <level number>` starts that level with the validator bot playing,
-    /// so the game can be watched and screenshotted in the simulator without touch input. Those runs
-    /// are silent.
+    /// and `-autoplay endless` an endless run, so the game can be watched and screenshotted in the
+    /// simulator without touch input. Those runs are silent and are not saved.
     private(set) var autoplay = false
+    /// The endless run in progress or just ended; nil while a level is played on its own.
+    private(set) var endless: EndlessRun?
     private var attempts = 0
 
     init(bundle: Bundle = .main) {
@@ -51,11 +54,15 @@ final class AppModel {
         save = store.load()
         #if DEBUG
         let arguments = ProcessInfo.processInfo.arguments
-        if let flag = arguments.firstIndex(of: "-autoplay"), arguments.indices.contains(flag + 1),
-           let number = Int(arguments[flag + 1]), levels.indices.contains(number - 1) {
-            autoplay = true
-            save.unlockedLevels = levels.count
-            screen = .playing(level: number - 1, attempt: 0)
+        if let flag = arguments.firstIndex(of: "-autoplay"), arguments.indices.contains(flag + 1) {
+            if arguments[flag + 1] == "endless" {
+                autoplay = true
+                startEndless()
+            } else if let number = Int(arguments[flag + 1]), levels.indices.contains(number - 1) {
+                autoplay = true
+                save.unlockedLevels = levels.count
+                screen = .playing(level: number - 1, attempt: 0)
+            }
         }
         #endif
     }
@@ -68,23 +75,65 @@ final class AppModel {
         index < save.unlockedLevels
     }
 
-    /// The hero starts a level with saved XP, but never below what earlier bosses guarantee.
+    /// On its own a level starts with saved XP, but never below what earlier bosses guarantee. In an
+    /// endless run the hero is whoever left the previous level.
     func startingStats(for index: Int) -> HeroStats {
-        HeroStats(xp: max(save.xp, Progression.xp(forLevel: levels[index].entryHeroLevel)))
+        if let endless { return endless.startingStats(for: levels[index]) }
+        return HeroStats(xp: max(save.xp, Progression.xp(forLevel: levels[index].entryHeroLevel)))
     }
 
     func start(level index: Int) {
         guard levels.indices.contains(index), isUnlocked(index) else { return }
+        endless = nil
         attempts += 1
         screen = .playing(level: index, attempt: attempts)
     }
 
+    /// Starts an endless run from the first level with a fresh hero.
+    func startEndless() {
+        let run = EndlessRun(levelCount: levels.count)
+        endless = run
+        attempts += 1
+        screen = .playing(level: run.levelIndex, attempt: attempts)
+    }
+
     func finish(level index: Int, result: GameResult) {
-        if result.won, !autoplay {
-            save.complete(levelID: levels[index].id, index: index, total: levels.count, score: result.score, xp: result.xp)
-            store.save(save)
+        guard var run = endless else {
+            if result.won, !autoplay {
+                save.complete(levelID: levels[index].id, score: result.score, xp: result.xp)
+                store.save(save)
+            }
+            screen = .finished(level: index, result: result)
+            return
         }
-        screen = .finished(level: index, result: result)
+        if result.won {
+            var hero = HeroStats(xp: result.xp)
+            hero.hearts = result.hearts
+            run.clear(stats: hero, score: result.score)
+        } else {
+            run.end(score: result.score)
+        }
+        endless = run
+        record(run)
+        if run.isOver {
+            screen = .finished(level: index, result: result)
+        } else {
+            attempts += 1
+            screen = .playing(level: run.levelIndex, attempt: attempts)
+        }
+    }
+
+    /// Back to the menu from anywhere; an endless run left part-way keeps what it had banked.
+    func quit() {
+        if let endless { record(endless) }
+        endless = nil
+        screen = .menu
+    }
+
+    private func record(_ run: EndlessRun) {
+        guard !autoplay else { return }
+        save.recordEndless(score: run.score, cleared: run.cleared, total: levels.count)
+        store.save(save)
     }
 
     func setSound(on: Bool) {

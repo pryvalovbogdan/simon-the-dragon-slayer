@@ -25,7 +25,7 @@ struct GameView: View {
                 .onChange(of: proxy.size) { _, newSize in scene?.layout(viewSize: newSize) }
             }
             .ignoresSafeArea()
-            HUDView(hud: hud, quit: { model.screen = .menu })
+            HUDView(hud: hud, quit: { model.quit() })
         }
     }
 
@@ -42,9 +42,20 @@ struct GameView: View {
             // Bot runs are for debugging and stay silent.
             soundOn: model.save.soundOn && !model.autoplay,
             autoplay: model.autoplay,
+            timeScale: model.endless?.speed ?? 1,
+            openingBanner: openingBanner(for: level),
             text: { model.text($0) },
             onFinish: { model.finish(level: levelIndex, result: $0) }
         )
+    }
+}
+
+extension GameView {
+    /// In an endless run each level announces itself, and a new loop its number and speed.
+    private func openingBanner(for level: LevelDefinition) -> String? {
+        guard let run = model.endless else { return nil }
+        guard run.startsNewLoop else { return model.text(level.nameKey).uppercased() }
+        return "LOOP \(run.loop) — SPEED ×\(run.speed.formatted(.number.precision(.fractionLength(0...2))))"
     }
 }
 

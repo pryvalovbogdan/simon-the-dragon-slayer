@@ -62,7 +62,7 @@ There are no ravines in a boss fight.
 ## Levels and bosses
 
 During a boss fight the world keeps scrolling and the boss stays ahead of the hero (210 units in
-landscape, 170 in portrait where less fits on screen; levels are validated at both). Every boss
+landscape, 140 in portrait where less fits on screen; levels are validated at both). Every boss
 attack is one of two shapes: **low** (jump it) or **high** (stay down). Attacks are announced by a
 wind-up animation; ground strikes that appear ahead blink before they can hurt.
 
@@ -74,6 +74,20 @@ wind-up animation; ground strikes that appear ahead blink before they can hurt.
 | 4 | tower | 140 | `boss_stormking` | Only charged fireballs hurt, and only while recovering. |
 
 Bosses change attack pattern as their health drops (`phases` in `Bosses.json`).
+
+## Endless run
+
+The menu's START button begins an endless run: the levels in order, each with its boss, then round
+again from the first. It is open from the first launch. Beating a level in an endless run is also
+what makes that level appear on the menu to play on its own.
+
+- The hero starts every run at level 1 with three hearts, whatever the save holds, and keeps their
+  XP and abilities from level to level. Hearts carry over; each boss beaten gives one back.
+- Every completed loop runs the whole game clock 15% faster (hero, enemies, bosses and their
+  attacks alike), up to twice the normal speed from loop 8. Because only the clock changes, the
+  proof that each level can be beaten without a hit holds on every loop.
+- The run ends when the hearts run out or the hero falls. The score adds up across levels; the best
+  score and the most levels beaten in one run are saved. XP earned here is not saved.
 
 ## Names
 
