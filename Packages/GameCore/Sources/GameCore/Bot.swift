@@ -119,6 +119,8 @@ public enum LevelValidator {
             }
         }
 
+        report.problems += ravineProblems(in: level, items: sorted, tuning: tuning)
+
         let boss = bosses[level.boss]
         if let boss {
             report.problems += problems(in: boss)
@@ -134,6 +136,36 @@ public enum LevelValidator {
             report.problems.append("no-hit bot failed at distance \(Int(run.distance)) (\(run.phase))")
         }
         return report
+    }
+
+    /// Ground left between two ravines: room for the widest walker to turn around on.
+    static let minimumLedge = 40.0
+    /// Share of a full jump's reach a ravine may span, so clearing it does not need a perfect take-off.
+    static let ravineJumpShare = 0.65
+
+    static func ravineProblems(in level: LevelDefinition, items: [PlacedItem], tuning: Tuning) -> [String] {
+        var problems: [String] = []
+        let ravines = (level.ravines ?? []).sorted { $0.at < $1.at }
+        let reach = 2 * tuning.jumpVelocity / tuning.gravity * level.speed
+        let widest = (reach * ravineJumpShare).rounded(.down)
+        for (index, ravine) in ravines.enumerated() {
+            let name = "ravine at \(Int(ravine.at))"
+            if ravine.at < 150 { problems.append("\(name) is inside the 150-unit start runway") }
+            if ravine.end > level.length - 60 { problems.append("\(name) is too close to the boss (length \(Int(level.length)))") }
+            if ravine.width < 16 || ravine.width > widest {
+                problems.append("\(name) is \(Int(ravine.width)) wide; it must be between 16 and \(Int(widest)) at speed \(Int(level.speed))")
+            }
+            if index > 0, ravine.at - ravines[index - 1].end < minimumLedge {
+                problems.append("\(name) is too close to the one before it (leave \(Int(minimumLedge)) of ground)")
+            }
+            for item in items where item.y == nil && item.kind.spec.baseY == 0 {
+                let half = item.kind.spec.width / 2
+                if item.at + half > ravine.at, item.at - half < ravine.end {
+                    problems.append("\(item.kind.rawValue) at \(Int(item.at)) stands in the \(name)")
+                }
+            }
+        }
+        return problems
     }
 
     public static func problems(in boss: BossDefinition) -> [String] {

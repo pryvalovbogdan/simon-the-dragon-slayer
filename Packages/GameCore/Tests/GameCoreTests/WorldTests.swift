@@ -49,9 +49,36 @@ import Testing
         #expect(world.isOver)
     }
 
-    @Test func landingOnAGoblinBouncesWithoutHurtingEitherSide() {
+    /// Jumps at whichever take-off gap brings the hero down on top of the enemy.
+    private func stomp(_ kind: ItemKind) -> (world: RunnerWorld, events: [GameEvent])? {
+        for takeOff in stride(from: 20.0, to: 140, by: 4) {
+            var world = RunnerWorld(level: flatLevel(items: [.init(at: 300, kind: kind)]), boss: nil)
+            var events: [GameEvent] = []
+            var jumped = false
+            while world.time < 3.5 {
+                let gap = (world.entities.first?.x ?? 1000) - world.distance
+                let jump = !jumped && gap < takeOff
+                jumped = jumped || jump
+                events += world.step(Input(jumpPressed: jump, jumpHeld: true), dt: dt)
+            }
+            if events.contains(where: { if case .stomped = $0 { true } else { false } }) { return (world, events) }
+        }
+        return nil
+    }
+
+    @Test(arguments: [ItemKind.goblin, .wolf, .skeleton])
+    func landingOnItKillsItForItsXP(kind: ItemKind) throws {
+        let (world, events) = try #require(stomp(kind))
+        #expect(events.contains(.enemyDefeated(id: 1, kind: kind)))
+        // One landing is enough, however much health it had.
+        #expect(!events.contains { if case .enemyHit = $0 { true } else { false } })
+        #expect(world.stats.xp == kind.spec.xp)
+        #expect(world.score == kind.spec.xp)
+        #expect(world.stats.hearts == 3)
+    }
+
+    @Test func theHeroBouncesOffAStompedEnemy() {
         var world = RunnerWorld(level: flatLevel(items: [.init(at: 200, kind: .goblin)]), boss: nil)
-        var events: [GameEvent] = []
         var bouncedUp = false
         // Jump late enough to come down on its head: goblin closes at 120 u/s, jump lasts 0.67 s.
         while world.time < 3 {
@@ -59,13 +86,15 @@ import Testing
             let jump = world.onGround && gap < 62 && gap > 50
             let step = world.step(Input(jumpPressed: jump, jumpHeld: true), dt: dt)
             if step.contains(where: { if case .stomped = $0 { true } else { false } }) { bouncedUp = world.heroVY > 0 }
-            events += step
         }
-        #expect(events.contains { if case .stomped = $0 { true } else { false } })
         #expect(bouncedUp)
+    }
+
+    @Test(arguments: [ItemKind.hound, .archer])
+    func landingOnItOnlyBounces(kind: ItemKind) throws {
+        let (world, events) = try #require(stomp(kind))
         #expect(!events.contains { if case .enemyDefeated = $0 { true } else { false } })
         #expect(world.stats.xp == 0)
-        #expect(world.stats.hearts == 3)
     }
 
     @Test func fireballNeedsLevelTwoAndBurnsEnemies() {
@@ -116,15 +145,11 @@ import Testing
         #expect((mage.run(4)).contains(.heroHit(heartsLeft: 2)))
     }
 
-    @Test func skeletonCannotBeStompedAndTakesTwoFireballs() {
-        var jumper = RunnerWorld(level: flatLevel(items: [.init(at: 200, kind: .skeleton)]), boss: nil)
-        var events: [GameEvent] = []
-        while jumper.time < 3 {
-            let gap = (jumper.entities.first?.x ?? 1000) - jumper.distance
-            events += jumper.step(Input(jumpPressed: jumper.onGround && gap < 30 && gap > 20, jumpHeld: false), dt: dt)
-        }
-        #expect(!events.contains { if case .stomped = $0 { true } else { false } })
+    @Test func skeletonHurtsFromTheSideAndTakesTwoFireballs() {
+        var walker = RunnerWorld(level: flatLevel(items: [.init(at: 200, kind: .skeleton)]), boss: nil)
+        var events = walker.run(3)
         #expect(events.contains(.heroHit(heartsLeft: 2)))
+        #expect(walker.stats.xp == 0)
 
         var mage = RunnerWorld(level: flatLevel(items: [.init(at: 380, kind: .skeleton)]), boss: nil, stats: HeroStats(xp: 100))
         events = []
@@ -182,6 +207,112 @@ import Testing
         #expect(events.contains(.levelComplete))
         #expect(world.phase == .won)
         #expect(world.stats.level == 3)
+    }
+
+    // MARK: - Ravines
+
+    @Test func runningIntoARavineEndsTheRunWhateverHeartsAreLeft() {
+        var world = RunnerWorld(level: flatLevel(ravines: [Ravine(at: 200, width: 40)]), boss: nil)
+        let events = world.run(3)
+        #expect(events.contains(.heroFell))
+        #expect(events.contains(.heroDied))
+        #expect(world.phase == .dead)
+        #expect(world.stats.hearts == 0)
+        #expect(world.distance > 200 && world.distance < 240)
+        #expect(world.heroY < 0)
+    }
+
+    @Test func aJumpClearsARavine() {
+        var world = RunnerWorld(level: flatLevel(ravines: [Ravine(at: 200, width: 40)]), boss: nil)
+        world.run(1.9)
+        let events = world.run(1.5, Input(jumpPressed: true, jumpHeld: true))
+        #expect(!events.contains(.heroFell))
+        #expect(events.contains(.landed))
+        #expect(world.onGround)
+        #expect(world.distance > 240)
+        #expect(world.stats.hearts == 3)
+    }
+
+    @Test func aJumpThatComesDownOverARavineFalls() {
+        var world = RunnerWorld(level: flatLevel(ravines: [Ravine(at: 200, width: 40)]), boss: nil)
+        // A full jump covers about 67 units at speed 100; from 150 it comes down at 217.
+        world.run(1.5)
+        let events = world.run(1.5, Input(jumpPressed: true, jumpHeld: true))
+        #expect(events.contains(.heroFell))
+        #expect(!events.contains(.landed))
+    }
+
+    @Test func theHeroStandsUntilTheirCentreIsPastTheRim() {
+        var world = RunnerWorld(level: flatLevel(ravines: [Ravine(at: 200, width: 40)]), boss: nil)
+        while world.distance < 199 { _ = world.step(Input(), dt: dt) }
+        // The front half of the hitbox already hangs over the gap.
+        #expect(world.heroBox.maxX > 200)
+        #expect(world.onGround)
+        #expect(!world.isOver)
+    }
+
+    @Test func noJumpingBackOutOfARavine() {
+        var world = RunnerWorld(level: flatLevel(ravines: [Ravine(at: 200, width: 40)], entry: 3), boss: nil,
+                                stats: HeroStats(xp: Progression.xp(forLevel: 3)))
+        while !world.isOver, world.time < 5 {
+            _ = world.step(Input(jumpPressed: world.distance > 201, jumpHeld: true), dt: dt)
+        }
+        #expect(world.phase == .dead)
+    }
+
+    @Test func aWalkerTurnsAroundAtARavine() throws {
+        let level = flatLevel(items: [.init(at: 260, kind: .goblin)], ravines: [Ravine(at: 200, width: 40)])
+        var world = RunnerWorld(level: level, boss: nil)
+        var leftmost = 1000.0
+        var turnedAt: Double?
+        while world.time < 1.8 {
+            _ = world.step(Input(), dt: dt)
+            guard let goblin = world.entities.first else { continue }
+            leftmost = min(leftmost, goblin.box.minX)
+            if goblin.reversed, turnedAt == nil { turnedAt = goblin.x }
+        }
+        // It never steps over the rim at 240, and after turning it walks away from it.
+        #expect(leftmost >= 240)
+        #expect(leftmost < 241)
+        let goblin = try #require(world.entities.first)
+        #expect(goblin.reversed)
+        #expect(goblin.x > (turnedAt ?? 1000))
+    }
+
+    @Test func aWalkerBetweenTwoRavinesPatrols() {
+        let level = flatLevel(items: [.init(at: 560, kind: .hound)],
+                              ravines: [Ravine(at: 500, width: 40), Ravine(at: 600, width: 40)])
+        var world = RunnerWorld(level: level, boss: nil)
+        var turns = 0
+        var reversed = false
+        while world.time < 3.5 {
+            _ = world.step(Input(), dt: dt)
+            guard let hound = world.entities.first else { continue }
+            #expect(hound.box.minX >= 540 && hound.box.maxX <= 600)
+            if hound.reversed != reversed {
+                reversed = hound.reversed
+                turns += 1
+            }
+        }
+        #expect(turns >= 3)
+    }
+
+    @Test func flyersAndStaticThingsIgnoreRavines() {
+        let level = flatLevel(items: [.init(at: 300, kind: .raven), .init(at: 310, kind: .ghost)],
+                              ravines: [Ravine(at: 200, width: 40)])
+        var world = RunnerWorld(level: level, boss: nil)
+        world.run(1.2)
+        #expect(world.entities.count == 2)
+        #expect(world.entities.allSatisfy { !$0.reversed })
+        #expect(world.entities.contains { $0.kind == .raven && $0.x < 260 })
+    }
+
+    @Test func ravinesInTheBossArenaAreIgnored() {
+        let level = flatLevel(ravines: [Ravine(at: 380, width: 40)], length: 400, reward: 3)
+        var world = RunnerWorld(level: level, boss: nil)
+        #expect(world.ravines.isEmpty)
+        world.run(10)
+        #expect(world.phase == .won)
     }
 
     @Test func simulationIsDeterministic() throws {

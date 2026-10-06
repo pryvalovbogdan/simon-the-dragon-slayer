@@ -3,10 +3,44 @@
  "nameKey": "level.4.name",
  "background": "tower",
  "speed": 140,
- "length": 5000,
+ "length": 7500,
  "entryHeroLevel": 4,
  "boss": "boss_stormking",
  "bossRewardLevel": 4,
+ "ravines": [
+  {
+   "at": 700,
+   "width": 50
+  },
+  {
+   "at": 1900,
+   "width": 56
+  },
+  {
+   "at": 4170,
+   "width": 56
+  },
+  {
+   "at": 4296,
+   "width": 54
+  },
+  {
+   "at": 5200,
+   "width": 54
+  },
+  {
+   "at": 6160,
+   "width": 56
+  },
+  {
+   "at": 6900,
+   "width": 54
+  },
+  {
+   "at": 7024,
+   "width": 54
+  }
+ ],
  "items": [
   {
    "at": 220,
@@ -58,7 +92,7 @@
    "y": 14
   },
   {
-   "at": 800,
+   "at": 850,
    "kind": "hound"
   },
   {
@@ -176,7 +210,7 @@
    "kind": "giant"
   },
   {
-   "at": 4340,
+   "at": 4262,
    "kind": "wolf"
   },
   {
@@ -202,6 +236,112 @@
   {
    "at": 4908,
    "kind": "coin"
+  },
+  {
+   "at": 4900,
+   "kind": "skeleton"
+  },
+  {
+   "at": 5080,
+   "kind": "archer"
+  },
+  {
+   "at": 5340,
+   "kind": "icicle"
+  },
+  {
+   "at": 5500,
+   "kind": "hound"
+  },
+  {
+   "at": 5670,
+   "kind": "coin",
+   "y": 14
+  },
+  {
+   "at": 5680,
+   "kind": "tree"
+  },
+  {
+   "at": 5684,
+   "kind": "coin",
+   "y": 30
+  },
+  {
+   "at": 5698,
+   "kind": "coin",
+   "y": 40
+  },
+  {
+   "at": 5712,
+   "kind": "coin",
+   "y": 30
+  },
+  {
+   "at": 5726,
+   "kind": "coin",
+   "y": 14
+  },
+  {
+   "at": 5860,
+   "kind": "ghost"
+  },
+  {
+   "at": 6040,
+   "kind": "giant"
+  },
+  {
+   "at": 6296,
+   "kind": "wolf"
+  },
+  {
+   "at": 6440,
+   "kind": "raven"
+  },
+  {
+   "at": 6590,
+   "kind": "coin",
+   "y": 14
+  },
+  {
+   "at": 6600,
+   "kind": "thorns"
+  },
+  {
+   "at": 6604,
+   "kind": "coin",
+   "y": 30
+  },
+  {
+   "at": 6618,
+   "kind": "coin",
+   "y": 40
+  },
+  {
+   "at": 6632,
+   "kind": "coin",
+   "y": 30
+  },
+  {
+   "at": 6646,
+   "kind": "coin",
+   "y": 14
+  },
+  {
+   "at": 6780,
+   "kind": "archer"
+  },
+  {
+   "at": 6990,
+   "kind": "hound"
+  },
+  {
+   "at": 7200,
+   "kind": "icicle"
+  },
+  {
+   "at": 7340,
+   "kind": "giant"
   }
  ]
 }

@@ -8,7 +8,7 @@ description: Add a new enemy or obstacle type to the game end to end - rules, sp
 `<id>` is a neutral lower-case role id (`wolf`, not a character name).
 
 1. **Rules** — `Packages/GameCore/Sources/GameCore/Items.swift`: add the `ItemKind` case and its
-   `ItemSpec` (hitbox, `baseY`, hp, xp, velocity, `stompable`, `burnable`, `minHeroLevel`).
+   `ItemSpec` (hitbox, `baseY`, hp, xp, velocity, `stompable`, `stompKills`, `burnable`, `minHeroLevel`).
    Special behaviour (like the archer's arrows) goes in `RunnerWorld.moveEntities`. Add a test
    in `WorldTests.swift` for whatever is new about it.
 2. **Sprite** — add `build()` output named exactly `<id>` in `Tools/sprites/characters/` with

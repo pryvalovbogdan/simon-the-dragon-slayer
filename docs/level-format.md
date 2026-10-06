@@ -15,6 +15,7 @@ Files are loaded in file-name order; adding `level_05.json` adds a fifth level w
   "shrineLevel": 2,
   "boss": "boss_giant",
   "bossRewardLevel": 3,
+  "ravines": [{ "at": 1420, "width": 30 }],
   "items": [{ "at": 420, "kind": "root" }, { "at": 704, "kind": "coin", "y": 30 }]
 }
 ```
@@ -31,9 +32,17 @@ Files are loaded in file-name order; adding `level_05.json` adds a fifth level w
 | `items[].at` | Distance from the start. Keep 150 clear at the start and 60 before `length` |
 | `items[].kind` | An `ItemKind`: tree, root, thorns, goblin, wolf, skeleton, ghost, giant, icicle, archer, hound, raven, coin, shrine |
 | `items[].y` | Optional height above ground (coin arcs) |
+| `ravines[]` | Optional gaps in the ground: `at` is the left rim, `width` how far it spans. Needs sprites `ravine_<theme>` and `ravine_<theme>_fill` |
 
 Useful numbers: a full jump is 50 high and lasts 0.67 s, so it covers `speed × 0.67` units
 (≈ 74 at speed 110). A tap hop is about 10 high. Leave roughly 110+ units between ground threats.
+
+Ravines: a fall ends the run, so the validator caps `width` at 65% of a full jump's reach (47 at
+speed 110, 60 at 140) and wants at least 16. Keep them out of the start runway and the last 60
+units, leave 40 of ground between two of them, and put nothing that stands on the ground inside
+one (coins above are fine). Walking enemies turn back at a rim, so one placed between two ravines
+patrols the ledge. To have a walker turn where the player can watch, start it far enough from the
+rim that it arrives about two seconds after it spawns (a goblin about 45 units, a hound about 90).
 
 ## `App/Resources/Bosses.json`
 
@@ -63,7 +72,7 @@ Useful numbers: a full jump is 50 high and lasts 0.67 s, so it covers `speed × 
 ## Validation
 
 `swift test --package-path Packages/GameCore` runs `LevelValidator` on every level file: static
-checks (runway, abilities guaranteed where needed, boss and attack names resolve) and then a bot
+checks (runway, abilities guaranteed where needed, ravines, boss and attack names resolve) and then a bot
 that must finish the level and boss **on a single heart**. A failure reports the distance at which
 the bot was hit, e.g. `no-hit bot failed at distance 4431 (dead)` — a distance past `length` means
 the boss pattern is the problem.

@@ -39,7 +39,8 @@ struct GameView: View {
             stats: model.startingStats(for: levelIndex),
             library: model.sprites,
             hud: hud,
-            soundOn: model.save.soundOn,
+            // Bot runs are for debugging and stay silent.
+            soundOn: model.save.soundOn && !model.autoplay,
             autoplay: model.autoplay,
             text: { model.text($0) },
             onFinish: { model.finish(level: levelIndex, result: $0) }

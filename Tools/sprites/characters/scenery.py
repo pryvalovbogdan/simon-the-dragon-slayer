@@ -102,6 +102,31 @@ def ground_fill(theme: str, fill) -> Sprite:
     return single(f"ground_{theme}_fill", c)
 
 
+def ravine(theme: str, top, top_light, rock, rock_dark, seed: int) -> Sprite:
+    """Left wall of a ravine, as tall as the ground tile; the game mirrors it for the right wall."""
+    c = Canvas(8, 48)
+    rnd = noise(seed)
+    for y in range(5, 48):
+        # Ragged rock that thins out as it drops into the dark.
+        reach = 1 + int(rnd() * 3) if y < 30 else int(rnd() * 2)
+        c.rect(0, y, reach, y, rock if y < 18 else rock_dark)
+        if y < 18:
+            c.px(reach, y, rock_dark)
+    # The turf curls over the rim.
+    for y, reach in enumerate((5, 5, 4, 3, 2)):
+        c.rect(0, y, reach, y, top)
+    c.rect(0, 0, 4, 0, top_light)
+    return single(f"ravine_{theme}", c)
+
+
+def ravine_fill(theme: str, deep) -> Sprite:
+    """The dark between the walls: horizontal bands only, so the game can stretch it to any width."""
+    c = Canvas(8, 48)
+    c.rect(0, 0, 7, 47, P.BLACK)
+    c.rect(0, 0, 7, 15, deep)
+    return single(f"ravine_{theme}_fill", c)
+
+
 def build() -> list[Sprite]:
     return [
         sky("forest", [P.BLUE, P.BLUE, P.BLUE, P.BLUE_L, P.BLUE_L]),
@@ -109,22 +134,30 @@ def build() -> list[Sprite]:
         trees("forest", "near", 150, 2, 6, P.BROWN_D, P.GREEN_D, P.GREEN),
         ground("forest", P.GREEN, P.GREEN_L, P.BROWN, P.BROWN_D, 3),
         ground_fill("forest", P.BROWN),
+        ravine("forest", P.GREEN, P.GREEN_L, P.BROWN_D, P.OUTLINE, 13),
+        ravine_fill("forest", P.OUTLINE),
 
         sky("mountain", [P.BLUE_D, P.BLUE, P.BLUE, P.BLUE_L, P.BLUE_L]),
         peaks("mountain", "far", 150, 4, 5, (80, 145), (50, 80), P.BLUE_D, P.WHITE),
         peaks("mountain", "near", 100, 5, 7, (40, 90), (30, 55), P.GREY_D, P.BLUE_L),
         ground("mountain", P.WHITE, P.WHITE, P.GREY_L, P.BLUE_L, 6),
         ground_fill("mountain", P.GREY_L),
+        ravine("mountain", P.WHITE, P.WHITE, P.GREY, P.GREY_D, 14),
+        ravine_fill("mountain", P.NAVY),
 
         sky("wastes", [P.NAVY, P.NAVY, P.PURPLE_D, P.PURPLE_D, P.PALE_D]),
         peaks("wastes", "far", 130, 7, 4, (60, 125), (60, 100), P.SLATE, P.PALE_D),
         peaks("wastes", "near", 70, 8, 9, (20, 60), (14, 30), P.GREY_D, None),
         ground("wastes", P.PALE, P.WHITE, P.GREY, P.GREY_D, 9),
         ground_fill("wastes", P.GREY),
+        ravine("wastes", P.PALE, P.WHITE, P.GREY_D, P.SLATE, 15),
+        ravine_fill("wastes", P.OUTLINE),
 
         sky("tower", [P.BLACK, P.BLACK, P.RED_D, P.RED_D, P.RED]),
         spires("tower", "far", 150, 10, 8, P.BLACK, None),
         spires("tower", "near", 160, 11, 5, P.SLATE, P.ORANGE),
         ground("tower", P.GREY_D, P.GREY, P.SLATE, P.BLACK, 12),
         ground_fill("tower", P.SLATE),
+        ravine("tower", P.GREY_D, P.GREY, P.OUTLINE, P.BLACK, 16),
+        ravine_fill("tower", P.OUTLINE),
     ]

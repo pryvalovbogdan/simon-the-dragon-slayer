@@ -29,10 +29,11 @@ try Lore(data: Data(contentsOf: resources.appendingPathComponent("Lore.json")))
 
 let dt = 1.0 / 60
 
-func flatLevel(items: [PlacedItem] = [], length: Double = 2000, entry: Int = 1, shrine: Int? = nil,
-               reward: Int = 2) -> LevelDefinition {
+func flatLevel(items: [PlacedItem] = [], ravines: [Ravine] = [], length: Double = 2000, entry: Int = 1,
+               shrine: Int? = nil, reward: Int = 2) -> LevelDefinition {
     LevelDefinition(id: "test", nameKey: "test", background: "forest", speed: 100, length: length,
-                    entryHeroLevel: entry, shrineLevel: shrine, boss: "none", bossRewardLevel: reward, items: items)
+                    entryHeroLevel: entry, shrineLevel: shrine, boss: "none", bossRewardLevel: reward, items: items,
+                    ravines: ravines)
 }
 
 extension RunnerWorld {

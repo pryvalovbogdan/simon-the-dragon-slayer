@@ -34,6 +34,10 @@ ORIENT=portrait Tools/run-sim.sh 1 39   # same, upright (default is landscape)
 Tools/release-check.sh               # gate before any TestFlight/App Store upload
 ```
 
+Debug without sound: watch the game with bot runs (`Tools/run-sim.sh <level> …`), which are always
+silent. Never launch a level with sound on while debugging.
+After debugging in the simulator, always stop it: `xcrun simctl shutdown all`.
+
 First-time setup: `brew install xcodegen` and
 `python3 -m venv Tools/.venv && Tools/.venv/bin/pip install pillow pytest`.
 

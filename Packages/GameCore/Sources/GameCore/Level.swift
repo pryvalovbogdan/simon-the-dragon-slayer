@@ -14,6 +14,25 @@ public struct PlacedItem: Codable, Sendable, Equatable {
     }
 }
 
+/// A gap in the ground. The hero falls in; walking enemies turn back at its rims.
+public struct Ravine: Codable, Sendable, Equatable {
+    /// Left rim, as a distance from the level start.
+    public var at: Double
+    public var width: Double
+
+    public var end: Double { at + width }
+
+    public init(at: Double, width: Double) {
+        self.at = at
+        self.width = width
+    }
+
+    /// True when there is no ground under `x`.
+    public func isOpen(at x: Double) -> Bool {
+        x > at && x < end
+    }
+}
+
 public struct LevelDefinition: Codable, Sendable, Equatable {
     public var id: String
     /// Key into Lore.json for the display name.
@@ -31,10 +50,11 @@ public struct LevelDefinition: Codable, Sendable, Equatable {
     /// Hero level granted by defeating the boss.
     public var bossRewardLevel: Int
     public var items: [PlacedItem]
+    public var ravines: [Ravine]?
 
     public init(id: String, nameKey: String, background: String, speed: Double, length: Double,
                 entryHeroLevel: Int, shrineLevel: Int? = nil, boss: String, bossRewardLevel: Int,
-                items: [PlacedItem]) {
+                items: [PlacedItem], ravines: [Ravine]? = nil) {
         self.id = id
         self.nameKey = nameKey
         self.background = background
@@ -45,6 +65,7 @@ public struct LevelDefinition: Codable, Sendable, Equatable {
         self.boss = boss
         self.bossRewardLevel = bossRewardLevel
         self.items = items
+        self.ravines = ravines
     }
 }
 

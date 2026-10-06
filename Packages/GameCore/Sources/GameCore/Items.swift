@@ -16,9 +16,10 @@ public struct ItemSpec: Sendable {
     /// World velocity along x; negative walks toward the hero.
     public var velocity: Double = 0
     public var hurtsOnTouch = true
-    /// Landing on it from above is safe: the hero bounces off unhurt. The enemy is not harmed either;
-    /// only fireballs defeat enemies.
+    /// Landing on it from above is safe: the hero bounces off unhurt.
     public var stompable = false
+    /// That landing also defeats it outright, whatever health it has left, and earns its XP.
+    public var stompKills = false
     /// Fireballs damage it (otherwise they pass through).
     public var burnable = false
     /// Hero level a player needs to get past it without being hit.
@@ -26,18 +27,23 @@ public struct ItemSpec: Sendable {
 }
 
 extension ItemKind {
+    /// Moves along the ground, so it cannot cross a ravine.
+    public var walks: Bool { spec.velocity != 0 && spec.baseY == 0 }
+
     public var spec: ItemSpec {
         switch self {
         case .tree: ItemSpec(width: 12, height: 24)
         case .root: ItemSpec(width: 18, height: 7)
         // Wide and low: needs a committed jump. Fire does nothing to it.
         case .thorns: ItemSpec(width: 22, height: 14)
-        case .wolf: ItemSpec(width: 20, height: 15, hp: 2, xp: 20, velocity: -50, stompable: true, burnable: true)
-        // Its raised blade makes it unsafe to land on; burn it (two shots) or clear it.
-        case .skeleton: ItemSpec(width: 12, height: 26, hp: 2, xp: 25, velocity: -14, burnable: true)
+        case .wolf: ItemSpec(width: 20, height: 15, hp: 2, xp: 20, velocity: -50, stompable: true, stompKills: true,
+                             burnable: true)
+        case .skeleton: ItemSpec(width: 12, height: 26, hp: 2, xp: 25, velocity: -14, stompable: true,
+                                 stompKills: true, burnable: true)
         // Fire and boots pass straight through it. It drifts in overhead, then swoops to the ground.
         case .ghost: ItemSpec(width: 14, height: 18, baseY: GhostFlight.high, velocity: -20)
-        case .goblin: ItemSpec(width: 14, height: 18, xp: 10, velocity: -20, stompable: true, burnable: true)
+        case .goblin: ItemSpec(width: 14, height: 18, xp: 10, velocity: -20, stompable: true, stompKills: true,
+                               burnable: true)
         case .giant: ItemSpec(width: 24, height: 56, hp: 3, xp: 40, velocity: -8, burnable: true, minHeroLevel: 2)
         case .icicle: ItemSpec(width: 10, height: 40, baseY: 42)
         case .archer: ItemSpec(width: 14, height: 24, hp: 2, xp: 25, stompable: true, burnable: true)

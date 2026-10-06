@@ -57,6 +57,9 @@ final class GameScene: SKScene {
     private var unlocked: [Ability] = []
 
     private var parallax: [ParallaxNode] = []
+    private var ravineNodes: [(ravine: Ravine, node: SKNode)] = []
+    /// The hero went down a ravine: the drop is animated here, so `renderHero` leaves them alone.
+    private var fell = false
     private let scenery = SKNode()
     private let actors = SKNode()
     private var hero: ActorNode!
@@ -194,6 +197,43 @@ final class GameScene: SKScene {
             scenery.addChild(node)
             parallax.append(node)
         }
+        buildRavines(theme: theme)
+    }
+
+    /// Pits drawn over the ground strip, one per ravine; `render()` moves them with the level.
+    private func buildRavines(theme: String) {
+        ravineNodes.removeAll()
+        let name = "ravine_\(theme)"
+        guard let wall = library.textures(name, "still").first, let sheet = library.sheet(name),
+              let dark = library.textures("\(name)_fill", "still").first else { return }
+        let wallSize = CGSize(width: sheet.width, height: sheet.height)
+        for ravine in world.ravines {
+            let node = SKNode()
+            node.zPosition = -3
+            let width = CGFloat(ravine.width)
+            let fill = SKSpriteNode(texture: dark, size: CGSize(width: width, height: wallSize.height))
+            fill.anchorPoint = .zero
+            fill.position.y = groundY - wallSize.height
+            node.addChild(fill)
+            if groundY > wallSize.height {
+                // Where the earth is deeper than the drawn pit, carry its bottom colour on down.
+                let bottomColour = SKTexture(rect: CGRect(x: 0, y: 0, width: 1, height: 0.02), in: dark)
+                bottomColour.filteringMode = .nearest
+                let rest = SKSpriteNode(texture: bottomColour, size: CGSize(width: width, height: fill.position.y + 1))
+                rest.anchorPoint = .zero
+                node.addChild(rest)
+            }
+            for (x, facing) in [(0, 1.0), (width, -1.0)] {
+                let side = SKSpriteNode(texture: wall, size: wallSize)
+                side.anchorPoint = .zero
+                side.position = CGPoint(x: x, y: fill.position.y)
+                side.xScale = facing
+                side.zPosition = 0.5
+                node.addChild(side)
+            }
+            scenery.addChild(node)
+            ravineNodes.append((ravine, node))
+        }
     }
 
     // MARK: - Input
@@ -269,6 +309,8 @@ final class GameScene: SKScene {
             case .heroDied:
                 play(.hurt)
                 haptics.impactOccurred()
+            case .heroFell:
+                dropHeroIntoRavine()
             case .stomped:
                 play(.stomp)
             case .enemyHit(let id):
@@ -321,6 +363,31 @@ final class GameScene: SKScene {
         }
     }
 
+    /// Drops the hero out of sight. The crop keeps them behind the ground on either side of the pit.
+    private func dropHeroIntoRavine() {
+        fell = true
+        hero.play("fall")
+        guard let ravine = world.ravines.first(where: { $0.isOpen(at: world.distance) }) else { return }
+        let sky = SKSpriteNode(color: .white, size: CGSize(width: size.width, height: size.height - groundY))
+        sky.anchorPoint = .zero
+        sky.position.y = groundY
+        let pit = SKSpriteNode(color: .white, size: CGSize(width: CGFloat(ravine.width), height: groundY))
+        pit.anchorPoint = .zero
+        pit.position.x = screenX(ravine.at)
+        let mask = SKNode()
+        mask.addChild(sky)
+        mask.addChild(pit)
+        let crop = SKCropNode()
+        crop.maskNode = mask
+        crop.zPosition = hero.zPosition
+        hero.removeFromParent()
+        crop.addChild(hero)
+        actors.addChild(crop)
+        let drop = SKAction.moveBy(x: 0, y: -(groundY + hero.size.height), duration: 0.5)
+        drop.timingMode = .easeIn
+        hero.run(drop)
+    }
+
     private func retire(_ node: ActorNode?) {
         guard let node else { return }
         if node.has("death") {
@@ -352,6 +419,10 @@ final class GameScene: SKScene {
 
     private func render() {
         for layer in parallax { layer.scroll(to: CGFloat(scroll)) }
+        for (ravine, node) in ravineNodes {
+            node.position.x = screenX(ravine.at).rounded()
+            node.isHidden = node.position.x > size.width || node.position.x + CGFloat(ravine.width) < 0
+        }
         renderHero()
         renderEntities()
         renderHazards()
@@ -360,6 +431,7 @@ final class GameScene: SKScene {
     }
 
     private func renderHero() {
+        guard !fell else { return }
         hero.position = CGPoint(x: framing.heroScreenX, y: screenY(world.heroY))
         // Blink while hit-immune so the player can see the grace period.
         let blinking = world.invulnerable > 0 && world.phase != .dead && world.phase != .victory
@@ -397,6 +469,7 @@ final class GameScene: SKScene {
             seen.insert(entity.id)
             let node = entityNodes[entity.id] ?? makeEntityNode(entity)
             node.position = CGPoint(x: screenX(entity.x), y: screenY(entity.y))
+            node.xScale = entity.reversed ? -1 : 1
             let gap = entity.x - world.distance
             switch entity.kind {
             case .giant:

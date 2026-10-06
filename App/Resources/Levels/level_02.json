@@ -3,10 +3,44 @@
  "nameKey": "level.2.name",
  "background": "mountain",
  "speed": 120,
- "length": 4200,
+ "length": 6300,
  "entryHeroLevel": 3,
  "boss": "boss_dragon",
  "bossRewardLevel": 4,
+ "ravines": [
+  {
+   "at": 1150,
+   "width": 40
+  },
+  {
+   "at": 2330,
+   "width": 44
+  },
+  {
+   "at": 2850,
+   "width": 40
+  },
+  {
+   "at": 2960,
+   "width": 40
+  },
+  {
+   "at": 4420,
+   "width": 44
+  },
+  {
+   "at": 5160,
+   "width": 40
+  },
+  {
+   "at": 5270,
+   "width": 40
+  },
+  {
+   "at": 5900,
+   "width": 48
+  }
+ ],
  "items": [
   {
    "at": 220,
@@ -68,6 +102,10 @@
   {
    "at": 1060,
    "kind": "giant"
+  },
+  {
+   "at": 1245,
+   "kind": "goblin"
   },
   {
    "at": 1260,
@@ -147,6 +185,10 @@
    "kind": "wolf"
   },
   {
+   "at": 2925,
+   "kind": "wolf"
+  },
+  {
    "at": 2940,
    "kind": "coin"
   },
@@ -156,11 +198,13 @@
   },
   {
    "at": 2972,
-   "kind": "coin"
+   "kind": "coin",
+   "y": 36
   },
   {
    "at": 2988,
-   "kind": "coin"
+   "kind": "coin",
+   "y": 46
   },
   {
    "at": 3100,
@@ -222,6 +266,149 @@
   {
    "at": 4028,
    "kind": "coin"
+  },
+  {
+   "at": 3980,
+   "kind": "icicle"
+  },
+  {
+   "at": 4140,
+   "kind": "wolf"
+  },
+  {
+   "at": 4290,
+   "kind": "coin",
+   "y": 14
+  },
+  {
+   "at": 4300,
+   "kind": "tree"
+  },
+  {
+   "at": 4304,
+   "kind": "coin",
+   "y": 30
+  },
+  {
+   "at": 4318,
+   "kind": "coin",
+   "y": 40
+  },
+  {
+   "at": 4332,
+   "kind": "coin",
+   "y": 30
+  },
+  {
+   "at": 4346,
+   "kind": "coin",
+   "y": 14
+  },
+  {
+   "at": 4516,
+   "kind": "goblin"
+  },
+  {
+   "at": 4660,
+   "kind": "giant"
+  },
+  {
+   "at": 4860,
+   "kind": "icicle"
+  },
+  {
+   "at": 4940,
+   "kind": "coin"
+  },
+  {
+   "at": 4956,
+   "kind": "coin"
+  },
+  {
+   "at": 4972,
+   "kind": "coin"
+  },
+  {
+   "at": 4988,
+   "kind": "coin"
+  },
+  {
+   "at": 5060,
+   "kind": "root"
+  },
+  {
+   "at": 5235,
+   "kind": "wolf"
+  },
+  {
+   "at": 5430,
+   "kind": "coin",
+   "y": 14
+  },
+  {
+   "at": 5440,
+   "kind": "thorns"
+  },
+  {
+   "at": 5444,
+   "kind": "coin",
+   "y": 30
+  },
+  {
+   "at": 5458,
+   "kind": "coin",
+   "y": 40
+  },
+  {
+   "at": 5472,
+   "kind": "coin",
+   "y": 30
+  },
+  {
+   "at": 5486,
+   "kind": "coin",
+   "y": 14
+  },
+  {
+   "at": 5600,
+   "kind": "giant"
+  },
+  {
+   "at": 5800,
+   "kind": "icicle"
+  },
+  {
+   "at": 6040,
+   "kind": "wolf"
+  },
+  {
+   "at": 6170,
+   "kind": "coin",
+   "y": 14
+  },
+  {
+   "at": 6180,
+   "kind": "tree"
+  },
+  {
+   "at": 6184,
+   "kind": "coin",
+   "y": 30
+  },
+  {
+   "at": 6198,
+   "kind": "coin",
+   "y": 40
+  },
+  {
+   "at": 6212,
+   "kind": "coin",
+   "y": 30
+  },
+  {
+   "at": 6226,
+   "kind": "coin",
+   "y": 14
   }
  ]
 }

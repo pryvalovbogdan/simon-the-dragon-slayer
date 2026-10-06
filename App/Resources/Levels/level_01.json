@@ -3,10 +3,37 @@
  "nameKey": "level.1.name",
  "background": "forest",
  "speed": 110,
- "length": 3600,
+ "length": 5400,
  "entryHeroLevel": 1,
  "boss": "boss_giant",
  "bossRewardLevel": 3,
+ "shrineLevel": 2,
+ "ravines": [
+  {
+   "at": 500,
+   "width": 28
+  },
+  {
+   "at": 1420,
+   "width": 30
+  },
+  {
+   "at": 3110,
+   "width": 34
+  },
+  {
+   "at": 3800,
+   "width": 32
+  },
+  {
+   "at": 4500,
+   "width": 36
+  },
+  {
+   "at": 5060,
+   "width": 36
+  }
+ ],
  "items": [
   {
    "at": 220,
@@ -255,7 +282,128 @@
   {
    "at": 3528,
    "kind": "coin"
+  },
+  {
+   "at": 3540,
+   "kind": "thorns"
+  },
+  {
+   "at": 3700,
+   "kind": "goblin"
+  },
+  {
+   "at": 3884,
+   "kind": "goblin"
+  },
+  {
+   "at": 3960,
+   "kind": "coin"
+  },
+  {
+   "at": 3976,
+   "kind": "coin"
+  },
+  {
+   "at": 3992,
+   "kind": "coin"
+  },
+  {
+   "at": 4008,
+   "kind": "coin"
+  },
+  {
+   "at": 4070,
+   "kind": "coin",
+   "y": 14
+  },
+  {
+   "at": 4080,
+   "kind": "tree"
+  },
+  {
+   "at": 4084,
+   "kind": "coin",
+   "y": 30
+  },
+  {
+   "at": 4098,
+   "kind": "coin",
+   "y": 40
+  },
+  {
+   "at": 4112,
+   "kind": "coin",
+   "y": 30
+  },
+  {
+   "at": 4126,
+   "kind": "coin",
+   "y": 14
+  },
+  {
+   "at": 4240,
+   "kind": "wolf"
+  },
+  {
+   "at": 4400,
+   "kind": "root"
+  },
+  {
+   "at": 4620,
+   "kind": "goblin"
+  },
+  {
+   "at": 4780,
+   "kind": "thorns"
+  },
+  {
+   "at": 4940,
+   "kind": "wolf"
+  },
+  {
+   "at": 5130,
+   "kind": "coin"
+  },
+  {
+   "at": 5146,
+   "kind": "coin"
+  },
+  {
+   "at": 5162,
+   "kind": "coin"
+  },
+  {
+   "at": 5178,
+   "kind": "coin"
+  },
+  {
+   "at": 5230,
+   "kind": "coin",
+   "y": 14
+  },
+  {
+   "at": 5240,
+   "kind": "tree"
+  },
+  {
+   "at": 5244,
+   "kind": "coin",
+   "y": 30
+  },
+  {
+   "at": 5258,
+   "kind": "coin",
+   "y": 40
+  },
+  {
+   "at": 5272,
+   "kind": "coin",
+   "y": 30
+  },
+  {
+   "at": 5286,
+   "kind": "coin",
+   "y": 14
   }
- ],
- "shrineLevel": 2
+ ]
 }

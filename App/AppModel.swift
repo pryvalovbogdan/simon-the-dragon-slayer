@@ -30,7 +30,8 @@ final class AppModel {
     var screen = Screen.menu
     private(set) var save: SaveGame
     /// Debug builds only: `-autoplay <level number>` starts that level with the validator bot playing,
-    /// so the game can be watched and screenshotted in the simulator without touch input.
+    /// so the game can be watched and screenshotted in the simulator without touch input. Those runs
+    /// are silent.
     private(set) var autoplay = false
     private var attempts = 0
 

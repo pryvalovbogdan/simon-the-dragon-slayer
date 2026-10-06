@@ -40,6 +40,8 @@ public struct Entity: Sendable, Equatable, Identifiable {
     public var x: Double
     public var y: Double
     public var hp: Int
+    /// Walking away from the hero, after turning back at a ravine.
+    public var reversed = false
     var timer = 0.6
 
     public var box: AABB {
@@ -97,6 +99,8 @@ public enum GameEvent: Sendable, Equatable {
     case landed
     case heroHit(heartsLeft: Int)
     case heroDied
+    /// The hero dropped into a ravine; `heroDied` follows.
+    case heroFell
     case stomped(id: Int)
     case enemyHit(id: Int)
     case enemyDefeated(id: Int, kind: ItemKind)
@@ -119,6 +123,8 @@ public enum GameEvent: Sendable, Equatable {
 public struct RunnerWorld: Sendable {
     public let level: LevelDefinition
     public let boss: BossDefinition?
+    /// The level's ravines in order. Like items, any that reach the boss arena are left out.
+    public let ravines: [Ravine]
     public private(set) var tuning: Tuning
 
     public private(set) var time = 0.0
@@ -154,6 +160,7 @@ public struct RunnerWorld: Sendable {
         var sorted = level
         sorted.items.sort { $0.at < $1.at }
         self.level = sorted
+        ravines = (level.ravines ?? []).filter { $0.end < level.length }.sorted { $0.at < $1.at }
         self.boss = boss
         self.stats = stats
         self.tuning = tuning
@@ -218,6 +225,13 @@ public struct RunnerWorld: Sendable {
     private mutating func moveHero(_ input: Input, dt: Double, events: inout [GameEvent]) {
         jumpBuffer = input.jumpPressed ? tuning.jumpBuffer : max(0, jumpBuffer - dt)
 
+        let overRavine = ravines.contains { $0.isOpen(at: distance) }
+        if onGround, overRavine {
+            // Ran off the rim: nothing to push off from, so no jump can save this.
+            onGround = false
+            jumpsUsed = 2
+        }
+
         if jumpBuffer > 0 {
             if onGround {
                 heroVY = tuning.jumpVelocity
@@ -242,12 +256,18 @@ public struct RunnerWorld: Sendable {
         }
         heroVY -= tuning.gravity * dt
         heroY += heroVY * dt
-        if heroY <= 0 {
+        guard heroY <= 0 else { return }
+        if !overRavine {
             heroY = 0
             heroVY = 0
             onGround = true
             jumpsUsed = 0
             events.append(.landed)
+        } else if heroY < 0, phase != .dead {
+            // Below the rim there is no way back, whatever hearts are left.
+            stats.hearts = 0
+            phase = .dead
+            events += [.heroFell, .heroDied]
         }
     }
 
@@ -302,7 +322,16 @@ public struct RunnerWorld: Sendable {
     private mutating func moveEntities(dt: Double) {
         for index in entities.indices {
             let spec = entities[index].kind.spec
-            entities[index].x += spec.velocity * dt
+            let velocity = entities[index].reversed ? -spec.velocity : spec.velocity
+            entities[index].x += velocity * dt
+            if entities[index].kind.walks {
+                // Stop at the rim and head back the other way.
+                let front = entities[index].x + (velocity < 0 ? -spec.width : spec.width) / 2
+                if let ravine = ravines.first(where: { $0.isOpen(at: front) }) {
+                    entities[index].x = velocity < 0 ? ravine.end + spec.width / 2 : ravine.at - spec.width / 2
+                    entities[index].reversed.toggle()
+                }
+            }
             if entities[index].kind == .ghost {
                 entities[index].y = GhostFlight.height(gap: entities[index].x - distance)
             }
@@ -400,8 +429,9 @@ public struct RunnerWorld: Sendable {
             default:
                 let fromAbove = heroVY < 0 && previousBottom >= entity.box.maxY - 4
                 if spec.stompable, fromAbove {
-                    // A bounce, not an attack: neither side is hurt and no XP is earned.
                     events.append(.stomped(id: entity.id))
+                    // For most it is only a bounce; the ones it kills pay out like a burn.
+                    if spec.stompKills { damage(entityAt: index, by: entity.hp, events: &events) }
                     heroVY = tuning.stompBounce
                     jumpsUsed = 1
                     jumpCutDone = true

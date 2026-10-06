@@ -3,10 +3,40 @@
  "nameKey": "level.3.name",
  "background": "wastes",
  "speed": 130,
- "length": 4600,
+ "length": 6900,
  "entryHeroLevel": 4,
  "boss": "boss_queen",
  "bossRewardLevel": 4,
+ "ravines": [
+  {
+   "at": 1920,
+   "width": 48
+  },
+  {
+   "at": 4100,
+   "width": 44
+  },
+  {
+   "at": 4214,
+   "width": 44
+  },
+  {
+   "at": 4900,
+   "width": 48
+  },
+  {
+   "at": 5800,
+   "width": 52
+  },
+  {
+   "at": 6340,
+   "width": 44
+  },
+  {
+   "at": 6454,
+   "width": 44
+  }
+ ],
  "items": [
   {
    "at": 220,
@@ -163,7 +193,7 @@
    "kind": "raven"
   },
   {
-   "at": 4240,
+   "at": 4190,
    "kind": "hound"
   },
   {
@@ -181,6 +211,83 @@
   {
    "at": 4448,
    "kind": "coin"
+  },
+  {
+   "at": 4420,
+   "kind": "skeleton"
+  },
+  {
+   "at": 4600,
+   "kind": "archer"
+  },
+  {
+   "at": 4800,
+   "kind": "icicle"
+  },
+  {
+   "at": 5140,
+   "kind": "raven"
+  },
+  {
+   "at": 5290,
+   "kind": "coin",
+   "y": 14
+  },
+  {
+   "at": 5300,
+   "kind": "skeleton"
+  },
+  {
+   "at": 5304,
+   "kind": "coin",
+   "y": 30
+  },
+  {
+   "at": 5318,
+   "kind": "coin",
+   "y": 40
+  },
+  {
+   "at": 5332,
+   "kind": "coin",
+   "y": 30
+  },
+  {
+   "at": 5346,
+   "kind": "coin",
+   "y": 14
+  },
+  {
+   "at": 5480,
+   "kind": "giant"
+  },
+  {
+   "at": 5700,
+   "kind": "ghost"
+  },
+  {
+   "at": 5952,
+   "kind": "hound"
+  },
+  {
+   "at": 6060,
+   "kind": "thorns"
+  },
+  {
+   "at": 6220,
+   "kind": "archer"
+  },
+  {
+   "at": 6420,
+   "kind": "hound"
+  },
+  {
+   "at": 6680,
+   "kind": "raven"
+  },
+  {
+   "at": 6790,
+   "kind": "skeleton"
   }
  ]
 }

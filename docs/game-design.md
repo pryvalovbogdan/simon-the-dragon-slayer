@@ -12,12 +12,14 @@ The hero runs automatically. The level scrolls toward him at the level's speed.
 | Hold the right side, then release | Charged fireball: 3 damage (hero level 4). |
 
 Three hearts. A hit costs one and gives 1.2 s of immunity (the hero blinks). Zero hearts ends the run.
-Landing on top of a goblin, wolf, hound or archer is safe: the hero bounces off, but the enemy is
-not hurt and gives no XP. Only fireballs defeat enemies.
+Landing on top of a goblin, wolf or skeleton defeats it in one go and gives its XP, and the hero
+bounces off. Landing on a hound or archer is a safe bounce only: it is not hurt and gives no XP, so
+those need fireballs. Running into any of them from the side costs a heart.
 
 ## Progression
 
-XP comes from coins (5), enemies burned with fireballs (10–40) and is topped up by shrines and bosses.
+XP comes from coins (5), enemies burned with fireballs or jumped on (10–40) and is topped up by
+shrines and bosses.
 
 | Hero level | XP | Unlocks |
 | --- | --- | --- |
@@ -38,9 +40,9 @@ kills only get you there sooner. XP is saved when a level is cleared.
 | `tree` | Static, 24 high | Jump (fireballs pass through it) |
 | `root` | Static, low | Hop |
 | `thorns` | Static, low and wide | A full jump (fireballs pass through it) |
-| `goblin` | Walks toward the hero | Jump or bounce over it, or burn |
-| `wolf` | Fast ground runner, 2 HP | Jump or bounce over it, or 2 fireballs |
-| `skeleton` | Slow walker with a raised blade, 2 HP | Jump clear (landing on it hurts), or 2 fireballs |
+| `goblin` | Walks toward the hero | Land on it or burn it, or jump over |
+| `wolf` | Fast ground runner, 2 HP | Land on it or 2 fireballs, or jump over |
+| `skeleton` | Slow walker, 2 HP | Land on it or 2 fireballs, or jump over |
 | `ghost` | Drifts in overhead, then swoops to the ground when close | Jump clear of it late; fireballs pass through and landing on it hurts |
 | `giant` | Slow, 56 high, 3 HP | 3 fireballs, or a double jump |
 | `icicle` | Hangs just above head height | Stay on the ground |
@@ -49,6 +51,13 @@ kills only get you there sooner. XP is saved when a level is cleared.
 | `raven` | Flies just above head height | Stay on the ground (a jumping fireball also works) |
 | `coin` | +5 XP | — |
 | `shrine` | Raises the hero to the level's `shrineLevel` | Cannot be missed |
+
+Ravines are gaps in the ground. The hero keeps their footing until their middle is past the rim;
+after that they fall, and a fall ends the run whatever hearts are left. Jump them — fireballs,
+arrows and flying enemies cross freely. Anything that walks (`goblin`, `wolf`, `skeleton`, `giant`,
+`hound`) turns around at a rim and heads back the other way, so an enemy on a ledge between two
+ravines paces it, and one that has turned runs ahead of the hero until it is caught or burned.
+There are no ravines in a boss fight.
 
 ## Levels and bosses
 

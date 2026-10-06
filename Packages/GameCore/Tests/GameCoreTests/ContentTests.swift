@@ -37,6 +37,7 @@ import Testing
         let wall = stride(from: 400.0, to: 700, by: 14).map { PlacedItem(at: $0, kind: .tree) }
         var level = try Content.level("level_01")
         level.items = wall
+        level.ravines = nil
         let report = LevelValidator.validate(level, bosses: try Content.bosses())
         #expect(!report.isValid)
         #expect(report.problems.contains { $0.contains("no-hit bot failed") })
@@ -57,6 +58,25 @@ import Testing
         #expect(problems.contains { $0.contains("start runway") })
         #expect(problems.contains { $0.contains("too close to the boss") })
         #expect(problems.contains { $0.contains("not defined") })
+    }
+
+    @Test func badRavinesAreRejected() throws {
+        var level = try Content.level("level_01")
+        level.items = [PlacedItem(at: 820, kind: .tree), PlacedItem(at: 820, kind: .coin)]
+        level.ravines = [Ravine(at: 100, width: 30), Ravine(at: 800, width: 40), Ravine(at: 850, width: 30),
+                         Ravine(at: 1200, width: 90), Ravine(at: level.length - 70, width: 30)]
+        let problems = LevelValidator.validate(level, bosses: try Content.bosses()).problems
+        #expect(problems.contains { $0.contains("ravine at 100 is inside the 150-unit start runway") })
+        #expect(problems.contains { $0.contains("tree at 820 stands in the ravine at 800") })
+        #expect(!problems.contains { $0.contains("coin at 820") })
+        #expect(problems.contains { $0.contains("ravine at 850 is too close to the one before it") })
+        #expect(problems.contains { $0.contains("ravine at 1200 is 90 wide") })
+        #expect(problems.contains { $0.contains("too close to the boss") && $0.contains("ravine") })
+    }
+
+    @Test func levelsWithoutRavinesStillLoad() throws {
+        let json = #"{"id":"l","nameKey":"k","background":"forest","speed":110,"length":900,"entryHeroLevel":1,"boss":"b","bossRewardLevel":2,"items":[]}"#
+        #expect(try ContentLoader.level(from: Data(json.utf8)).ravines == nil)
     }
 
     @Test func everyNameTheGameShowsIsInTheLoreFile() throws {
