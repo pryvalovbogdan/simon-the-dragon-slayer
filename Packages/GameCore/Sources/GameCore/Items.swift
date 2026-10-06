@@ -42,7 +42,7 @@ extension ItemKind {
                                  stompKills: true, burnable: true)
         // Fire and boots pass straight through it. It drifts in overhead, then swoops to the ground.
         case .ghost: ItemSpec(width: 14, height: 18, baseY: GhostFlight.high, velocity: -20)
-        case .goblin: ItemSpec(width: 14, height: 18, xp: 10, velocity: -20, stompable: true, stompKills: true,
+        case .goblin: ItemSpec(width: 18, height: 24, xp: 10, velocity: -20, stompable: true, stompKills: true,
                                burnable: true)
         case .giant: ItemSpec(width: 24, height: 56, hp: 3, xp: 40, velocity: -8, burnable: true, minHeroLevel: 2)
         case .icicle: ItemSpec(width: 10, height: 40, baseY: 42)

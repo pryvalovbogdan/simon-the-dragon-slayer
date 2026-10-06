@@ -627,10 +627,10 @@
   }
  },
  "goblin": {
-  "width": 24,
-  "height": 24,
-  "anchorX": 0.5625,
-  "anchorY": 0.0417,
+  "width": 32,
+  "height": 32,
+  "anchorX": 0.5781,
+  "anchorY": 0.0312,
   "animations": {
    "walk": {
     "frames": 6,

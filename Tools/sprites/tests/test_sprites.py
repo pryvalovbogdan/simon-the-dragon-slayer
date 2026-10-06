@@ -18,7 +18,7 @@ SPEC = {
     "hero": ((48, 48), {"run": 8, "stop": 4, "idle": 4, "jump": 2, "fall": 2, "cast": 6, "hurt": 2, "death": 6}),
     "fireball": ((16, 16), {"fly": 4, "impact": 5}),
     "fireball_charged": ((24, 24), {"fly": 4, "impact": 5}),
-    "goblin": ((24, 24), {"walk": 6, "death": 4}),
+    "goblin": ((32, 32), {"walk": 6, "death": 4}),
     "giant": ((48, 64), {"walk": 6, "swing": 6, "hurt": 2, "death": 6}),
     "archer": ((24, 32), {"idle": 2, "shoot": 4, "death": 4}),
     "hound": ((32, 20), {"run": 6, "death": 4}),
