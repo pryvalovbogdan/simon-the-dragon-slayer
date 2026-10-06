@@ -81,7 +81,13 @@ def spires(theme: str, layer: str, height: int, seed: int, count: int, color, wi
     return single(f"bg_{theme}_{layer}", c)
 
 
-def ground(theme: str, top, top_light, fill, speck, seed: int) -> Sprite:
+EARTH_TOP = 12
+
+
+def ground(theme: str, top, top_light, fill, speck, seed: int) -> list[Sprite]:
+    """The ground tile, and its grassless lower part as a tile of its own for stacking underneath
+    where the earth runs deeper than one tile. The game never cuts pieces out of a texture itself:
+    on a device the atlas packs textures together and a cut-out shows its neighbours."""
     c = Canvas(32, 48)
     c.rect(0, 0, 31, 47, fill)
     c.rect(0, 0, 31, 4, top)
@@ -92,7 +98,16 @@ def ground(theme: str, top, top_light, fill, speck, seed: int) -> Sprite:
     for _ in range(26):
         x, y = int(rnd() * 31), 9 + int(rnd() * 38)
         c.rect(x, y, x + int(rnd() * 2), y, speck)
-    return single(f"ground_{theme}", c)
+    earth = Canvas(32, 48 - EARTH_TOP)
+    earth.paste(c.img.crop((0, EARTH_TOP, 32, 48)))
+    return [single(f"ground_{theme}", c), single(f"ground_{theme}_earth", earth)]
+
+
+def flat(name: str, color) -> Sprite:
+    """One plain colour, for the game to stretch over an area."""
+    c = Canvas(8, 8)
+    c.rect(0, 0, 7, 7, color)
+    return single(name, c)
 
 
 def ground_fill(theme: str, fill) -> Sprite:
@@ -127,37 +142,115 @@ def ravine_fill(theme: str, deep) -> Sprite:
     return single(f"ravine_{theme}_fill", c)
 
 
+def clouds(theme: str, height: int, seed: int, color) -> Sprite:
+    """A bank of cloud: puffs along the top, solid below, so it can stand on the horizon."""
+    c = Canvas(LAYER_W, height)
+    rnd = noise(seed)
+    top = height * 0.42
+    c.rect(0, top, LAYER_W - 1, height - 1, color)
+    count = 13
+    for i in range(count):
+        x = i * LAYER_W / count + rnd() * 10
+        radius = 12 + rnd() * 16
+        y = top + rnd() * 8
+        wrapped(c, lambda px, y=y, radius=radius: c.ellipse(px, y, radius, radius * 0.8, color), x)
+    return single(f"bg_{theme}_clouds", c)
+
+
+def puffs(theme: str, seed: int, color) -> Sprite:
+    """Small clouds on their own, for the open sky above the horizon."""
+    height = 120
+    c = Canvas(LAYER_W, height)
+    rnd = noise(seed)
+    count = 5
+    for i in range(count):
+        x = i * LAYER_W / count + rnd() * 30
+        y = 24 + rnd() * (height - 44)
+        w = 13 + rnd() * 11
+
+        def one(px, y=y, w=w):
+            c.ellipse(px, y, w, w * 0.32, color)
+            c.ellipse(px - w * 0.35, y - w * 0.22, w * 0.42, w * 0.36, color)
+            c.ellipse(px + w * 0.2, y - w * 0.32, w * 0.5, w * 0.46, color)
+        wrapped(c, one, x)
+    return single(f"bg_{theme}_puffs", c)
+
+
+def bushes(theme: str, height: int, seed: int, leaf, leaf_light) -> Sprite:
+    c = Canvas(LAYER_W, height)
+    rnd = noise(seed)
+    c.rect(0, height * 0.7, LAYER_W - 1, height - 1, leaf)
+    count = 20
+    for i in range(count):
+        x = i * LAYER_W / count + rnd() * 8
+        radius = height * (0.27 + rnd() * 0.23)
+        y = height - radius * 0.6
+
+        def one(px, y=y, radius=radius):
+            c.ellipse(px, y, radius, radius, leaf)
+            c.ellipse(px - radius * 0.25, y - radius * 0.35, radius * 0.45, radius * 0.35, leaf_light)
+        wrapped(c, one, x)
+    return single(f"bg_{theme}_bushes", c)
+
+
 def build() -> list[Sprite]:
     return [
         sky("forest", [P.BLUE, P.BLUE, P.BLUE, P.BLUE_L, P.BLUE_L]),
         trees("forest", "far", 110, 1, 9, P.FOREST, P.FOREST, P.GREEN_D),
         trees("forest", "near", 150, 2, 6, P.BROWN_D, P.GREEN_D, P.GREEN),
-        ground("forest", P.GREEN, P.GREEN_L, P.BROWN, P.BROWN_D, 3),
+        *ground("forest", P.GREEN, P.GREEN_L, P.BROWN, P.BROWN_D, 3),
+        flat("bg_forest_sky_top", P.BLUE),
+        flat("ravine_forest_deep", P.BLACK),
         ground_fill("forest", P.BROWN),
         ravine("forest", P.GREEN, P.GREEN_L, P.BROWN_D, P.OUTLINE, 13),
         ravine_fill("forest", P.OUTLINE),
+        clouds("forest", 170, 20, P.WHITE),
+        puffs("forest", 21, P.WHITE),
+        bushes("forest", 18, 22, P.GREEN_D, P.GREEN),
 
         sky("mountain", [P.BLUE_D, P.BLUE, P.BLUE, P.BLUE_L, P.BLUE_L]),
         peaks("mountain", "far", 150, 4, 5, (80, 145), (50, 80), P.BLUE_D, P.WHITE),
         peaks("mountain", "near", 100, 5, 7, (40, 90), (30, 55), P.GREY_D, P.BLUE_L),
-        ground("mountain", P.WHITE, P.WHITE, P.GREY_L, P.BLUE_L, 6),
+        *ground("mountain", P.WHITE, P.WHITE, P.GREY_L, P.BLUE_L, 6),
+        flat("bg_mountain_sky_top", P.BLUE_D),
+        flat("ravine_mountain_deep", P.BLACK),
         ground_fill("mountain", P.GREY_L),
         ravine("mountain", P.WHITE, P.WHITE, P.GREY, P.GREY_D, 14),
         ravine_fill("mountain", P.NAVY),
+        clouds("mountain", 170, 23, P.WHITE),
+        puffs("mountain", 24, P.WHITE),
+        bushes("mountain", 18, 25, P.GREY_L, P.WHITE),
 
         sky("wastes", [P.NAVY, P.NAVY, P.PURPLE_D, P.PURPLE_D, P.PALE_D]),
         peaks("wastes", "far", 130, 7, 4, (60, 125), (60, 100), P.SLATE, P.PALE_D),
         peaks("wastes", "near", 70, 8, 9, (20, 60), (14, 30), P.GREY_D, None),
-        ground("wastes", P.PALE, P.WHITE, P.GREY, P.GREY_D, 9),
+        *ground("wastes", P.PALE, P.WHITE, P.GREY, P.GREY_D, 9),
+        flat("bg_wastes_sky_top", P.NAVY),
+        flat("ravine_wastes_deep", P.BLACK),
         ground_fill("wastes", P.GREY),
         ravine("wastes", P.PALE, P.WHITE, P.GREY_D, P.SLATE, 15),
         ravine_fill("wastes", P.OUTLINE),
+        clouds("wastes", 170, 26, P.PALE_D),
+        puffs("wastes", 27, P.PALE_D),
+        bushes("wastes", 18, 28, P.GREY_D, P.GREY),
 
         sky("tower", [P.BLACK, P.BLACK, P.RED_D, P.RED_D, P.RED]),
         spires("tower", "far", 150, 10, 8, P.BLACK, None),
         spires("tower", "near", 160, 11, 5, P.SLATE, P.ORANGE),
-        ground("tower", P.GREY_D, P.GREY, P.SLATE, P.BLACK, 12),
+        *ground("tower", P.GREY_D, P.GREY, P.SLATE, P.BLACK, 12),
+        flat("bg_tower_sky_top", P.BLACK),
+        flat("ravine_tower_deep", P.BLACK),
         ground_fill("tower", P.SLATE),
         ravine("tower", P.GREY_D, P.GREY, P.OUTLINE, P.BLACK, 16),
         ravine_fill("tower", P.OUTLINE),
+        clouds("tower", 150, 29, P.PURPLE_D),
+        puffs("tower", 30, P.PURPLE_D),
+        bushes("tower", 18, 31, P.BLACK, P.SLATE),
+
+        # The start screen: a bright morning for the hero to run through.
+        sky("menu", [P.BLUE]),
+        clouds("menu", 110, 17, P.WHITE),
+        puffs("menu", 32, P.WHITE),
+        trees("menu", "horizon", 80, 18, 12, P.BLUE_L, P.BLUE_L, P.BLUE_L),
+        bushes("menu", 26, 19, P.GREEN, P.GREEN_L),
     ]

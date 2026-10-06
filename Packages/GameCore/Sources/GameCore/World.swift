@@ -24,7 +24,7 @@ public struct Tuning: Sendable, Equatable {
     /// and `narrowBossOffset` on a narrow (portrait) one, where less of the level fits on screen.
     public var bossOffset = Tuning.wideBossOffset
     public static let wideBossOffset = 210.0
-    public static let narrowBossOffset = 170.0
+    public static let narrowBossOffset = 140.0
     public var bossIntro = 1.5
     public var victoryDelay = 2.0
     public var archerInterval = 1.8

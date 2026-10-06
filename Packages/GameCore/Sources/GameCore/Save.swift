@@ -2,18 +2,40 @@ import Foundation
 
 public struct SaveGame: Codable, Sendable, Equatable {
     public var xp = 0
-    /// Number of levels the player may start (1 = only the first).
-    public var unlockedLevels = 1
+    /// Number of levels the player may start on their own, counted from the first. Levels are
+    /// opened by beating them in an endless run.
+    public var unlockedLevels = 0
     public var bestScores: [String: Int] = [:]
     public var soundOn = true
+    public var bestEndlessScore = 0
+    /// Most levels beaten in one endless run.
+    public var bestEndlessCleared = 0
 
     public init() {}
 
-    /// Records a finished level; `index` is 0-based, `total` the number of levels in the game.
-    public mutating func complete(levelID: String, index: Int, total: Int, score: Int, xp newXP: Int) {
+    /// Fields added after the first release are optional in the data, so older saves still load.
+    public init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        xp = try values.decodeIfPresent(Int.self, forKey: .xp) ?? 0
+        unlockedLevels = try values.decodeIfPresent(Int.self, forKey: .unlockedLevels) ?? 0
+        bestScores = try values.decodeIfPresent([String: Int].self, forKey: .bestScores) ?? [:]
+        soundOn = try values.decodeIfPresent(Bool.self, forKey: .soundOn) ?? true
+        bestEndlessScore = try values.decodeIfPresent(Int.self, forKey: .bestEndlessScore) ?? 0
+        bestEndlessCleared = try values.decodeIfPresent(Int.self, forKey: .bestEndlessCleared) ?? 0
+    }
+
+    /// Records a level finished on its own.
+    public mutating func complete(levelID: String, score: Int, xp newXP: Int) {
         xp = max(xp, newXP)
-        unlockedLevels = min(total, max(unlockedLevels, index + 2))
         bestScores[levelID] = max(bestScores[levelID] ?? 0, score)
+    }
+
+    /// Records where an endless run stands: `cleared` levels beaten out of a game of `total`. Each
+    /// level beaten there becomes playable on its own.
+    public mutating func recordEndless(score: Int, cleared: Int, total: Int) {
+        unlockedLevels = min(total, max(unlockedLevels, cleared))
+        bestEndlessScore = max(bestEndlessScore, score)
+        bestEndlessCleared = max(bestEndlessCleared, cleared)
     }
 }
 

@@ -1,22 +1,22 @@
-"""Goblin (24x24): small forest raider."""
+"""Goblin (32x32): small forest raider, tall enough to show over the undergrowth."""
 import math
 
 import palette as P
 from draw import Body, Canvas, Pose, humanoid, stride, swing, topple
 from sprite import Sprite
 
-SIZE = (24, 24)
-CX, GROUND = 10, 22
-BODY = Body(head=(8, 7), torso=(5, 5), thigh=3, shin=3, upper=3, fore=3, skin=P.GREEN_L, skin_d=P.GREEN,
+SIZE = (32, 32)
+CX, GROUND = 13, 30
+BODY = Body(head=(10, 9), torso=(7, 7), thigh=4, shin=4, upper=4, fore=4, skin=P.GREEN_L, skin_d=P.GREEN,
             hair=None, top=P.BROWN, top_d=P.BROWN_D, legs=P.BROWN_D, legs_d=P.BLACK, boots=P.BLACK,
             eye=P.RED, belt=None)
 
 
 def gear(c, joints):
     x, y = joints["head"]
-    c.poly([(x - 4, y - 1), (x - 7, y - 4), (x - 3, y - 3)], P.GREEN_L)   # ear
+    c.poly([(x - 5, y - 1), (x - 9, y - 5), (x - 4, y - 4)], P.GREEN_L)   # ear
     hx, hy = joints["near_hand"]
-    c.line((hx, hy), (hx + 4, hy - 4), P.GREY_L)                           # dagger
+    c.line((hx, hy), (hx + 5, hy - 5), P.GREY_L)                           # dagger
 
 
 def figure(pose: Pose) -> Canvas:

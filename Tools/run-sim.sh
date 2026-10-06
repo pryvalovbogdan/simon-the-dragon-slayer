@@ -1,8 +1,9 @@
 #!/bin/bash
 # Builds the app, installs it on an iPhone simulator, launches it and saves screenshots.
-# Usage: [ORIENT=landscape|portrait] Tools/run-sim.sh [level number for bot autoplay] [seconds ...]
+# Usage: [ORIENT=landscape|portrait] Tools/run-sim.sh [level number or "endless" for bot autoplay] [seconds ...]
 #   Tools/run-sim.sh              -> menu screenshot
 #   Tools/run-sim.sh 1 4 20 40    -> level 1 played by the bot, shots after 4 s, 20 s and 40 s
+#   Tools/run-sim.sh endless 60   -> an endless run played by the bot, shot after 60 s
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
@@ -20,12 +21,12 @@ APP=.build/xcode/Build/Products/Debug-iphonesimulator/SimonTheDragonSlayer.app
 
 xcrun simctl bootstatus "$DEVICE" -b >/dev/null
 xcrun simctl install "$DEVICE" "$APP"
-xcrun simctl terminate "$DEVICE" com.example.simonthedragonslayer 2>/dev/null || true
+xcrun simctl terminate "$DEVICE" com.pryvalov.simonthedragonslayer 2>/dev/null || true
 
 LEVEL="${1:-}"
 if [ -n "$LEVEL" ]; then
   shift
-  xcrun simctl launch "$DEVICE" com.example.simonthedragonslayer -autoplay "$LEVEL" -orientation "$ORIENT" >/dev/null
+  xcrun simctl launch "$DEVICE" com.pryvalov.simonthedragonslayer -autoplay "$LEVEL" -orientation "$ORIENT" >/dev/null
   PREVIOUS=0
   for AT in "${@:-4}"; do
     sleep $((AT - PREVIOUS)); PREVIOUS=$AT
@@ -33,7 +34,7 @@ if [ -n "$LEVEL" ]; then
     echo "$OUT/level${LEVEL}_${ORIENT}_${AT}s.png"
   done
 else
-  xcrun simctl launch "$DEVICE" com.example.simonthedragonslayer -orientation "$ORIENT" >/dev/null
+  xcrun simctl launch "$DEVICE" com.pryvalov.simonthedragonslayer -orientation "$ORIENT" >/dev/null
   sleep 3
   xcrun simctl io "$DEVICE" screenshot "$OUT/menu_${ORIENT}.png" >/dev/null 2>&1
   echo "$OUT/menu_${ORIENT}.png"

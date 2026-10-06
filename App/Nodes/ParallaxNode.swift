@@ -23,6 +23,20 @@ final class ParallaxNode: SKNode {
         fatalError("init(coder:) is not used")
     }
 
+    /// Rows of the grassless earth tile from `top` down past the bottom of the scene, for screens
+    /// where the earth runs deeper than the ground tile is tall.
+    static func earth(below top: CGFloat, tile: SKTexture, tileSize: CGSize, viewWidth: CGFloat) -> [ParallaxNode] {
+        var rows: [ParallaxNode] = []
+        var top = top
+        while top > 0 {
+            top -= tileSize.height
+            let row = ParallaxNode(texture: tile, size: tileSize, viewWidth: viewWidth, factor: 1)
+            row.position.y = top
+            rows.append(row)
+        }
+        return rows
+    }
+
     func scroll(to distance: CGFloat) {
         // Whole pixels only, otherwise neighbouring tiles shimmer.
         position.x = -floor((distance * factor).truncatingRemainder(dividingBy: tileWidth))

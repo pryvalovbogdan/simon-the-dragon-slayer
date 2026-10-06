@@ -13,7 +13,9 @@ Read `docs/level-format.md` first.
    - Things to run under (icicle, raven, high boss hazards) sit at y 42+; the hero is 32 tall.
    - Start around 110+ units between ground threats and tighten from there.
 2. Add the level's `nameKey` (and a new boss's `<id>.name`) to `App/Resources/Lore.json`.
-3. A new theme needs four sprites (`bg_<theme>_sky|far|near`, `ground_<theme>`) in
+3. A new theme needs its backdrop sprites (`bg_<theme>_sky|clouds|puffs|far|near|bushes`,
+   `bg_<theme>_sky_top`, `ground_<theme>` with `_fill` and `_earth`, `ravine_<theme>` with `_fill`
+   and `_deep`) in
    `Tools/sprites/characters/scenery.py`. A new boss needs an entry in `Bosses.json`, a sprite
    named like its id, lore keys `<id>.name`, and an entry in `GameScene.attackAnimation`.
 4. Validate: `swift test --package-path Packages/GameCore`. A failure such as

@@ -1,4 +1,43 @@
 {
+ "ability_chargedFireball": {
+  "width": 24,
+  "height": 24,
+  "anchorX": 0.5,
+  "anchorY": 0,
+  "animations": {
+   "still": {
+    "frames": 1,
+    "fps": 1,
+    "loop": true
+   }
+  }
+ },
+ "ability_doubleJump": {
+  "width": 24,
+  "height": 24,
+  "anchorX": 0.5,
+  "anchorY": 0,
+  "animations": {
+   "still": {
+    "frames": 1,
+    "fps": 1,
+    "loop": true
+   }
+  }
+ },
+ "ability_fireball": {
+  "width": 24,
+  "height": 24,
+  "anchorX": 0.5,
+  "anchorY": 0,
+  "animations": {
+   "still": {
+    "frames": 1,
+    "fps": 1,
+    "loop": true
+   }
+  }
+ },
  "archer": {
   "width": 24,
   "height": 32,
@@ -19,6 +58,32 @@
     "frames": 4,
     "fps": 10,
     "loop": false
+   }
+  }
+ },
+ "bg_forest_bushes": {
+  "width": 320,
+  "height": 18,
+  "anchorX": 0.5,
+  "anchorY": 0,
+  "animations": {
+   "still": {
+    "frames": 1,
+    "fps": 1,
+    "loop": true
+   }
+  }
+ },
+ "bg_forest_clouds": {
+  "width": 320,
+  "height": 170,
+  "anchorX": 0.5,
+  "anchorY": 0,
+  "animations": {
+   "still": {
+    "frames": 1,
+    "fps": 1,
+    "loop": true
    }
   }
  },
@@ -48,9 +113,126 @@
    }
   }
  },
+ "bg_forest_puffs": {
+  "width": 320,
+  "height": 120,
+  "anchorX": 0.5,
+  "anchorY": 0,
+  "animations": {
+   "still": {
+    "frames": 1,
+    "fps": 1,
+    "loop": true
+   }
+  }
+ },
  "bg_forest_sky": {
   "width": 16,
   "height": 200,
+  "anchorX": 0.5,
+  "anchorY": 0,
+  "animations": {
+   "still": {
+    "frames": 1,
+    "fps": 1,
+    "loop": true
+   }
+  }
+ },
+ "bg_forest_sky_top": {
+  "width": 8,
+  "height": 8,
+  "anchorX": 0.5,
+  "anchorY": 0,
+  "animations": {
+   "still": {
+    "frames": 1,
+    "fps": 1,
+    "loop": true
+   }
+  }
+ },
+ "bg_menu_bushes": {
+  "width": 320,
+  "height": 26,
+  "anchorX": 0.5,
+  "anchorY": 0,
+  "animations": {
+   "still": {
+    "frames": 1,
+    "fps": 1,
+    "loop": true
+   }
+  }
+ },
+ "bg_menu_clouds": {
+  "width": 320,
+  "height": 110,
+  "anchorX": 0.5,
+  "anchorY": 0,
+  "animations": {
+   "still": {
+    "frames": 1,
+    "fps": 1,
+    "loop": true
+   }
+  }
+ },
+ "bg_menu_horizon": {
+  "width": 320,
+  "height": 80,
+  "anchorX": 0.5,
+  "anchorY": 0,
+  "animations": {
+   "still": {
+    "frames": 1,
+    "fps": 1,
+    "loop": true
+   }
+  }
+ },
+ "bg_menu_puffs": {
+  "width": 320,
+  "height": 120,
+  "anchorX": 0.5,
+  "anchorY": 0,
+  "animations": {
+   "still": {
+    "frames": 1,
+    "fps": 1,
+    "loop": true
+   }
+  }
+ },
+ "bg_menu_sky": {
+  "width": 16,
+  "height": 200,
+  "anchorX": 0.5,
+  "anchorY": 0,
+  "animations": {
+   "still": {
+    "frames": 1,
+    "fps": 1,
+    "loop": true
+   }
+  }
+ },
+ "bg_mountain_bushes": {
+  "width": 320,
+  "height": 18,
+  "anchorX": 0.5,
+  "anchorY": 0,
+  "animations": {
+   "still": {
+    "frames": 1,
+    "fps": 1,
+    "loop": true
+   }
+  }
+ },
+ "bg_mountain_clouds": {
+  "width": 320,
+  "height": 170,
   "anchorX": 0.5,
   "anchorY": 0,
   "animations": {
@@ -87,9 +269,61 @@
    }
   }
  },
+ "bg_mountain_puffs": {
+  "width": 320,
+  "height": 120,
+  "anchorX": 0.5,
+  "anchorY": 0,
+  "animations": {
+   "still": {
+    "frames": 1,
+    "fps": 1,
+    "loop": true
+   }
+  }
+ },
  "bg_mountain_sky": {
   "width": 16,
   "height": 200,
+  "anchorX": 0.5,
+  "anchorY": 0,
+  "animations": {
+   "still": {
+    "frames": 1,
+    "fps": 1,
+    "loop": true
+   }
+  }
+ },
+ "bg_mountain_sky_top": {
+  "width": 8,
+  "height": 8,
+  "anchorX": 0.5,
+  "anchorY": 0,
+  "animations": {
+   "still": {
+    "frames": 1,
+    "fps": 1,
+    "loop": true
+   }
+  }
+ },
+ "bg_tower_bushes": {
+  "width": 320,
+  "height": 18,
+  "anchorX": 0.5,
+  "anchorY": 0,
+  "animations": {
+   "still": {
+    "frames": 1,
+    "fps": 1,
+    "loop": true
+   }
+  }
+ },
+ "bg_tower_clouds": {
+  "width": 320,
+  "height": 150,
   "anchorX": 0.5,
   "anchorY": 0,
   "animations": {
@@ -126,9 +360,61 @@
    }
   }
  },
+ "bg_tower_puffs": {
+  "width": 320,
+  "height": 120,
+  "anchorX": 0.5,
+  "anchorY": 0,
+  "animations": {
+   "still": {
+    "frames": 1,
+    "fps": 1,
+    "loop": true
+   }
+  }
+ },
  "bg_tower_sky": {
   "width": 16,
   "height": 200,
+  "anchorX": 0.5,
+  "anchorY": 0,
+  "animations": {
+   "still": {
+    "frames": 1,
+    "fps": 1,
+    "loop": true
+   }
+  }
+ },
+ "bg_tower_sky_top": {
+  "width": 8,
+  "height": 8,
+  "anchorX": 0.5,
+  "anchorY": 0,
+  "animations": {
+   "still": {
+    "frames": 1,
+    "fps": 1,
+    "loop": true
+   }
+  }
+ },
+ "bg_wastes_bushes": {
+  "width": 320,
+  "height": 18,
+  "anchorX": 0.5,
+  "anchorY": 0,
+  "animations": {
+   "still": {
+    "frames": 1,
+    "fps": 1,
+    "loop": true
+   }
+  }
+ },
+ "bg_wastes_clouds": {
+  "width": 320,
+  "height": 170,
   "anchorX": 0.5,
   "anchorY": 0,
   "animations": {
@@ -165,9 +451,35 @@
    }
   }
  },
+ "bg_wastes_puffs": {
+  "width": 320,
+  "height": 120,
+  "anchorX": 0.5,
+  "anchorY": 0,
+  "animations": {
+   "still": {
+    "frames": 1,
+    "fps": 1,
+    "loop": true
+   }
+  }
+ },
  "bg_wastes_sky": {
   "width": 16,
   "height": 200,
+  "anchorX": 0.5,
+  "anchorY": 0,
+  "animations": {
+   "still": {
+    "frames": 1,
+    "fps": 1,
+    "loop": true
+   }
+  }
+ },
+ "bg_wastes_sky_top": {
+  "width": 8,
+  "height": 8,
   "anchorX": 0.5,
   "anchorY": 0,
   "animations": {
@@ -406,10 +718,10 @@
   }
  },
  "goblin": {
-  "width": 24,
-  "height": 24,
-  "anchorX": 0.5625,
-  "anchorY": 0.0417,
+  "width": 32,
+  "height": 32,
+  "anchorX": 0.5781,
+  "anchorY": 0.0312,
   "animations": {
    "walk": {
     "frames": 6,
@@ -426,6 +738,19 @@
  "ground_forest": {
   "width": 32,
   "height": 48,
+  "anchorX": 0.5,
+  "anchorY": 0,
+  "animations": {
+   "still": {
+    "frames": 1,
+    "fps": 1,
+    "loop": true
+   }
+  }
+ },
+ "ground_forest_earth": {
+  "width": 32,
+  "height": 36,
   "anchorX": 0.5,
   "anchorY": 0,
   "animations": {
@@ -462,6 +787,19 @@
    }
   }
  },
+ "ground_mountain_earth": {
+  "width": 32,
+  "height": 36,
+  "anchorX": 0.5,
+  "anchorY": 0,
+  "animations": {
+   "still": {
+    "frames": 1,
+    "fps": 1,
+    "loop": true
+   }
+  }
+ },
  "ground_mountain_fill": {
   "width": 8,
   "height": 8,
@@ -488,6 +826,19 @@
    }
   }
  },
+ "ground_tower_earth": {
+  "width": 32,
+  "height": 36,
+  "anchorX": 0.5,
+  "anchorY": 0,
+  "animations": {
+   "still": {
+    "frames": 1,
+    "fps": 1,
+    "loop": true
+   }
+  }
+ },
  "ground_tower_fill": {
   "width": 8,
   "height": 8,
@@ -504,6 +855,19 @@
  "ground_wastes": {
   "width": 32,
   "height": 48,
+  "anchorX": 0.5,
+  "anchorY": 0,
+  "animations": {
+   "still": {
+    "frames": 1,
+    "fps": 1,
+    "loop": true
+   }
+  }
+ },
+ "ground_wastes_earth": {
+  "width": 32,
+  "height": 36,
   "anchorX": 0.5,
   "anchorY": 0,
   "animations": {
@@ -762,6 +1126,29 @@
    }
   }
  },
+ "medal": {
+  "width": 32,
+  "height": 32,
+  "anchorX": 0.5,
+  "anchorY": 0,
+  "animations": {
+   "bronze": {
+    "frames": 1,
+    "fps": 1,
+    "loop": true
+   },
+   "silver": {
+    "frames": 1,
+    "fps": 1,
+    "loop": true
+   },
+   "gold": {
+    "frames": 1,
+    "fps": 1,
+    "loop": true
+   }
+  }
+ },
  "raven": {
   "width": 24,
   "height": 20,
@@ -783,6 +1170,19 @@
  "ravine_forest": {
   "width": 8,
   "height": 48,
+  "anchorX": 0.5,
+  "anchorY": 0,
+  "animations": {
+   "still": {
+    "frames": 1,
+    "fps": 1,
+    "loop": true
+   }
+  }
+ },
+ "ravine_forest_deep": {
+  "width": 8,
+  "height": 8,
   "anchorX": 0.5,
   "anchorY": 0,
   "animations": {
@@ -819,6 +1219,19 @@
    }
   }
  },
+ "ravine_mountain_deep": {
+  "width": 8,
+  "height": 8,
+  "anchorX": 0.5,
+  "anchorY": 0,
+  "animations": {
+   "still": {
+    "frames": 1,
+    "fps": 1,
+    "loop": true
+   }
+  }
+ },
  "ravine_mountain_fill": {
   "width": 8,
   "height": 48,
@@ -845,6 +1258,19 @@
    }
   }
  },
+ "ravine_tower_deep": {
+  "width": 8,
+  "height": 8,
+  "anchorX": 0.5,
+  "anchorY": 0,
+  "animations": {
+   "still": {
+    "frames": 1,
+    "fps": 1,
+    "loop": true
+   }
+  }
+ },
  "ravine_tower_fill": {
   "width": 8,
   "height": 48,
@@ -861,6 +1287,19 @@
  "ravine_wastes": {
   "width": 8,
   "height": 48,
+  "anchorX": 0.5,
+  "anchorY": 0,
+  "animations": {
+   "still": {
+    "frames": 1,
+    "fps": 1,
+    "loop": true
+   }
+  }
+ },
+ "ravine_wastes_deep": {
+  "width": 8,
+  "height": 8,
   "anchorX": 0.5,
   "anchorY": 0,
   "animations": {
@@ -925,6 +1364,45 @@
     "frames": 4,
     "fps": 10,
     "loop": false
+   }
+  }
+ },
+ "spark_ember": {
+  "width": 5,
+  "height": 7,
+  "anchorX": 0.5,
+  "anchorY": 0,
+  "animations": {
+   "still": {
+    "frames": 1,
+    "fps": 1,
+    "loop": true
+   }
+  }
+ },
+ "spark_feather": {
+  "width": 8,
+  "height": 5,
+  "anchorX": 0.5,
+  "anchorY": 0,
+  "animations": {
+   "still": {
+    "frames": 1,
+    "fps": 1,
+    "loop": true
+   }
+  }
+ },
+ "spark_star": {
+  "width": 9,
+  "height": 9,
+  "anchorX": 0.5,
+  "anchorY": 0,
+  "animations": {
+   "still": {
+    "frames": 1,
+    "fps": 1,
+    "loop": true
    }
   }
  },

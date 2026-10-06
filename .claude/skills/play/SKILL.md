@@ -6,6 +6,7 @@ description: Build the game, run it in the iPhone simulator and capture screensh
 # /play [level] [seconds ...]
 
 - `Tools/run-sim.sh` — builds, installs, launches, screenshots the menu.
+- `Tools/run-sim.sh endless 60` — the bot plays an endless run (levels back to back, faster each loop).
 - `Tools/run-sim.sh 2 12 41` — launches level 2 with the validator bot playing (`-autoplay`,
   Debug builds only) and takes screenshots 12 s and 41 s after launch.
 

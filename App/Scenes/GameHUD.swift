@@ -1,4 +1,5 @@
 import Foundation
+import GameCore
 import Observation
 
 /// What the SwiftUI overlay shows; the scene writes it once per frame.
@@ -17,5 +18,7 @@ final class GameHUD {
     var bossName: String?
     var bossFraction = 1.0
     var banner: String?
+    /// An ability just won, shown as an award card for a moment.
+    var award: Ability?
     var isPaused = false
 }

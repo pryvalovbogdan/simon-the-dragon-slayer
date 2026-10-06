@@ -62,6 +62,25 @@ def coin() -> Sprite:
     return sprite
 
 
+def medal() -> Sprite:
+    """The end-screen award: a struck disc with a sword on it, in three metals."""
+    sprite = Sprite("medal", (32, 32))
+    for name, face, shade, shine in (("bronze", P.BROWN_L, P.BROWN, P.SAND), ("silver", P.GREY_L, P.GREY, P.WHITE),
+                                     ("gold", P.GOLD, P.GOLD_D, P.YELLOW)):
+        c = Canvas(32, 32)
+        c.ellipse(15.5, 15.5, 13, 13, shade)
+        c.ellipse(15.5, 15.5, 10.5, 10.5, face)
+        c.line((10, 8), (14, 6), shine)
+        # Sword, point up.
+        c.rect(15, 7, 16, 19, shade)
+        c.px(15.5, 6, shade)
+        c.rect(12, 20, 19, 20, shade)
+        c.rect(15, 21, 16, 24, shade)
+        c.rect(15, 8, 15, 18, shine)
+        sprite.add(name, [c.outline(P.OUTLINE)], fps=1)
+    return sprite
+
+
 def shrine() -> Sprite:
     """A standing stone whose runes pulse; passing it grants the level-up."""
     sprite = Sprite("shrine", (24, 48), ground=46)
@@ -91,6 +110,55 @@ def heart(name: str, fill, shade) -> Sprite:
     c.poly([(0.5, 3.5), (8.5, 3.5), (4.5, 8)], fill)
     c.px(2, 2, shade)
     return single(name, c.outline())
+
+
+def flame(c: Canvas) -> None:
+    c.poly([(12, 2), (17, 9), (19, 15), (16, 21), (8, 21), (5, 15), (8, 9), (10, 12)], P.RED)
+    c.poly([(12, 7), (15, 13), (16, 17), (14, 20), (10, 20), (8, 16), (10, 13)], P.ORANGE)
+    c.poly([(12, 13), (14, 17), (13, 20), (11, 20), (10, 17)], P.YELLOW)
+
+
+def ability_icons() -> list[Sprite]:
+    """What the award card shows for each ability; named after the ability ids."""
+    fire = Canvas(24, 24)
+    flame(fire)
+
+    charged = Canvas(24, 24)
+    flame(charged)
+    charged.poly([(12, 14), (14, 17), (13, 20), (11, 20), (10, 17)], P.WHITE)
+    for x, y in ((3, 5), (20, 4), (2, 17), (21, 12)):
+        charged.rect(x - 1, y, x + 1, y, P.YELLOW)
+        charged.rect(x, y - 1, x, y + 1, P.YELLOW)
+
+    boot = Canvas(24, 24)
+    boot.poly([(9, 9), (2, 4), (5, 9), (1, 10), (5, 12), (2, 15), (9, 14)], P.WHITE)       # wing
+    boot.line((8, 10), (4, 8), P.BLUE_L)
+    boot.line((8, 12), (4, 12), P.BLUE_L)
+    boot.rect(10, 5, 15, 16, P.BROWN)
+    boot.rect(10, 5, 15, 6, P.BROWN_L)
+    boot.rect(10, 16, 20, 19, P.BROWN)
+    boot.rect(10, 20, 20, 20, P.BROWN_D)
+    boot.rect(13, 12, 15, 12, P.GOLD)
+
+    return [single("ability_fireball", fire.outline()), single("ability_chargedFireball", charged.outline()),
+            single("ability_doubleJump", boot.outline())]
+
+
+def sparks() -> list[Sprite]:
+    """Bits thrown out around the hero when an ability is won."""
+    star = Canvas(9, 9)
+    star.poly([(4, 0), (5, 3), (8, 3), (6, 5), (7, 8), (4, 6), (1, 8), (2, 5), (0, 3), (3, 3)], P.GOLD)
+    star.rect(4, 3, 4, 4, P.YELLOW)
+
+    ember = Canvas(5, 7)
+    ember.poly([(2, 0), (4, 3), (4, 5), (3, 6), (1, 6), (0, 4)], P.ORANGE)
+    ember.rect(2, 4, 2, 5, P.YELLOW)
+
+    feather = Canvas(8, 5)
+    feather.poly([(0, 2), (3, 0), (7, 1), (5, 4), (2, 4)], P.WHITE)
+    feather.line((1, 2), (6, 2), P.BLUE_L)
+
+    return [single("spark_star", star), single("spark_ember", ember), single("spark_feather", feather)]
 
 
 def hazard(name: str, size: tuple[int, int], frames: list[Canvas], fps: int = 10) -> Sprite:
@@ -206,5 +274,5 @@ def hazards() -> list[Sprite]:
 
 
 def build() -> list[Sprite]:
-    return [tree(), root(), icicle(), coin(), shrine(), heart("heart_full", P.RED, P.WHITE),
-            heart("heart_empty", P.SLATE, P.GREY_D), *hazards()]
+    return [tree(), root(), icicle(), coin(), medal(), shrine(), heart("heart_full", P.RED, P.WHITE),
+            heart("heart_empty", P.SLATE, P.GREY_D), *ability_icons(), *sparks(), *hazards()]

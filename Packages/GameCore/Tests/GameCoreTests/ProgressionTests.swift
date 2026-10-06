@@ -48,17 +48,16 @@ import Testing
         #expect(store.load() == SaveGame())
 
         var game = SaveGame()
-        game.complete(levelID: "level_01", index: 0, total: 4, score: 120, xp: 300)
-        game.complete(levelID: "level_01", index: 0, total: 4, score: 80, xp: 100)
+        game.complete(levelID: "level_01", score: 120, xp: 300)
+        game.complete(levelID: "level_01", score: 80, xp: 100)
+        game.recordEndless(score: 900, cleared: 2, total: 4)
         store.save(game)
 
         let loaded = store.load()
         #expect(loaded.unlockedLevels == 2)
         #expect(loaded.bestScores["level_01"] == 120)
         #expect(loaded.xp == 300)
-
-        game.complete(levelID: "level_04", index: 3, total: 4, score: 1, xp: 600)
-        #expect(game.unlockedLevels == 4)
+        #expect(loaded.bestEndlessScore == 900)
     }
 }
 

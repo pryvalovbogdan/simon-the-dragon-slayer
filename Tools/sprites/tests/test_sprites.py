@@ -18,7 +18,7 @@ SPEC = {
     "hero": ((48, 48), {"run": 8, "stop": 4, "idle": 4, "jump": 2, "fall": 2, "cast": 6, "hurt": 2, "death": 6}),
     "fireball": ((16, 16), {"fly": 4, "impact": 5}),
     "fireball_charged": ((24, 24), {"fly": 4, "impact": 5}),
-    "goblin": ((24, 24), {"walk": 6, "death": 4}),
+    "goblin": ((32, 32), {"walk": 6, "death": 4}),
     "giant": ((48, 64), {"walk": 6, "swing": 6, "hurt": 2, "death": 6}),
     "archer": ((24, 32), {"idle": 2, "shoot": 4, "death": 4}),
     "hound": ((32, 20), {"run": 6, "death": 4}),
@@ -92,13 +92,16 @@ def test_every_thing_the_game_can_show_has_a_sprite(sprites):
     for path in sorted((resources / "Levels").glob("level_*.json")):
         level = json.loads(path.read_text())
         needed |= {item["kind"] for item in level["items"]}
-        needed |= {level["boss"], f"ground_{level['background']}", f"ground_{level['background']}_fill"}
-        needed |= {f"bg_{level['background']}_{layer}" for layer in ("sky", "far", "near")}
+        needed |= {level["boss"], f"ground_{level['background']}", f"ground_{level['background']}_fill",
+                   f"ground_{level['background']}_earth", f"bg_{level['background']}_sky_top"}
+        needed |= {f"bg_{level['background']}_{layer}" for layer in ("sky", "far", "near", "clouds", "puffs", "bushes")}
         if level.get("ravines"):
-            needed |= {f"ravine_{level['background']}", f"ravine_{level['background']}_fill"}
+            needed |= {f"ravine_{level['background']}", f"ravine_{level['background']}_fill",
+                       f"ravine_{level['background']}_deep"}
     for boss in json.loads((resources / "Bosses.json").read_text()):
         for attack in boss["attacks"]:
             needed |= {f"hazard_{h['kind']}" for h in attack["hazards"]}
             needed |= {s["kind"] for s in attack.get("summons", [])}
-    needed |= {"hazard_arrow", "hero", "fireball", "fireball_charged"}
+    needed |= {"hazard_arrow", "hero", "fireball", "fireball_charged", "medal", "spark_star", "spark_ember", "spark_feather"}
+    needed |= {f"ability_{name}" for name in ("fireball", "doubleJump", "chargedFireball")}
     assert needed - set(sprites) == set()
