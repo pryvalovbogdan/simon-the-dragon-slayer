@@ -70,6 +70,7 @@ final class GameScene: SKScene {
     private var hurtUntil = 0.0
     private var castUntil = 0.0
     private var bannerUntil = 0.0
+    private var awardUntil = 0.0
 
     private let haptics = UIImpactFeedbackGenerator(style: .medium)
 
@@ -343,7 +344,7 @@ final class GameScene: SKScene {
                 play(.levelUp)
                 if let ability {
                     unlocked.append(ability)
-                    showBanner("LEVEL \(level) — \(text("ability.\(ability.rawValue)").uppercased())")
+                    award(ability)
                 } else {
                     showBanner("LEVEL \(level)")
                 }
@@ -408,6 +409,46 @@ final class GameScene: SKScene {
             node.play("death") { [weak node] in node?.removeFromParent() }
         } else {
             node.run(.sequence([.fadeOut(withDuration: 0.15), .removeFromParent()]))
+        }
+    }
+
+    /// A new ability is the big moment of a run: an award card on the HUD and a burst around the hero.
+    private func award(_ ability: Ability) {
+        hud.award = ability
+        awardUntil = world.time + 2.6
+        hero.flash(.yellow, duration: 0.25)
+        let origin = CGPoint(x: hero.position.x, y: hero.position.y + 18)
+
+        if let star = library.textures("spark_star", "still").first {
+            let count = 10
+            for index in 0..<count {
+                let angle = CGFloat(index) / CGFloat(count) * 2 * .pi
+                let node = SKSpriteNode(texture: star)
+                node.position = origin
+                node.zPosition = 7
+                actors.addChild(node)
+                let fly = SKAction.moveBy(x: cos(angle) * 48, y: sin(angle) * 48, duration: 0.6)
+                fly.timingMode = .easeOut
+                node.run(.sequence([.group([fly, .rotate(byAngle: .pi, duration: 0.6),
+                                            .sequence([.wait(forDuration: 0.35), .fadeOut(withDuration: 0.25)])]),
+                                    .removeFromParent()]))
+            }
+        }
+        // Fire for the fireballs, feathers for the jump.
+        let rising = ability == .doubleJump ? "spark_feather" : "spark_ember"
+        if let texture = library.textures(rising, "still").first {
+            for (index, offset) in [-16, 9, -5, 15, -11, 3, 12, -8].enumerated() {
+                let node = SKSpriteNode(texture: texture)
+                node.position = CGPoint(x: origin.x + CGFloat(offset), y: hero.position.y + CGFloat(index % 3) * 6)
+                node.zPosition = 7
+                node.alpha = 0
+                actors.addChild(node)
+                let rise = SKAction.moveBy(x: CGFloat(offset) * 0.3, y: 46, duration: 0.8)
+                rise.timingMode = .easeOut
+                node.run(.sequence([.wait(forDuration: Double(index) * 0.07), .fadeIn(withDuration: 0.05),
+                                    .group([rise, .sequence([.wait(forDuration: 0.45), .fadeOut(withDuration: 0.35)])]),
+                                    .removeFromParent()]))
+            }
         }
     }
 
@@ -593,24 +634,31 @@ final class GameScene: SKScene {
 
     private func syncHUD() {
         let stats = world.stats
-        hud.hearts = stats.hearts
-        hud.maxHearts = stats.maxHearts
-        hud.heroLevel = stats.level
+        show(\.hearts, stats.hearts)
+        show(\.maxHearts, stats.maxHearts)
+        show(\.heroLevel, stats.level)
         if let needed = Progression.xpToNext(fromXP: stats.xp) {
             let floor = Progression.xp(forLevel: stats.level)
-            hud.xpFraction = Double(stats.xp - floor) / Double(stats.xp - floor + needed)
+            show(\.xpFraction, Double(stats.xp - floor) / Double(stats.xp - floor + needed))
         } else {
-            hud.xpFraction = 1
+            show(\.xpFraction, 1)
         }
-        hud.canFire = stats.has(.fireball)
-        hud.canCharge = stats.has(.chargedFireball)
-        hud.chargeFraction = min(1, world.charge / world.tuning.chargeTime)
+        show(\.canFire, stats.has(.fireball))
+        show(\.canCharge, stats.has(.chargedFireball))
+        show(\.chargeFraction, min(1, world.charge / world.tuning.chargeTime))
         if let boss = world.bossState, world.phase == .boss {
-            hud.bossName = text("\(boss.id).name")
-            hud.bossFraction = boss.hpFraction
+            show(\.bossName, text("\(boss.id).name"))
+            show(\.bossFraction, boss.hpFraction)
         } else {
-            hud.bossName = nil
+            show(\.bossName, nil)
         }
         if hud.banner != nil, world.time > bannerUntil { hud.banner = nil }
+        if hud.award != nil, world.time > awardUntil { hud.award = nil }
+    }
+
+    /// Writes a HUD value only when it differs. Every write redraws the SwiftUI overlay, even one
+    /// that changes nothing, and this runs each frame.
+    private func show<Value: Equatable>(_ field: ReferenceWritableKeyPath<GameHUD, Value>, _ value: Value) {
+        if hud[keyPath: field] != value { hud[keyPath: field] = value }
     }
 }

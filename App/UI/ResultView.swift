@@ -130,13 +130,12 @@ struct ResultView: View {
 
 /// The medal earned, drawn from the sprite atlas, or an empty slot when there is none.
 private struct MedalView: View {
-    @Environment(AppModel.self) private var model
     let medal: Medal?
 
     var body: some View {
         Group {
-            if let medal, let image = model.sprites.textures("medal", medal.rawValue).first?.cgImage() {
-                Image(decorative: image, scale: 1).interpolation(.none).resizable()
+            if let medal {
+                SpriteImage(sprite: "medal", animation: medal.rawValue)
             } else {
                 Circle().stroke(Color.menuInk.opacity(0.35), style: StrokeStyle(lineWidth: 3, dash: [6, 5])).padding(8)
             }

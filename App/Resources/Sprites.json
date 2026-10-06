@@ -1,4 +1,43 @@
 {
+ "ability_chargedFireball": {
+  "width": 24,
+  "height": 24,
+  "anchorX": 0.5,
+  "anchorY": 0,
+  "animations": {
+   "still": {
+    "frames": 1,
+    "fps": 1,
+    "loop": true
+   }
+  }
+ },
+ "ability_doubleJump": {
+  "width": 24,
+  "height": 24,
+  "anchorX": 0.5,
+  "anchorY": 0,
+  "animations": {
+   "still": {
+    "frames": 1,
+    "fps": 1,
+    "loop": true
+   }
+  }
+ },
+ "ability_fireball": {
+  "width": 24,
+  "height": 24,
+  "anchorX": 0.5,
+  "anchorY": 0,
+  "animations": {
+   "still": {
+    "frames": 1,
+    "fps": 1,
+    "loop": true
+   }
+  }
+ },
  "archer": {
   "width": 24,
   "height": 32,
@@ -1169,6 +1208,45 @@
     "frames": 4,
     "fps": 10,
     "loop": false
+   }
+  }
+ },
+ "spark_ember": {
+  "width": 5,
+  "height": 7,
+  "anchorX": 0.5,
+  "anchorY": 0,
+  "animations": {
+   "still": {
+    "frames": 1,
+    "fps": 1,
+    "loop": true
+   }
+  }
+ },
+ "spark_feather": {
+  "width": 8,
+  "height": 5,
+  "anchorX": 0.5,
+  "anchorY": 0,
+  "animations": {
+   "still": {
+    "frames": 1,
+    "fps": 1,
+    "loop": true
+   }
+  }
+ },
+ "spark_star": {
+  "width": 9,
+  "height": 9,
+  "anchorX": 0.5,
+  "anchorY": 0,
+  "animations": {
+   "still": {
+    "frames": 1,
+    "fps": 1,
+    "loop": true
    }
   }
  },

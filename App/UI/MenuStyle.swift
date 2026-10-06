@@ -20,7 +20,8 @@ struct MenuBackground: View {
             ZStack {
                 Color(red: 0.44, green: 0.71, blue: 0.88)
                 if let scene {
-                    SpriteView(scene: scene, preferredFramesPerSecond: 60)
+                    // Only the running scene scrolls; at rest half the frame rate is plenty.
+                    SpriteView(scene: scene, preferredFramesPerSecond: pose == .running ? 60 : 30)
                 }
             }
             .onAppear { scene = makeScene(proxy.size) }
@@ -52,6 +53,9 @@ struct PixelTitle: View {
         return [words.prefix(first).joined(separator: " "), words.dropFirst(first).joined(separator: " ")]
     }
 
+    /// Outline thickness, in step with the lettering so small text is not swamped by it.
+    private var weight: CGFloat { max(1.5, size * 0.075) }
+
     var body: some View {
         VStack(alignment: alignment, spacing: 2) {
             ForEach(lines, id: \.self) { line in
@@ -59,7 +63,7 @@ struct PixelTitle: View {
                     ForEach(Self.outline.indices, id: \.self) { index in
                         Text(line)
                             .foregroundStyle(Color.menuInk)
-                            .offset(x: Self.outline[index].width * 3, y: Self.outline[index].height * 3)
+                            .offset(x: Self.outline[index].width * weight, y: Self.outline[index].height * weight)
                     }
                     Text(line).foregroundStyle(LinearGradient(
                         stops: [.init(color: tint ?? .menuPaper, location: 0.52), .init(color: tint ?? .orange, location: 0.52)],
@@ -72,6 +76,19 @@ struct PixelTitle: View {
         .minimumScaleFactor(0.5)
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(text)
+    }
+}
+
+/// One frame of a generated sprite as a SwiftUI image, kept crisp at any size.
+struct SpriteImage: View {
+    @Environment(AppModel.self) private var model
+    let sprite: String
+    let animation: String
+
+    var body: some View {
+        if let image = model.sprites.textures(sprite, animation).first?.cgImage() {
+            Image(decorative: image, scale: 1).interpolation(.none).resizable()
+        }
     }
 }
 

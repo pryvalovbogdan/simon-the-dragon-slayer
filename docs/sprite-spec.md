@@ -29,7 +29,8 @@ Outputs per animation:
 | boss_stormking | 96×128 | idle 6, lightning 8, phase 6, hurt 2, death 10 |
 
 Also generated: props (`tree`, `root`, `icicle`, `coin`, `shrine`, hearts, and `medal` with one
-frame each for `bronze`, `silver` and `gold`), ten `hazard_*` sprites,
+frame each for `bronze`, `silver` and `gold`), an `ability_<id>` icon per ability for the award card,
+`spark_star|ember|feather` for the burst around the hero, ten `hazard_*` sprites,
 and per theme `bg_<theme>_sky|clouds|puffs|far|near|bushes`, `ground_<theme>` (all but the sky are
 320 wide and tile horizontally) and `ravine_<theme>` with `ravine_<theme>_fill` (the left wall of a ravine, mirrored
 for the right one, and the dark stretched between them). The start screen has its own backdrop:

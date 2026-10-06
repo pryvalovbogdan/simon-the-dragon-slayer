@@ -38,7 +38,7 @@ def main(argv: list[str]) -> int:
         export.contact_sheet([sprite], export.OUT / "contact" / f"{sprite.name}.png")
     if not wanted:
         by_name = {s.name: s for s in sprites}
-        export.app_icon(by_name["hero"], by_name["fireball_charged"])
+        export.app_icon(by_name)
     frames = sum(len(a.frames) for s in built for a in s.anims.values())
     print(f"built {len(built)} sprite(s), {frames} frames; manifest has {len(manifest)} sprites")
     print(f"previews: {export.OUT / 'preview'}")

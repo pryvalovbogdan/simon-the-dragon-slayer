@@ -102,8 +102,14 @@ private struct HUDView: View {
                         .background(.black.opacity(0.55), in: Capsule())
                         .padding(.top, 8)
                 }
+                if let ability = hud.award {
+                    AwardCard(ability: ability)
+                        .padding(.top, 8)
+                        .transition(.scale(scale: 0.3).combined(with: .opacity))
+                }
                 Spacer()
             }
+            .animation(.spring(response: 0.35, dampingFraction: 0.55), value: hud.award)
             .padding(.horizontal, 16)
             .padding(.top, 8)
 
@@ -138,6 +144,27 @@ private struct HUDView: View {
             }
         }
         .foregroundStyle(.white)
+    }
+}
+
+/// The award for a new ability: its icon and name on a gold card.
+private struct AwardCard: View {
+    @Environment(AppModel.self) private var model
+    let ability: Ability
+
+    var body: some View {
+        HStack(spacing: 12) {
+            SpriteImage(sprite: "ability_\(ability.rawValue)", animation: "still").frame(width: 48, height: 48)
+            VStack(alignment: .leading, spacing: 2) {
+                Text("NEW ABILITY").font(.pixel(10)).foregroundStyle(Color.menuInk.opacity(0.75))
+                PixelTitle(text: model.text("ability.\(ability.rawValue)"), size: 20).fixedSize()
+            }
+        }
+        .padding(.vertical, 10)
+        .padding(.horizontal, 4)
+        .modifier(MenuPanel(fill: Color(red: 0.95, green: 0.78, blue: 0.27)))
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("New ability: \(model.text("ability.\(ability.rawValue)"))")
     }
 }
 

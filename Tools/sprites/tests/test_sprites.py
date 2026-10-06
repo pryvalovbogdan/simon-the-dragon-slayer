@@ -100,5 +100,6 @@ def test_every_thing_the_game_can_show_has_a_sprite(sprites):
         for attack in boss["attacks"]:
             needed |= {f"hazard_{h['kind']}" for h in attack["hazards"]}
             needed |= {s["kind"] for s in attack.get("summons", [])}
-    needed |= {"hazard_arrow", "hero", "fireball", "fireball_charged"}
+    needed |= {"hazard_arrow", "hero", "fireball", "fireball_charged", "medal", "spark_star", "spark_ember", "spark_feather"}
+    needed |= {f"ability_{name}" for name in ("fireball", "doubleJump", "chargedFireball")}
     assert needed - set(sprites) == set()

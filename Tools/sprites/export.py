@@ -97,22 +97,31 @@ def export(sprites: list[Sprite], only: set[str] | None = None) -> dict:
     return manifest
 
 
-def app_icon(hero: Sprite, fireball: Sprite) -> None:
-    """1024px App Store icon: the running hero and a fireball on a dusk sky. Opaque, as Apple requires."""
-    import palette as P
-    size, scale = 1024, 26
-    icon = Image.new("RGBA", (size, size), P.NAVY)
-    bands = [P.NAVY, P.PURPLE_D, P.RED_D, P.ORANGE]
-    for i, color in enumerate(bands):
-        icon.paste(Image.new("RGBA", (size, size // 4 + 1), color), (0, 300 + i * 130))
-    icon.paste(Image.new("RGBA", (size, 230), P.FOREST), (0, size - 230))
-    icon.paste(Image.new("RGBA", (size, 26), P.GREEN), (0, size - 230))
-    figure = hero.anims["cast"].frames[3]
-    big = figure.resize((figure.width * scale, figure.height * scale), Image.NEAREST)
-    icon.alpha_composite(big, (40, size - 204 - (hero.ground or figure.height) * scale))
-    ball = fireball.anims["fly"].frames[0]
-    big = ball.resize((ball.width * scale // 2, ball.height * scale // 2), Image.NEAREST)
-    icon.alpha_composite(big, (size - big.width - 60, 330))
+def app_icon(sprites: dict[str, Sprite]) -> None:
+    """1024px App Store icon: the start screen in miniature, with the hero mid-stride in front of
+    its sky, clouds, pale trees and bushes. Opaque, as Apple requires."""
+    units, ground = 128, 108
+    scale = 1024 // units
+
+    def still(name: str) -> Image.Image:
+        return next(iter(sprites[name].anims.values())).frames[0]
+
+    scene = Image.new("RGBA", (units, units))
+    scene.paste(still("bg_menu_sky").resize((units, units), Image.NEAREST), (0, 0))
+    # Each backdrop strip is cut where it frames the hero best, and stands on the ground line.
+    for name, offset in (("bg_menu_clouds", 150), ("bg_menu_horizon", 96), ("bg_menu_bushes", 14)):
+        strip = still(name)
+        scene.alpha_composite(strip.crop((offset, 0, offset + units, strip.height)), (0, ground - strip.height))
+    tile = still("ground_forest")
+    for x in range(0, units, tile.width):
+        scene.alpha_composite(tile, (x, ground))
+    hero = sprites["hero"]
+    figure = hero.anims["run"].frames[1]
+    figure = figure.resize((figure.width * 2, figure.height * 2), Image.NEAREST)
+    centre = hero.cx if hero.cx is not None else hero.size[0] / 2
+    feet = hero.ground if hero.ground is not None else hero.size[1]
+    scene.alpha_composite(figure, (int(units / 2 - centre * 2), ground - feet * 2))
+    icon = scene.resize((1024, 1024), Image.NEAREST)
     folder = ATLAS.parent / "AppIcon.appiconset"
     folder.mkdir(parents=True, exist_ok=True)
     write_png(icon.convert("RGB"), folder / "icon.png")
