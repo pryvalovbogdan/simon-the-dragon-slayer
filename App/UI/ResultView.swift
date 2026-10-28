@@ -89,7 +89,7 @@ struct ResultView: View {
         }
         .padding(.vertical, 14)
         .padding(.horizontal, 6)
-        .modifier(MenuPanel(fill: Self.cardFill))
+        .modifier(MenuPanel(fill: .cardFill))
     }
 
     private var noteLines: some View {
@@ -101,11 +101,8 @@ struct ResultView: View {
         }
     }
 
-    private static let cardFill = Color(red: 0.85, green: 0.75, blue: 0.54)
-    private static let cardInk = Color(red: 0.62, green: 0.42, blue: 0.1)
-
     private func label(_ text: String) -> some View {
-        Text(text).font(.pixel(12)).foregroundStyle(Self.cardInk)
+        Text(text).font(.pixel(12)).foregroundStyle(Color.cardInk)
     }
 
     /// The small print under the numbers: how far the run got, and anything it unlocked.
@@ -145,7 +142,7 @@ private struct MedalView: View {
     }
 }
 
-private struct ResultButton: View {
+struct ResultButton: View {
     let title: String
     let action: () -> Void
 

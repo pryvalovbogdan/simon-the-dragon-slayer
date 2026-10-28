@@ -4,6 +4,14 @@
 fireball, and fights a boss at the end of each of four levels. An original setting: do not add
 names, places or story from existing books, films or games.
 
+## The `PURRFECTLY DANGEROUS/` folder is another game
+
+`PURRFECTLY DANGEROUS/` in this repo only holds reference images and screenshots for the separate
+cat game **Purrfectly Dangerous**, whose code is at `~/projects/purrfectly-dangerous` (its own repo,
+with its own `CLAUDE.md`). When a request points at that folder or a file in it, the work is for
+that game: read and follow `~/projects/purrfectly-dangerous/CLAUDE.md` and make every change, build,
+test and commit there, using paths under that repo. Never change Simon for such a request.
+
 ## Rules that are easy to break
 
 1. **Game rules live in `Packages/GameCore` and never import SpriteKit/UIKit.** `App/` only draws
@@ -30,7 +38,7 @@ names, places or story from existing books, films or games.
 Tools/check.sh                       # rules + level solvability + art tests + simulator build
 swift test --package-path Packages/GameCore
 Tools/.venv/bin/python Tools/sprites/build.py [name ...]   # regenerate art (all if no name)
-python3 Tools/sfx/build.py           # regenerate sound effects
+python3 Tools/sfx/build.py           # regenerate sound effects and the menu theme
 Tools/run-sim.sh                     # build, launch in simulator, screenshot the menu
 Tools/run-sim.sh 2 12 41             # bot plays level 2; screenshots at 12 s and 41 s
 Tools/run-sim.sh endless 60          # bot plays an endless run; screenshot at 60 s

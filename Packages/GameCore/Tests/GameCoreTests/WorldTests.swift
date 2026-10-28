@@ -2,24 +2,76 @@ import Testing
 @testable import GameCore
 
 @Suite struct WorldTests {
-    @Test func holdingJumpGoesHigherThanTapping() {
-        func apex(held: Bool) -> Double {
-            var world = RunnerWorld(level: flatLevel(), boss: nil)
-            var top = 0.0
-            var input = Input(jumpPressed: true, jumpHeld: held)
-            for _ in 0..<90 {
-                _ = world.step(input, dt: dt)
-                input.jumpPressed = false
-                top = max(top, world.heroY)
-            }
-            #expect(world.onGround)
-            return top
+    /// Peak height of a jump with the button held for `hold` seconds; `regrab` presses it again at
+    /// the top of the boost window, which must not bring the boost back.
+    private func apex(hold: Double, regrab: Bool = false) -> Double {
+        var world = RunnerWorld(level: flatLevel(), boss: nil)
+        var top = 0.0
+        var elapsed = 0.0
+        for frame in 0..<90 {
+            let held = elapsed < hold || (regrab && elapsed > hold + 0.03 && elapsed < 0.4)
+            _ = world.step(Input(jumpPressed: frame == 0, jumpHeld: held), dt: dt)
+            elapsed += dt
+            top = max(top, world.heroY)
         }
-        let tap = apex(held: false)
-        let hold = apex(held: true)
-        #expect(tap > 5)
-        #expect(hold > tap * 2)
-        #expect(hold > ItemKind.tree.spec.height)
+        #expect(world.onGround)
+        return top
+    }
+
+    @Test func holdingJumpLongerGoesHigher() {
+        let tuning = Tuning()
+        let tap = apex(hold: 0)
+        let short = apex(hold: 0.07)
+        let full = apex(hold: 0.4)
+        // A tap still hops a tree; the height grows with the hold, up to a full jump.
+        #expect(tap > ItemKind.tree.spec.height)
+        #expect(abs(tap - tuning.tapApex) < 2)
+        #expect(short > tap + 5)
+        #expect(full > short + 5)
+        #expect(abs(full - tuning.jumpApex) < 2)
+    }
+
+    @Test func pressingAgainAfterLettingGoAddsNoLift() {
+        #expect(abs(apex(hold: 0.03, regrab: true) - apex(hold: 0.03)) < 0.01)
+    }
+
+    /// Tapping jump twice in a row: a second tap in the falling half of a hop is kept until the feet
+    /// touch down, so the next hop starts on landing instead of being dropped.
+    @Test func aSecondTapWhileFallingJumpsAgainOnLanding() {
+        func steps(_ world: RunnerWorld, _ condition: (RunnerWorld) -> Bool) -> Int {
+            var world = world, n = 0
+            while !condition(world) { _ = world.step(Input(), dt: dt); n += 1 }
+            return n
+        }
+        var world = RunnerWorld(level: flatLevel(), boss: nil)
+        _ = world.run(0.5)
+        _ = world.step(Input(jumpPressed: true), dt: dt)
+        let untilLanding = steps(world) { $0.onGround }
+        let untilApex = steps(world) { $0.heroVY <= 0 }
+        // Tap again just after the top of the hop.
+        for _ in 0..<(untilApex + 1) { _ = world.step(Input(), dt: dt) }
+        var events = world.step(Input(jumpPressed: true), dt: dt)
+        for _ in 0..<(untilLanding - untilApex + 2) { events += world.step(Input(), dt: dt) }
+        #expect(events.contains(.jumped(double: false)))
+        #expect(!world.onGround)
+    }
+
+    /// A press long before landing is meant for a later obstacle: it must not fire on touchdown.
+    @Test func anEarlyPressWhileFallingIsNotKeptUntilLanding() {
+        // A double jump falls longest (about 0.45 s from its top).
+        let stats = HeroStats(xp: Progression.xp(forLevel: 3))
+        var world = RunnerWorld(level: flatLevel(), boss: nil, stats: stats)
+        _ = world.run(0.5)
+        _ = world.step(Input(jumpPressed: true, jumpHeld: true), dt: dt)
+        while world.heroVY > 0 { _ = world.step(Input(jumpHeld: true), dt: dt) }
+        _ = world.step(Input(jumpPressed: true, jumpHeld: true), dt: dt)      // the double jump
+        while world.heroVY > 0 { _ = world.step(Input(jumpHeld: true), dt: dt) }
+        _ = world.step(Input(jumpHeld: true), dt: dt)
+        var events = world.step(Input(jumpPressed: true, jumpHeld: true), dt: dt)
+        while !world.onGround { events += world.step(Input(), dt: dt) }
+        events += world.step(Input(), dt: dt)
+        #expect(!events.contains(.jumped(double: false)))
+        #expect(world.onGround)
     }
 
     @Test func doubleJumpNeedsTheAbility() {
@@ -31,6 +83,32 @@ import Testing
         }
         #expect(jumps(level: 2) == 1)
         #expect(jumps(level: 3) == 2)
+    }
+
+    /// Players tap: each press is held about a tenth of a second. Two quick taps must still clear a
+    /// giant at the fastest level speed, with some slack in when they come.
+    @Test func twoQuickTapsClearAGiant() {
+        let tap = 0.1
+        var timings = 0
+        for takeOff in stride(from: 20.0, to: 160, by: 4) {
+            for second in stride(from: 0.1, to: 0.45, by: 0.05) {
+                var level = flatLevel(items: [.init(at: 300, kind: .giant)])
+                level.speed = 140
+                var world = RunnerWorld(level: level, boss: nil, stats: HeroStats(xp: Progression.xp(forLevel: 3)))
+                var events: [GameEvent] = []
+                var jumpedAt: Double?
+                while world.time < 4 {
+                    let gap = (world.entities.first?.x ?? 1000) - world.distance
+                    if jumpedAt == nil, gap < takeOff { jumpedAt = world.time }
+                    let since = jumpedAt.map { world.time - $0 } ?? -1
+                    let pressed = since == 0 || (since >= second && since < second + dt)
+                    let held = (since >= 0 && since < tap) || (since >= second && since < second + tap)
+                    events += world.step(Input(jumpPressed: pressed, jumpHeld: held), dt: dt)
+                }
+                if !events.contains(where: { if case .heroHit = $0 { true } else { false } }) { timings += 1 }
+            }
+        }
+        #expect(timings >= 8)
     }
 
     @Test func runningIntoATreeCostsAHeartThenGrantsImmunity() {
@@ -80,7 +158,7 @@ import Testing
     @Test func theHeroBouncesOffAStompedEnemy() {
         var world = RunnerWorld(level: flatLevel(items: [.init(at: 200, kind: .goblin)]), boss: nil)
         var bouncedUp = false
-        // Jump late enough to come down on its head: goblin closes at 120 u/s, jump lasts 0.67 s.
+        // Jump late enough to come down on its head: goblin closes at 120 u/s, jump lasts 0.69 s.
         while world.time < 3 {
             let gap = (world.entities.first?.x ?? 1000) - world.distance
             let jump = world.onGround && gap < 62 && gap > 50

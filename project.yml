@@ -22,8 +22,8 @@ targets:
         # Signing team picked in Xcode; kept here because the project file is regenerated.
         DEVELOPMENT_TEAM: Q8URUD52A2
         CODE_SIGN_STYLE: Automatic
-        MARKETING_VERSION: "1.0.0"
-        CURRENT_PROJECT_VERSION: "2"
+        MARKETING_VERSION: "1.1.2"
+        CURRENT_PROJECT_VERSION: "11"
         SWIFT_VERSION: "5.0"
         TARGETED_DEVICE_FAMILY: "1"
         GENERATE_INFOPLIST_FILE: YES

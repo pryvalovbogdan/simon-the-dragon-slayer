@@ -146,7 +146,7 @@ public enum LevelValidator {
     static func ravineProblems(in level: LevelDefinition, items: [PlacedItem], tuning: Tuning) -> [String] {
         var problems: [String] = []
         let ravines = (level.ravines ?? []).sorted { $0.at < $1.at }
-        let reach = 2 * tuning.jumpVelocity / tuning.gravity * level.speed
+        let reach = tuning.jumpReach(speed: level.speed)
         let widest = (reach * ravineJumpShare).rounded(.down)
         for (index, ravine) in ravines.enumerated() {
             let name = "ravine at \(Int(ravine.at))"

@@ -2,12 +2,20 @@ import Foundation
 
 public struct Tuning: Sendable, Equatable {
     public var gravity = 900.0
-    public var jumpVelocity = 300.0
-    /// Upward speed is multiplied by this when the jump button is released early.
-    public var jumpCut = 0.45
-    public var doubleJumpScale = 0.9
+    /// Take-off speed of a jump. On its own (a tap) it peaks at `tapApex`; holding the button adds
+    /// lift (see `holdBoost`).
+    public var jumpVelocity = 225.0
+    /// Variable jump: while the button stays held, for up to `holdBoost` seconds after take-off (and
+    /// only while still rising), gravity is multiplied by `holdGravity`. Letting go ends the boost at
+    /// once; there is no cut to the speed already gained. A full hold peaks at `jumpApex`.
+    public var holdBoost = 0.14
+    public var holdGravity = 0.25
+    /// A double jump takes off at this share of `jumpVelocity` and always gets its whole boost.
+    public var doubleJumpScale = 0.875
     /// A jump pressed this long before landing still triggers.
     public var jumpBuffer = 0.1
+    /// The same, for a press on the way down (a quick second tap).
+    public var fallJumpBuffer = 0.3
     public var heroWidth = 14.0
     public var heroHeight = 32.0
     /// Fireball speed relative to the hero.
@@ -32,6 +40,30 @@ public struct Tuning: Sendable, Equatable {
     public var arrowSpeed = 90.0
 
     public init() {}
+
+    /// Height gained, and seconds taken, rising from take-off speed `speed` with the button held for
+    /// the whole boost.
+    public func heldRise(from speed: Double) -> (height: Double, time: Double) {
+        let boosted = gravity * holdGravity
+        let after = speed - boosted * holdBoost
+        guard after > 0 else { return (speed * speed / (2 * boosted), speed / boosted) }
+        return (speed * holdBoost - boosted * holdBoost * holdBoost / 2 + after * after / (2 * gravity),
+                holdBoost + after / gravity)
+    }
+
+    /// Height of a tapped jump (no boost).
+    public var tapApex: Double { jumpVelocity * jumpVelocity / (2 * gravity) }
+
+    /// Height of a full (held) jump from the ground.
+    public var jumpApex: Double { heldRise(from: jumpVelocity).height }
+
+    /// Height of a full jump followed by a double jump at its top.
+    public var doubleJumpApex: Double { jumpApex + heldRise(from: jumpVelocity * doubleJumpScale).height }
+
+    /// Horizontal reach of a full jump from the ground at `speed`.
+    public func jumpReach(speed: Double) -> Double {
+        (heldRise(from: jumpVelocity).time + (2 * jumpApex / gravity).squareRoot()) * speed
+    }
 }
 
 public struct Entity: Sendable, Equatable, Identifiable {
@@ -148,7 +180,10 @@ public struct RunnerWorld: Sendable {
     private var nextItem = 0
     private var nextID = 1
     private var jumpsUsed = 0
-    private var jumpCutDone = false
+    /// Seconds of reduced gravity left on this jump while the button stays held (see `Tuning.holdBoost`).
+    private var holdBoostLeft = 0.0
+    /// The boost runs whether or not the button is held (a double jump).
+    private var boostForced = false
     private var jumpBuffer = 0.0
     private var fireCooldown = 0.0
     private var wasFireHeld = false
@@ -223,7 +258,14 @@ public struct RunnerWorld: Sendable {
     // MARK: - Hero
 
     private mutating func moveHero(_ input: Input, dt: Double, events: inout [GameEvent]) {
-        jumpBuffer = input.jumpPressed ? tuning.jumpBuffer : max(0, jumpBuffer - dt)
+        // A press on the way down is kept a little longer, so tapping twice in a row hops again on
+        // landing; an earlier one is dropped, so it never fires far too soon on touchdown.
+        let falling = !onGround && heroVY <= 0
+        if input.jumpPressed {
+            jumpBuffer = falling ? tuning.fallJumpBuffer : tuning.jumpBuffer
+        } else {
+            jumpBuffer = max(0, jumpBuffer - dt)
+        }
 
         let overRavine = ravines.contains { $0.isOpen(at: distance) }
         if onGround, overRavine {
@@ -234,27 +276,36 @@ public struct RunnerWorld: Sendable {
 
         if jumpBuffer > 0 {
             if onGround {
+                // How high is up to the player: the boost lasts while the button is held.
+                holdBoostLeft = tuning.holdBoost
+                boostForced = false
                 heroVY = tuning.jumpVelocity
                 onGround = false
                 jumpsUsed = 1
-                jumpCutDone = false
                 jumpBuffer = 0
                 events.append(.jumped(double: false))
             } else if input.jumpPressed, jumpsUsed < 2, stats.has(.doubleJump) {
                 heroVY = tuning.jumpVelocity * tuning.doubleJumpScale
                 jumpsUsed = 2
-                jumpCutDone = false
+                // Always full height, as if held through its whole boost: players tap, and a short
+                // second jump never clears a giant.
+                holdBoostLeft = tuning.holdBoost
+                boostForced = true
                 jumpBuffer = 0
                 events.append(.jumped(double: true))
             }
         }
 
         guard !onGround else { return }
-        if !input.jumpHeld, heroVY > 0, !jumpCutDone {
-            heroVY *= tuning.jumpCut
-            jumpCutDone = true
+        var gravity = tuning.gravity
+        if holdBoostLeft > 0, heroVY > 0, input.jumpHeld || boostForced {
+            gravity *= tuning.holdGravity
+            holdBoostLeft = max(0, holdBoostLeft - dt)
+        } else {
+            // Let go (or past the top): the boost is over for this jump.
+            holdBoostLeft = 0
         }
-        heroVY -= tuning.gravity * dt
+        heroVY -= gravity * dt
         heroY += heroVY * dt
         guard heroY <= 0 else { return }
         if !overRavine {
@@ -434,7 +485,7 @@ public struct RunnerWorld: Sendable {
                     if spec.stompKills { damage(entityAt: index, by: entity.hp, events: &events) }
                     heroVY = tuning.stompBounce
                     jumpsUsed = 1
-                    jumpCutDone = true
+                    holdBoostLeft = 0
                 } else if spec.hurtsOnTouch {
                     hurt(events: &events)
                 }

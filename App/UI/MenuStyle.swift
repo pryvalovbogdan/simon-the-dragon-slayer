@@ -5,11 +5,16 @@ import SwiftUI
 extension Color {
     static let menuInk = Color(red: 0.11, green: 0.08, blue: 0.13)
     static let menuPaper = Color(red: 0.96, green: 0.96, blue: 0.94)
+    /// The parchment score card on the end and next-level screens, and its label ink.
+    static let cardFill = Color(red: 0.85, green: 0.75, blue: 0.54)
+    static let cardInk = Color(red: 0.62, green: 0.42, blue: 0.1)
 }
 
 /// The scene behind the menu and the end screen, rebuilt whenever the screen changes shape.
 struct MenuBackground: View {
     var pose = MenuScene.Pose.running
+    /// A level's background theme; nil for the menu's own morning.
+    var theme: String?
 
     @Environment(AppModel.self) private var model
     @Environment(\.displayScale) private var displayScale
@@ -31,7 +36,7 @@ struct MenuBackground: View {
     }
 
     private func makeScene(_ size: CGSize) -> MenuScene {
-        MenuScene(viewSize: size, displayScale: displayScale, library: model.sprites, pose: pose)
+        MenuScene(viewSize: size, displayScale: displayScale, library: model.sprites, pose: pose, theme: theme)
     }
 }
 

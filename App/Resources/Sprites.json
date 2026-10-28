@@ -491,9 +491,9 @@
   }
  },
  "boss_dragon": {
-  "width": 128,
+  "width": 184,
   "height": 96,
-  "anchorX": 0.543,
+  "anchorX": 0.4538,
   "anchorY": 0.0104,
   "animations": {
    "idle": {
@@ -502,6 +502,11 @@
     "loop": true
    },
    "breath": {
+    "frames": 8,
+    "fps": 10,
+    "loop": false
+   },
+   "spit": {
     "frames": 8,
     "fps": 10,
     "loop": false
@@ -524,10 +529,10 @@
   }
  },
  "boss_giant": {
-  "width": 96,
-  "height": 96,
-  "anchorX": 0.6823,
-  "anchorY": 0.0104,
+  "width": 136,
+  "height": 126,
+  "anchorX": 0.511,
+  "anchorY": 0.0079,
   "animations": {
    "idle": {
     "frames": 4,
@@ -590,10 +595,10 @@
   }
  },
  "boss_stormking": {
-  "width": 96,
-  "height": 128,
-  "anchorX": 0.5365,
-  "anchorY": 0.0078,
+  "width": 120,
+  "height": 140,
+  "anchorX": 0.6292,
+  "anchorY": 0.0071,
   "animations": {
    "idle": {
     "frames": 6,
@@ -690,10 +695,10 @@
   }
  },
  "giant": {
-  "width": 48,
-  "height": 64,
-  "anchorX": 0.6771,
-  "anchorY": 0.0156,
+  "width": 84,
+  "height": 80,
+  "anchorX": 0.5298,
+  "anchorY": 0.0125,
   "animations": {
    "walk": {
     "frames": 6,
@@ -952,6 +957,19 @@
    "fly": {
     "frames": 2,
     "fps": 6,
+    "loop": true
+   }
+  }
+ },
+ "hazard_icespike_shot": {
+  "width": 16,
+  "height": 16,
+  "anchorX": 0.5,
+  "anchorY": 0,
+  "animations": {
+   "fly": {
+    "frames": 4,
+    "fps": 12,
     "loop": true
    }
   }

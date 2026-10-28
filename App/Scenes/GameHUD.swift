@@ -13,6 +13,7 @@ final class GameHUD {
     var xpFraction = 0.0
     var canFire = false
     var canCharge = false
+    var canDoubleJump = false
     /// How full the charged shot is, 0...1.
     var chargeFraction = 0.0
     var bossName: String?

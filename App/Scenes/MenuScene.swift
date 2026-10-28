@@ -1,7 +1,8 @@
 import SpriteKit
 
 /// The picture behind the start and end screens: the hero in a bright morning, running on the start
-/// screen and at rest once a run is over. Decoration only; no game rules run here.
+/// screen and at rest once a run is over. Given a level theme it shows that level instead, for the
+/// screen that announces the next level of an endless run. Decoration only; no game rules run here.
 final class MenuScene: SKScene {
     enum Pose {
         case running, standing, fallen
@@ -16,13 +17,16 @@ final class MenuScene: SKScene {
     private let library: SpriteLibrary
     private let upright: Bool
     private let pose: Pose
+    /// A level's background theme to show instead of the menu's own morning.
+    private let theme: String?
     private var parallax: [ParallaxNode] = []
     private var lastTime: TimeInterval?
     private var scroll: CGFloat = 0
 
-    init(viewSize: CGSize, displayScale: CGFloat, library: SpriteLibrary, pose: Pose = .running) {
+    init(viewSize: CGSize, displayScale: CGFloat, library: SpriteLibrary, pose: Pose = .running, theme: String? = nil) {
         self.library = library
         self.pose = pose
+        self.theme = theme
         upright = viewSize.height > viewSize.width
         super.init(size: Self.sceneSize(viewSize: viewSize, displayScale: max(displayScale, 1)))
         scaleMode = .fill
@@ -48,6 +52,30 @@ final class MenuScene: SKScene {
     override func didMove(to view: SKView) {
         view.ignoresSiblingOrder = true
         let groundY = upright ? (size.height * Self.narrowGroundShare).rounded() : 40
+        if let theme {
+            parallax = LevelBackdrop.build(theme: theme, size: size, groundY: groundY, library: library, into: self)
+        } else {
+            addMenuBackdrop(groundY: groundY)
+        }
+
+        let hero = ActorNode(sprite: "hero", library: library)
+        hero.setScale(2)
+        // At rest on a wide screen the hero steps aside to leave the middle to the score card.
+        let place: CGFloat = upright ? 0.5 : (pose == .running ? 0.22 : 0.13)
+        hero.position = CGPoint(x: (size.width * place).rounded(), y: groundY)
+        switch pose {
+        case .running: hero.play("run")
+        case .standing: hero.play("idle")
+        case .fallen:
+            // Lying where they fell: a frame from before the death animation fades the hero away.
+            let frames = library.textures("hero", "death")
+            if !frames.isEmpty { hero.texture = frames[min(3, frames.count - 1)] }
+        }
+        addChild(hero)
+    }
+
+    /// The start screen's own morning: menu sky and hills over the forest ground.
+    private func addMenuBackdrop(groundY: CGFloat) {
         if let sky = library.textures("bg_menu_sky", "still").first {
             let node = SKSpriteNode(texture: sky, size: size)
             node.anchorPoint = .zero
@@ -77,21 +105,6 @@ final class MenuScene: SKScene {
                 parallax.append(row)
             }
         }
-
-        let hero = ActorNode(sprite: "hero", library: library)
-        hero.setScale(2)
-        // At rest on a wide screen the hero steps aside to leave the middle to the score card.
-        let place: CGFloat = upright ? 0.5 : (pose == .running ? 0.22 : 0.13)
-        hero.position = CGPoint(x: (size.width * place).rounded(), y: groundY)
-        switch pose {
-        case .running: hero.play("run")
-        case .standing: hero.play("idle")
-        case .fallen:
-            // Lying where they fell: a frame from before the death animation fades the hero away.
-            let frames = library.textures("hero", "death")
-            if !frames.isEmpty { hero.texture = frames[min(3, frames.count - 1)] }
-        }
-        addChild(hero)
     }
 
     private func addStrip(_ name: String, bottom: CGFloat, factor: CGFloat, z: CGFloat) {

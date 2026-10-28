@@ -1,21 +1,23 @@
-"""Shaggy white giants: the roaming giant (48x64) and the level 1 boss (96x96)."""
+"""Shaggy white giants: the roaming giant (84x80) and the level 1 boss (136x126).
+
+Both canvases leave room behind, in front and above the figure for the club's full swing."""
 import math
 
 import palette as P
 from draw import Body, Canvas, Pose, humanoid, stride, swing, tint, topple
 from sprite import Sprite
 
-GIANT = dict(size=(48, 64), cx=15, ground=62, club=12, horns=False,
+GIANT = dict(size=(84, 80), cx=39, ground=78, club=12, horns=False,
              body=Body(head=(12, 11), torso=(16, 20), thigh=11, shin=11, upper=10, fore=10, limb=5,
                        skin=P.PALE, skin_d=P.PALE_D, hair=P.WHITE, top=P.WHITE, top_d=P.GREY_L,
                        legs=P.GREY_L, legs_d=P.GREY, boots=P.GREY_D, eye=P.RED, belt=P.BROWN))
-CHIEF = dict(size=(96, 96), cx=30, ground=94, club=24, horns=True,
+CHIEF = dict(size=(136, 126), cx=66, ground=124, club=24, horns=True,
              body=Body(head=(18, 16), torso=(26, 30), thigh=17, shin=17, upper=16, fore=16, limb=8,
                        skin=P.PALE_D, skin_d=P.GREY, hair=P.GREY_L, top=P.GREY_L, top_d=P.GREY,
                        legs=P.GREY, legs_d=P.GREY_D, boots=P.SLATE, eye=P.RED, belt=P.BROWN_D))
 
 
-def figure(kind: dict, pose: Pose, club_angle: float = -20, impact: int = 0) -> Canvas:
+def figure(kind: dict, pose: Pose, club_angle: float = -20) -> Canvas:
     c = Canvas(*kind["size"])
     body: Body = kind["body"]
 
@@ -33,8 +35,6 @@ def figure(kind: dict, pose: Pose, club_angle: float = -20, impact: int = 0) -> 
         if kind["horns"]:
             canvas.line((x - hw / 2 + 1, y - hh / 2), (x - hw / 2 - 5, y - hh / 2 - 8), P.SAND, 3)
             canvas.line((x + hw / 2 - 2, y - hh / 2), (x + hw / 2 + 4, y - hh / 2 - 8), P.SAND, 3)
-        for i in range(impact):  # dust and cracks where the club lands
-            canvas.rect(tip[0] - 6 + i * 5, kind["ground"] - 1 - (i % 2) * 3, tip[0] - 4 + i * 5, kind["ground"], P.SAND)
 
     pose.extras.append(gear)
     humanoid(c, body, pose, kind["cx"], kind["ground"])
@@ -65,7 +65,7 @@ def swing_frames(kind: dict, frames: int) -> list[Canvas]:
         # The club continues the line of the arm; club angles are measured from straight up.
         out.append(figure(kind, Pose(near_leg=(22, 14), far_leg=(-22, 10), near_arm=(angle, 0), far_arm=(-25, 30),
                                      lean=lean, crouch=2 if landed else 0),
-                          club_angle=180 - angle, impact=3 if landed else 0).outline())
+                          club_angle=180 - angle).outline())
     return out
 
 
