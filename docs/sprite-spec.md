@@ -15,7 +15,7 @@ Outputs per animation:
 | fireball | 16×16 | fly 4, impact 5 |
 | fireball_charged | 24×24 | fly 4, impact 5 |
 | goblin | 32×32 | walk 6, death 4 |
-| giant | 48×64 | walk 6, swing 6, hurt 2, death 6 |
+| giant | 84×80 | walk 6, swing 6, hurt 2, death 6 |
 | archer | 24×32 | idle 2, shoot 4, death 4 |
 | hound | 32×20 | run 6, death 4 |
 | raven | 24×20 | fly 4, death 3 |
@@ -23,14 +23,14 @@ Outputs per animation:
 | skeleton | 24×32 | walk 6, death 4 |
 | ghost | 24×28 | float 4, death 3 |
 | thorns | 28×14 | still 1 |
-| boss_giant | 96×96 | idle 4, slam 8, stunned 4, hurt 2, death 8 |
-| boss_dragon | 128×96 | idle 6, breath 8, tail 6, hurt 2, death 8 |
+| boss_giant | 136×126 | idle 4, slam 8, stunned 4, hurt 2, death 8 |
+| boss_dragon | 184×96 | idle 6, breath 8, spit 8, tail 6, hurt 2, death 8 |
 | boss_queen | 64×96 | idle 4, summon 6, cast 6, hurt 2, death 8 |
-| boss_stormking | 96×128 | idle 6, lightning 8, phase 6, hurt 2, death 10 |
+| boss_stormking | 120×140 | idle 6, lightning 8, phase 6, hurt 2, death 10 |
 
 Also generated: props (`tree`, `root`, `icicle`, `coin`, `shrine`, hearts, and `medal` with one
 frame each for `bronze`, `silver` and `gold`), an `ability_<id>` icon per ability for the award card,
-`spark_star|ember|feather` for the burst around the hero, ten `hazard_*` sprites,
+`spark_star|ember|feather` for the burst around the hero, ten `hazard_*` sprites plus `hazard_icespike_shot` (the shard the dragon spits before a spike grows),
 and per theme `bg_<theme>_sky|clouds|puffs|far|near|bushes`, `ground_<theme>` (all but the sky are
 320 wide and tile horizontally) and `ravine_<theme>` with `ravine_<theme>_fill` (the left wall of a ravine, mirrored
 for the right one, and the dark stretched between them). The start screen has its own backdrop:

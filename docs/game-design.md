@@ -6,10 +6,10 @@ The hero runs automatically. The level scrolls toward him at the level's speed.
 
 | Input | Action |
 | --- | --- |
-| Tap (left 62% of the screen) | Jump. Hold for a higher jump; release early for a short hop. |
-| Tap again in the air | Double jump (hero level 3+). |
-| Tap the right side | Fireball (hero level 2+). |
-| Hold the right side, then release | Charged fireball: 3 damage (hero level 4). |
+| Jump button (bottom right) | Jump; **how long it is held decides how high**. A press takes off at a modest speed: a tap peaks at about 28, enough for a tree. While the button stays held, gravity is reduced to a quarter for up to 0.14 s after take-off, so a full hold peaks at 50 (a 0.05 s hold about 36, 0.1 s about 44). Letting go ends that boost at once, with no cut to the speed already gained; pressing again does not bring it back. A press on the way down is kept for 0.3 s, so tapping twice in a row hops again on landing; an earlier press (say, at the top of a double jump) is dropped rather than firing too soon. |
+| Press it again in the air | Double jump (hero level 3+); always gets its whole boost, held or not (about 40 more). |
+| Fire button (bottom left) | Fireball (hero level 2+). |
+| Hold the fire button, then release | Charged fireball: 3 damage (hero level 4). |
 
 Three hearts. A hit costs one and gives 1.2 s of immunity (the hero blinks). Zero hearts ends the run.
 Landing on top of a goblin, wolf or skeleton defeats it in one go and gives its XP, and the hero
@@ -44,7 +44,7 @@ kills only get you there sooner. XP is saved when a level is cleared.
 | `wolf` | Fast ground runner, 2 HP | Land on it or 2 fireballs, or jump over |
 | `skeleton` | Slow walker, 2 HP | Land on it or 2 fireballs, or jump over |
 | `ghost` | Drifts in overhead, then swoops to the ground when close | Jump clear of it late; fireballs pass through and landing on it hurts |
-| `giant` | Slow, 56 high, 3 HP | 3 fireballs, or a double jump |
+| `giant` | Slow, 56 high, 3 HP | 3 fireballs, or a double jump (landing on its head still hurts) |
 | `icicle` | Hangs just above head height | Stay on the ground |
 | `archer` | Stands and shoots low arrows | Jump the arrows; bounce over it or burn (2 HP) |
 | `hound` | Fast ground runner | Jump or bounce over it, or burn |
@@ -86,6 +86,9 @@ what makes that level appear on the menu to play on its own.
 - Every completed loop runs the whole game clock 15% faster (hero, enemies, bosses and their
   attacks alike), up to twice the normal speed from loop 8. Because only the clock changes, the
   proof that each level can be beaten without a hit holds on every loop.
+- Between two levels a next-level screen shows the coming level's name (or the new loop and its
+  speed) over that level's own scenery, with the run's score, levels beaten, hero level and hearts.
+  GO starts the level; it also starts by itself after four seconds.
 - The run ends when the hearts run out or the hero falls. The score adds up across levels; the best
   score and the most levels beaten in one run are saved. XP earned here is not saved.
 

@@ -220,6 +220,20 @@ def hazards() -> list[Sprite]:
         spike.append(c.outline(P.BLUE_D))
     out.append(hazard("icespike", (12, 18), spike, fps=6))
 
+    # The shard the dragon spits up; it arcs down onto the spot where the spike then grows.
+    shot = []
+    for i in range(4):
+        c = Canvas(16, 16)
+        angle = i / 4 * math.pi
+        dx, dy = math.cos(angle) * 6.5, math.sin(angle) * 6.5
+        nx, ny = -math.sin(angle) * 3, math.cos(angle) * 3
+        tip, tail = (7.5 + dx, 7.5 + dy), (7.5 - dx, 7.5 - dy)
+        c.poly([tip, (7.5 + nx, 7.5 + ny), tail, (7.5 - nx, 7.5 - ny)], P.BLUE_L)
+        c.poly([tip, (7.5 + nx, 7.5 + ny), tail], P.BLUE)
+        c.line((7.5 + dx * 0.6, 7.5 + dy * 0.6), (7.5 + dx * 0.1, 7.5 + dy * 0.1), P.WHITE)
+        shot.append(c.outline(P.BLUE_D))
+    out.append(hazard("icespike_shot", (16, 16), shot, fps=12))
+
     orb = []
     for i in range(4):
         c = Canvas(14, 14)

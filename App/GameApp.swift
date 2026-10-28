@@ -32,8 +32,9 @@ struct GameApp: App {
 
 struct RootView: View {
     @Environment(AppModel.self) private var model
+    @Environment(\.scenePhase) private var scenePhase
 
-    var body: some View {
+    @ViewBuilder private var screenView: some View {
         switch model.screen {
         case .menu:
             MenuView()
@@ -41,6 +42,13 @@ struct RootView: View {
             GameView(levelIndex: index).id(attempt)
         case .finished(let index, let result):
             ResultView(levelIndex: index, result: result)
+        case .nextLevel(let index):
+            NextLevelView(levelIndex: index)
         }
+    }
+
+    var body: some View {
+        screenView
+            .onChange(of: scenePhase) { _, phase in model.setActive(phase == .active) }
     }
 }

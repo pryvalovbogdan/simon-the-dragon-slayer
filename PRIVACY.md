@@ -1,4 +1,4 @@
-# Privacy Policy — Simon the Dragon Slayer
+f# Privacy Policy — Simon the Dragon Slayer
 
 Last updated: 6 October 2026
 

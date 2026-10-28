@@ -19,7 +19,7 @@ SPEC = {
     "fireball": ((16, 16), {"fly": 4, "impact": 5}),
     "fireball_charged": ((24, 24), {"fly": 4, "impact": 5}),
     "goblin": ((32, 32), {"walk": 6, "death": 4}),
-    "giant": ((48, 64), {"walk": 6, "swing": 6, "hurt": 2, "death": 6}),
+    "giant": ((84, 80), {"walk": 6, "swing": 6, "hurt": 2, "death": 6}),
     "archer": ((24, 32), {"idle": 2, "shoot": 4, "death": 4}),
     "hound": ((32, 20), {"run": 6, "death": 4}),
     "raven": ((24, 20), {"fly": 4, "death": 3}),
@@ -27,10 +27,10 @@ SPEC = {
     "skeleton": ((24, 32), {"walk": 6, "death": 4}),
     "ghost": ((24, 28), {"float": 4, "death": 3}),
     "thorns": ((28, 14), {"still": 1}),
-    "boss_giant": ((96, 96), {"idle": 4, "slam": 8, "stunned": 4, "hurt": 2, "death": 8}),
-    "boss_dragon": ((128, 96), {"idle": 6, "breath": 8, "tail": 6, "hurt": 2, "death": 8}),
+    "boss_giant": ((136, 126), {"idle": 4, "slam": 8, "stunned": 4, "hurt": 2, "death": 8}),
+    "boss_dragon": ((184, 96), {"idle": 6, "breath": 8, "spit": 8, "tail": 6, "hurt": 2, "death": 8}),
     "boss_queen": ((64, 96), {"idle": 4, "summon": 6, "cast": 6, "hurt": 2, "death": 8}),
-    "boss_stormking": ((96, 128), {"idle": 6, "lightning": 8, "phase": 6, "hurt": 2, "death": 10}),
+    "boss_stormking": ((120, 140), {"idle": 6, "lightning": 8, "phase": 6, "hurt": 2, "death": 10}),
 }
 
 
@@ -55,6 +55,18 @@ def test_every_frame_has_its_sprite_size_and_is_not_blank(sprites):
                 # The last frames of a death may dissolve to nothing; everything else must draw something.
                 if name != "death":
                     assert frame.getbbox() is not None, f"{sprite.name}/{name}[{index}] is empty"
+
+
+@pytest.mark.parametrize("name", ["boss_dragon", "boss_giant", "giant"])
+def test_big_creatures_are_not_clipped(sprites, name):
+    """A sprite that reaches the side or top of its canvas loses a snout, tail or club: widen the canvas."""
+    for anim, data in sprites[name].anims.items():
+        for index, frame in enumerate(data.frames):
+            width, height = frame.size
+            alpha = frame.getchannel("A")
+            edges = {"left": (0, 0, 1, height), "right": (width - 1, 0, width, height), "top": (0, 0, width, 1)}
+            for edge, box in edges.items():
+                assert alpha.crop(box).getbbox() is None, f"{name}/{anim}[{index}] touches the {edge} edge"
 
 
 def test_output_is_deterministic(sprites):

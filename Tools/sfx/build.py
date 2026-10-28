@@ -1,9 +1,13 @@
 #!/usr/bin/env python3
-"""Generates the game's sound effects as small 8-bit-style WAV files (standard library only)."""
+"""Generates the game's sound effects as 8-bit-style WAV files and the menu theme as AAC (standard
+library plus macOS `afconvert`; a WAV theme alone would be 1.5 MB of the app)."""
 import math
 import struct
+import subprocess
 import wave
 from pathlib import Path
+
+import music
 
 RATE = 22050
 OUT = Path(__file__).resolve().parents[2] / "App" / "Resources" / "Sounds"
@@ -57,6 +61,10 @@ def main() -> None:
     write("win", tone(523, 523, 0.12), tone(784, 784, 0.12), tone(1047, 1047, 0.12), tone(1319, 1319, 0.35))
     write("lose", tone(392, 392, 0.16), tone(330, 330, 0.16), tone(262, 180, 0.4))
     write("boss_roar", tone(140, 60, 0.5, "noise", 0.8))
+    write("menu_theme", music.render())
+    wav, m4a = OUT / "menu_theme.wav", OUT / "menu_theme.m4a"
+    subprocess.run(["afconvert", "-f", "m4af", "-d", "aac", "-b", "48000", str(wav), str(m4a)], check=True)
+    wav.unlink()
     print(f"wrote sounds to {OUT}")
 
 

@@ -34,11 +34,11 @@ Files are loaded in file-name order; adding `level_05.json` adds a fifth level w
 | `items[].y` | Optional height above ground (coin arcs) |
 | `ravines[]` | Optional gaps in the ground: `at` is the left rim, `width` how far it spans. Needs sprites `ravine_<theme>`, `ravine_<theme>_fill` and `ravine_<theme>_deep` |
 
-Useful numbers: a full jump is 50 high and lasts 0.67 s, so it covers `speed × 0.67` units
-(≈ 74 at speed 110). A tap hop is about 10 high. Leave roughly 110+ units between ground threats.
+Useful numbers: a full (held) jump is 50 high and lasts 0.69 s, so it covers `speed × 0.69` units
+(≈ 76 at speed 110). A tap hop is about 28 high. Leave roughly 110+ units between ground threats.
 
-Ravines: a fall ends the run, so the validator caps `width` at 65% of a full jump's reach (47 at
-speed 110, 60 at 140) and wants at least 16. Keep them out of the start runway and the last 60
+Ravines: a fall ends the run, so the validator caps `width` at 65% of a full jump's reach (49 at
+speed 110, 62 at 140) and wants at least 16. Keep them out of the start runway and the last 60
 units, leave 40 of ground between two of them, and put nothing that stands on the ground inside
 one (coins above are fine). Walking enemies turn back at a rim, so one placed between two ravines
 patrols the ledge. To have a walker turn where the player can watch, start it far enough from the

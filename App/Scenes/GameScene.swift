@@ -37,7 +37,8 @@ final class GameScene: SKScene {
     private var world: RunnerWorld
     private let library: SpriteLibrary
     private let hud: GameHUD
-    private let soundOn: Bool
+    /// Nil when sound is off; built with the scene so no sound loads mid-level.
+    private let sounds: SoundPlayer?
     /// How fast the game clock runs; above 1 in the later loops of an endless run.
     private let timeScale: Double
     private let openingBanner: String?
@@ -50,8 +51,8 @@ final class GameScene: SKScene {
     private var accumulator = 0.0
     /// Distance used for scrolling the scenery; stops when the level is won.
     private var scroll = 0.0
-    private var jumpTouches = Set<UITouch>()
-    private var fireTouches = Set<UITouch>()
+    private var jumpHeld = false
+    private var fireHeld = false
     private var jumpPending = false
     private var reported = false
     private var unlocked: [Ability] = []
@@ -67,6 +68,8 @@ final class GameScene: SKScene {
     private var entityNodes: [Int: ActorNode] = [:]
     private var hazardNodes: [Int: ActorNode] = [:]
     private var shotNodes: [Int: ActorNode] = [:]
+    /// Shards in flight from a boss to where an arming hazard will appear, with their flight time.
+    private var launchNodes: [Int: (node: ActorNode, flight: Double)] = [:]
     private var hurtUntil = 0.0
     private var castUntil = 0.0
     private var bannerUntil = 0.0
@@ -80,7 +83,7 @@ final class GameScene: SKScene {
         world = RunnerWorld(level: level, boss: boss, stats: stats)
         self.library = library
         self.hud = hud
-        self.soundOn = soundOn
+        sounds = soundOn ? SoundPlayer() : nil
         self.timeScale = timeScale
         self.openingBanner = openingBanner
         self.text = text
@@ -154,64 +157,8 @@ final class GameScene: SKScene {
         scenery.removeAllChildren()
         parallax.removeAll()
         let theme = world.level.background
-        if let sky = library.textures("bg_\(theme)_sky", "still").first {
-            // The banded sky keeps its drawn height and sits on the ground line, so the horizon looks the
-            // same in both orientations; anything above it is filled with the sky's top colour.
-            let bandHeight: CGFloat = 200
-            let node = SKSpriteNode(texture: sky, size: CGSize(width: size.width, height: bandHeight))
-            node.anchorPoint = .zero
-            node.position.y = groundY
-            node.zPosition = -10
-            scenery.addChild(node)
-            let above = size.height - groundY - bandHeight
-            if above > 0, let topColour = library.textures("bg_\(theme)_sky_top", "still").first {
-                let fill = SKSpriteNode(texture: topColour, size: CGSize(width: size.width, height: above + 1))
-                fill.anchorPoint = .zero
-                fill.position.y = groundY + bandHeight - 1
-                fill.zPosition = -10
-                scenery.addChild(fill)
-            }
-        } else {
-            backgroundColor = .darkGray
-        }
-        if let fill = library.textures("ground_\(theme)_fill", "still").first {
-            let node = SKSpriteNode(texture: fill, size: CGSize(width: size.width, height: groundY))
-            node.anchorPoint = .zero
-            node.zPosition = -5
-            scenery.addChild(node)
-        }
-        // Back to front. The loose clouds float above the tree line, so they mostly show upright,
-        // where there is open sky; everything else stands on the ground line.
-        for (layer, factor, z, lift) in [("puffs", 0.03, -9.5, 150.0), ("clouds", 0.06, -9.0, 0), ("far", 0.15, -8.0, 0),
-                                         ("near", 0.4, -6.0, 0), ("bushes", 0.7, -5.5, 0)] {
-            let name = "bg_\(theme)_\(layer)"
-            guard let texture = library.textures(name, "still").first, let sheet = library.sheet(name) else { continue }
-            let node = ParallaxNode(texture: texture, size: CGSize(width: sheet.width, height: sheet.height),
-                                    viewWidth: size.width, factor: factor)
-            node.position.y = groundY + lift
-            node.zPosition = z
-            scenery.addChild(node)
-            parallax.append(node)
-        }
-        let name = "ground_\(theme)"
-        if let texture = library.textures(name, "still").first, let sheet = library.sheet(name) {
-            let node = ParallaxNode(texture: texture, size: CGSize(width: sheet.width, height: sheet.height),
-                                    viewWidth: size.width, factor: 1)
-            node.position.y = groundY - sheet.height
-            node.zPosition = -4
-            scenery.addChild(node)
-            parallax.append(node)
-            // Upright the earth runs deeper than the tile; keep it textured and scrolling as one piece.
-            if let earth = library.textures("\(name)_earth", "still").first, let earthSheet = library.sheet("\(name)_earth") {
-                for row in ParallaxNode.earth(below: node.position.y, tile: earth,
-                                              tileSize: CGSize(width: earthSheet.width, height: earthSheet.height),
-                                              viewWidth: size.width) {
-                    row.zPosition = -4
-                    scenery.addChild(row)
-                    parallax.append(row)
-                }
-            }
-        }
+        if library.textures("bg_\(theme)_sky", "still").isEmpty { backgroundColor = .darkGray }
+        parallax = LevelBackdrop.build(theme: theme, size: size, groundY: groundY, library: library, into: scenery)
         buildRavines(theme: theme)
     }
 
@@ -251,25 +198,15 @@ final class GameScene: SKScene {
 
     // MARK: - Input
 
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        for touch in touches {
-            // Right-hand side is the fire button once the fireball is unlocked; everywhere else jumps.
-            if world.stats.has(.fireball), touch.location(in: self).x > size.width * 0.62 {
-                fireTouches.insert(touch)
-            } else {
-                jumpTouches.insert(touch)
-                jumpPending = true
-            }
-        }
+    // The on-screen buttons in the HUD call these; touches elsewhere on the screen do nothing.
+
+    func setJump(held: Bool) {
+        if held && !jumpHeld { jumpPending = true }
+        jumpHeld = held
     }
 
-    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        jumpTouches.subtract(touches)
-        fireTouches.subtract(touches)
-    }
-
-    override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
-        touchesEnded(touches, with: event)
+    func setFire(held: Bool) {
+        fireHeld = held
     }
 
     // MARK: - Loop
@@ -286,7 +223,7 @@ final class GameScene: SKScene {
             accumulator -= Self.step
             guard !world.isOver else { break }
             let input = bot?.input(for: world, dt: Self.step)
-                ?? Input(jumpPressed: jumpPending, jumpHeld: !jumpTouches.isEmpty, fireHeld: !fireTouches.isEmpty)
+                ?? Input(jumpPressed: jumpPending, jumpHeld: jumpHeld, fireHeld: fireHeld)
             jumpPending = false
             let moving = world.phase == .running || world.phase == .boss
             handle(world.step(input, dt: Self.step))
@@ -457,8 +394,7 @@ final class GameScene: SKScene {
     }
 
     private func play(_ sound: Sound) {
-        guard soundOn else { return }
-        run(sound.action)
+        sounds?.play(sound)
     }
 
     // MARK: - Drawing
@@ -566,11 +502,53 @@ final class GameScene: SKScene {
             node.position = CGPoint(x: screenX(hazard.x), y: screenY(hazard.y))
             // A hazard that is still arming is only a warning: faint and blinking.
             node.alpha = hazard.isArmed ? 1 : (Int(world.time * 12) % 2 == 0 ? 0.25 : 0.55)
+            renderLaunch(for: hazard)
         }
         for (id, node) in hazardNodes where !seen.contains(id) {
             node.removeFromParent()
             hazardNodes[id] = nil
         }
+        for (id, launch) in launchNodes where !seen.contains(id) {
+            launch.node.removeFromParent()
+            launchNodes[id] = nil
+        }
+    }
+
+    /// Where a boss's mouth is, in boss-local units from its anchor, for hazards it spits out.
+    private static let launchMouth: [String: (hazard: String, x: Double, y: Double)] = [
+        "boss_dragon": ("icespike", -64, 64),
+    ]
+
+    /// Shows a shard arcing from the boss's mouth onto an arming hazard, landing as it arms.
+    private func renderLaunch(for hazard: Hazard) {
+        guard let state = world.bossState, let mouth = Self.launchMouth[state.id], mouth.hazard == hazard.kind,
+              library.animation("hazard_\(hazard.kind)_shot", "fly") != nil else { return }
+        if hazard.isArmed {
+            if let launch = launchNodes[hazard.id] {
+                launch.node.isHidden = true
+            }
+            return
+        }
+        let launch: (node: ActorNode, flight: Double)
+        if let existing = launchNodes[hazard.id] {
+            launch = existing
+        } else {
+            let node = ActorNode(sprite: "hazard_\(hazard.kind)_shot", library: library)
+            node.anchorPoint = CGPoint(x: 0.5, y: 0.5)
+            node.zPosition = 6
+            node.play("fly")
+            actors.addChild(node)
+            launch = (node, hazard.arm)
+            launchNodes[hazard.id] = launch
+        }
+        let t = launch.flight > 0 ? min(1, max(0, 1 - hazard.arm / launch.flight)) : 1
+        let start = (x: state.x + mouth.x, y: state.y + mouth.y)
+        let end = (x: hazard.x, y: hazard.y + hazard.height / 2)
+        // A high lob: up out of the mouth, then down onto the spot.
+        let peak = max(start.y, end.y) + 24
+        let x = start.x + (end.x - start.x) * t
+        let y = (1 - t) * (1 - t) * start.y + 2 * (1 - t) * t * (2 * peak - (start.y + end.y) / 2) + t * t * end.y
+        launch.node.position = CGPoint(x: screenX(x), y: screenY(y))
     }
 
     private func renderShots() {
@@ -593,7 +571,7 @@ final class GameScene: SKScene {
     /// Animation a boss plays for an attack; "*" is the fallback for that boss.
     private static let attackAnimation: [String: [String: String]] = [
         "boss_giant": ["*": "slam"],
-        "boss_dragon": ["tail_sweep": "tail", "*": "breath"],
+        "boss_dragon": ["tail_sweep": "tail", "ice_rain": "spit", "*": "breath"],
         "boss_queen": ["mirror_orbs": "cast", "*": "summon"],
         "boss_stormking": ["*": "lightning"],
     ]
@@ -644,6 +622,7 @@ final class GameScene: SKScene {
         }
         show(\.canFire, stats.has(.fireball))
         show(\.canCharge, stats.has(.chargedFireball))
+        show(\.canDoubleJump, stats.has(.doubleJump))
         show(\.chargeFraction, min(1, world.charge / world.tuning.chargeTime))
         if let boss = world.bossState, world.phase == .boss {
             show(\.bossName, text("\(boss.id).name"))

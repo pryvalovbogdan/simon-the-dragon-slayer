@@ -20,6 +20,8 @@ final class AppModel {
         /// `attempt` changes on every start so a retry builds a fresh scene.
         case playing(level: Int, attempt: Int)
         case finished(level: Int, result: GameResult)
+        /// Between two levels of an endless run: the score so far and the level coming up.
+        case nextLevel(level: Int)
     }
 
     let levels: [LevelDefinition]
@@ -28,12 +30,19 @@ final class AppModel {
     private let lore: Lore
     private let store = DefaultsSaveStore()
 
-    var screen = Screen.menu
+    var screen = Screen.menu {
+        didSet { updateMusic() }
+    }
     private(set) var save: SaveGame
     /// Debug builds only: `-autoplay <level number>` starts that level with the validator bot playing,
     /// and `-autoplay endless` an endless run, so the game can be watched and screenshotted in the
     /// simulator without touch input. Those runs are silent and are not saved.
     private(set) var autoplay = false
+    /// Debug builds only: `-silent` keeps every sound off, for simulator runs (Tools/run-sim.sh).
+    private var silent = false
+    private let music = MusicPlayer()
+    /// False while the app is in the background or behind the app switcher; the music never plays then.
+    private var isActive = true
     /// The endless run in progress or just ended; nil while a level is played on its own.
     private(set) var endless: EndlessRun?
     private var attempts = 0
@@ -54,6 +63,7 @@ final class AppModel {
         save = store.load()
         #if DEBUG
         let arguments = ProcessInfo.processInfo.arguments
+        silent = arguments.contains("-silent")
         if let flag = arguments.firstIndex(of: "-autoplay"), arguments.indices.contains(flag + 1) {
             if arguments[flag + 1] == "endless" {
                 autoplay = true
@@ -65,6 +75,24 @@ final class AppModel {
             }
         }
         #endif
+        updateMusic()
+    }
+
+    /// Sound effects and music play only when the player has sound on and no debug run asked for quiet.
+    var soundOn: Bool { save.soundOn && !autoplay && !silent }
+
+    /// The theme plays on the start and end screens and is quiet during play.
+    private func updateMusic() {
+        guard isActive else {
+            music.pauseNow()
+            return
+        }
+        switch screen {
+        case .menu, .finished:
+            if soundOn { music.play() } else { music.stop() }
+        case .playing, .nextLevel:
+            music.stop()
+        }
     }
 
     func text(_ key: String) -> String {
@@ -115,12 +143,14 @@ final class AppModel {
         }
         endless = run
         record(run)
-        if run.isOver {
-            screen = .finished(level: index, result: result)
-        } else {
-            attempts += 1
-            screen = .playing(level: run.levelIndex, attempt: attempts)
-        }
+        screen = run.isOver ? .finished(level: index, result: result) : .nextLevel(level: run.levelIndex)
+    }
+
+    /// Leaves the next-level screen of an endless run and starts that level.
+    func continueEndless() {
+        guard case .nextLevel(let index) = screen, endless != nil else { return }
+        attempts += 1
+        screen = .playing(level: index, attempt: attempts)
     }
 
     /// Back to the menu from anywhere; an endless run left part-way keeps what it had banked.
@@ -136,8 +166,16 @@ final class AppModel {
         store.save(save)
     }
 
+    /// Called as the app comes to the front or leaves it.
+    func setActive(_ active: Bool) {
+        guard active != isActive else { return }
+        isActive = active
+        updateMusic()
+    }
+
     func setSound(on: Bool) {
         save.soundOn = on
         store.save(save)
+        updateMusic()
     }
 }
